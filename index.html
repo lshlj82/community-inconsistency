@@ -12,7 +12,7 @@
   function effective(){return saved()||(sys&&sys.matches?'dark':'light')}
   function apply(){root.setAttribute('data-theme',effective());root.style.colorScheme=effective()}
   apply();
-  // Pages listen for OS colour-scheme changes to redraw their canvases; make those
+  // Pages listen for OS color-scheme changes to redraw their canvases; make those
   // listeners (and .matches checks) follow the chosen theme instead of the OS alone.
   if(nativeMM){
     window.matchMedia=function(q){
@@ -71,6 +71,7 @@
 @media print{#theme-toggle{display:none}}
 </style>
 <!-- theme-toggle:end -->
+
 
 
 
@@ -728,7 +729,7 @@ $('relayout').addEventListener('click',()=>{ if(!S.g) return; S.layout=layoutFR(
 
 // ---------- network canvas ----------
 const cv=$('net'); let pts=[];
-function grey(t){ // 0 -> field-ish white, 1 -> ink
+function gray(t){ // 0 -> field-ish white, 1 -> ink
   const light=document.documentElement.dataset.theme!=='dark' && !matchMedia('(prefers-color-scheme: dark)').matches || document.documentElement.dataset.theme==='light';
   const a=light?[255,255,255]:[40,48,58], b=light?[24,34,46]:[235,240,245];
   const c=a.map((v,i)=>Math.round(v+(b[i]-v)*t)); return `rgb(${c})`; }
@@ -746,14 +747,14 @@ function drawNet(){
   for(const i of order){ let r=base, fill=css('--muted');
     if(N){ r=base*(1+Math.min(1.6,Math.sqrt(Math.max(0,N.Psi[i]-1))));
       if(mode==='comm') fill=PAL[N.top[i]%PAL.length];
-      else if(mode==='psi') fill=grey(maxPsi>1?(N.Psi[i]-1)/(maxPsi-1):0);
-      else if(mode==='phi') fill=grey(maxPhi>0?N.Phi[i]/maxPhi:0);
+      else if(mode==='psi') fill=gray(maxPsi>1?(N.Psi[i]-1)/(maxPsi-1):0);
+      else if(mode==='phi') fill=gray(maxPhi>0?N.Phi[i]/maxPhi:0);
       else if(mode==='truth'&&g.truth) fill=PAL[g.truth[i]%PAL.length]; }
     ctx.beginPath(); ctx.arc(pts[i][0],pts[i][1],r,0,Math.PI*2); ctx.fillStyle=fill; ctx.fill(); ctx.lineWidth=0.8; ctx.strokeStyle=css('--ink'); ctx.globalAlpha=.55; ctx.stroke(); ctx.globalAlpha=1; pts[i][2]=r; }
   if(g.n<=50){ ctx.fillStyle=css('--ink'); ctx.font='10px '+css('--sans'); ctx.textAlign='center'; for(let i=0;i<g.n;i++) ctx.fillText(g.names[i],pts[i][0],pts[i][1]-pts[i][2]-3); }
   const ramp=$('ramp');
   if(N && (mode==='psi'||mode==='phi')){ const mx=mode==='psi'?maxPsi:maxPhi, mn=mode==='psi'?1:0;
-    ramp.innerHTML=`<span>${fmt(mn,2)}</span><span class="bar" style="background:linear-gradient(90deg,${grey(0)},${grey(1)})"></span><span>${fmt(mx,2)}</span><span>${mode==='psi'?'Ψ':'Φ'}: consistent → inconsistent</span>`; }
+    ramp.innerHTML=`<span>${fmt(mn,2)}</span><span class="bar" style="background:linear-gradient(90deg,${gray(0)},${gray(1)})"></span><span>${fmt(mx,2)}</span><span>${mode==='psi'?'Ψ':'Φ'}: consistent → inconsistent</span>`; }
   else ramp.innerHTML='';
 }
 $('colorBy').addEventListener('change',drawNet); $('showEdges').addEventListener('change',drawNet);
