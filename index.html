@@ -1,819 +1,686 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- theme-toggle:start -->
-<script>
-(function(){
-  var KEY='lshlj82-demo-theme', root=document.documentElement, Q='(prefers-color-scheme: dark)';
-  var nativeMM=window.matchMedia?window.matchMedia.bind(window):null;
-  var sys=nativeMM?nativeMM(Q):null, hooked=[];
-  function saved(){try{var v=localStorage.getItem(KEY);return v==='light'||v==='dark'?v:null}catch(e){return null}}
-  function effective(){return saved()||(sys&&sys.matches?'dark':'light')}
-  function apply(){root.setAttribute('data-theme',effective());root.style.colorScheme=effective()}
-  apply();
-  // Pages listen for OS color-scheme changes to redraw their canvases; make those
-  // listeners (and .matches checks) follow the chosen theme instead of the OS alone.
-  if(nativeMM){
-    window.matchMedia=function(q){
-      var m=nativeMM(q);
-      if(!/prefers-color-scheme/.test(String(q)))return m;
-      var wantDark=/dark/.test(String(q));
-      try{Object.defineProperty(m,'matches',{configurable:true,get:function(){return (effective()==='dark')===wantDark}})}catch(e){}
-      var add=m.addEventListener, addL=m.addListener;
-      m.addEventListener=function(t,f,o){if(t==='change')hooked.push({m:m,f:f,d:wantDark});return add.call(m,t,f,o)};
-      if(addL)m.addListener=function(f){hooked.push({m:m,f:f,d:wantDark});return addL.call(m,f)};
-      return m;
-    };
-  }
-  function notify(){
-    hooked.forEach(function(h){
-      var ev={matches:(effective()==='dark')===h.d,media:h.m.media,type:'change'};
-      try{typeof h.f==='function'?h.f.call(h.m,ev):h.f&&h.f.handleEvent&&h.f.handleEvent(ev)}catch(e){console.error(e)}
-    });
-    window.dispatchEvent(new CustomEvent('themechange',{detail:{theme:effective()}}));
-  }
-  if(sys){var onSys=function(){if(!saved())apply()};sys.addEventListener?sys.addEventListener('change',onSys):sys.addListener(onSys)}
-  function label(b){var d=effective()==='dark';b.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');b.title=d?'Light mode':'Dark mode'}
-  function mount(){
-    if(document.getElementById('theme-toggle'))return;
-    var b=document.createElement('button');
-    b.id='theme-toggle';b.type='button';
-    b.innerHTML='<svg class="tt-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg class="tt-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 14.6A8.3 8.3 0 0 1 9.4 3.8a8.3 8.3 0 1 0 10.8 10.8z"/></svg>';
-    label(b);
-    b.addEventListener('click',function(){
-      var next=effective()==='dark'?'light':'dark';
-      try{localStorage.setItem(KEY,next)}catch(e){}
-      apply();label(b);notify();
-    });
-    document.body.appendChild(b);
-    new MutationObserver(function(){label(b)}).observe(root,{attributes:true,attributeFilter:['data-theme']});
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
-})();
-</script>
+<!-- lang-link:head -->
+<script>(function(){var p=null;try{p=localStorage.getItem("lshlj82-demo-lang")}catch(e){}if(p&&p!=="en"&&!/[?&]stay\b/.test(location.search))location.replace("ko.html"+location.hash);})();</script>
 <style>
-#theme-toggle{position:absolute;z-index:2147483000;right:calc(env(safe-area-inset-right,0px) + 12px);top:calc(env(safe-area-inset-top,0px) + 12px);
-  width:38px;height:38px;padding:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;
-  background:rgba(255,255,255,.88);color:#1d2633;border:1px solid rgba(20,30,45,.16);
-  box-shadow:0 2px 10px rgba(10,20,35,.14);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
-  transition:background-color .2s,color .2s,border-color .2s,transform .15s}
-#theme-toggle:hover{transform:scale(1.06)}
-#theme-toggle:focus-visible{outline:2px solid #3b82f6;outline-offset:2px}
-#theme-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-#theme-toggle .tt-moon{fill:currentColor;stroke:none}
-#theme-toggle .tt-sun{display:none}
-:root[data-theme="dark"] #theme-toggle{background:rgba(22,28,38,.88);color:#e8eef6;border-color:rgba(255,255,255,.16);box-shadow:0 2px 12px rgba(0,0,0,.45)}
-:root[data-theme="dark"] #theme-toggle .tt-sun{display:block}
-:root[data-theme="dark"] #theme-toggle .tt-moon{display:none}
-@media (prefers-reduced-motion:reduce){#theme-toggle{transition:none}#theme-toggle:hover{transform:none}}
-@media (max-width:760px){:root:root{padding-top:calc(env(safe-area-inset-top,0px) + 58px)}}
-@media print{#theme-toggle{display:none}}
+#langBtn{position:fixed;z-index:21;top:calc(env(safe-area-inset-top,0px) + 12px);right:calc(env(safe-area-inset-right,0px) + 60px);min-width:40px;height:40px;padding:0 10px;border-radius:20px;display:grid;place-items:center;cursor:pointer;text-decoration:none;font:600 14px/1 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;background:var(--lb-bg,rgba(255,255,255,.92));color:var(--lb-fg,#1d2633);border:1px solid var(--lb-bd,rgba(20,30,45,.18));box-shadow:0 1px 4px rgba(0,0,0,.12)}
+#langBtn:hover{border-color:currentColor}
+#langBtn:focus-visible{outline:2px solid #3b82f6;outline-offset:2px}
+:root[data-theme="dark"] #langBtn{--lb-bg:rgba(22,28,38,.92);--lb-fg:#e8eef6;--lb-bd:rgba(255,255,255,.18)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #langBtn{--lb-bg:rgba(22,28,38,.92);--lb-fg:#e8eef6;--lb-bd:rgba(255,255,255,.18)}}
+@media print{#langBtn{display:none}}
+html[lang="ko"] body{word-break:keep-all;overflow-wrap:break-word}
 </style>
-<!-- theme-toggle:end -->
-
-
-
+<!-- lang-link:head-end -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Consistency landscape explorer</title>
+<title>Inconsistent communities · 비일관적인 커뮤니티 | Network Science demos</title>
+<meta name="description" content="Interactive notes on the inconsistency of network communities: companionship, membership and partition inconsistency, and the consistency landscape. Created by Claude Opus 5.5 based on the lecture slides and papers by Sang Hoon Lee and colleagues.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},startup:{typeset:true}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
 <style>
 :root{
-  --bg:#EDF0F3; --panel:#FFFFFF; --ink:#18222E; --muted:#5B6775; --rule:#CBD2DA;
-  --omega:#7B4FA8; --nc:#0F8C7B; --band:#DDE3EA; --sel:#C98300; --field:#F6F8FA;
-  --serif:"Literata", "Iowan Old Style", Georgia, serif;
-  --sans:"Noto Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
-  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#F1F4F8;--grid:#DFE5EE;--panel:#FFFFFF;--ink:#1B2238;--muted:#566079;--rule:#C7CFDC;
+  --marker:#D11F3A;--edge:#AEB7C7;--edge-strong:#1B2238;--none:#BAC2D0;--magenta:#C2399F;--link:#285FC8;--ok-text:#1D7A4A;
+  --c0:#E5484D;--c1:#2F6BDB;--c2:#2A9D63;--c3:#E39B0B;--c4:#8E44C8;--c5:#0F9DB0;--c6:#9A6136;--c7:#D9488F;
+  --hand:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --text:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
   color-scheme:light;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#131920; --panel:#1B232C; --ink:#E4E9EE; --muted:#97A3B0; --rule:#2F3A47;
-  --omega:#B596DC; --nc:#44C2AD; --band:#25303B; --sel:#F0B23E; --field:#222B35; color-scheme:dark; } }
-:root[data-theme="dark"]{ --bg:#131920; --panel:#1B232C; --ink:#E4E9EE; --muted:#97A3B0; --rule:#2F3A47;
-  --omega:#B596DC; --nc:#44C2AD; --band:#25303B; --sel:#F0B23E; --field:#222B35; color-scheme:dark; }
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#111726;--grid:#1B2335;--panel:#161E30;--ink:#E6EAF3;--muted:#9AA5BC;--rule:#2C3750;
+  --marker:#FF5A6E;--edge:#3E4A63;--edge-strong:#E6EAF3;--none:#4B566D;--magenta:#E163C3;--link:#6C9BFF;--ok-text:#3CC383;
+  --c0:#FF6B6F;--c1:#5B8DEF;--c2:#3CC383;--c3:#F5B53A;--c4:#B07AF0;--c5:#2DC3D6;--c6:#C98A5C;--c7:#F07AB3;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#111726;--grid:#1B2335;--panel:#161E30;--ink:#E6EAF3;--muted:#9AA5BC;--rule:#2C3750;
+  --marker:#FF5A6E;--edge:#3E4A63;--edge-strong:#E6EAF3;--none:#4B566D;--magenta:#E163C3;--link:#6C9BFF;--ok-text:#3CC383;
+  --c0:#FF6B6F;--c1:#5B8DEF;--c2:#3CC383;--c3:#F5B53A;--c4:#B07AF0;--c5:#2DC3D6;--c6:#C98A5C;--c7:#F07AB3;color-scheme:dark}
 *,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);font-variant-numeric:tabular-nums}
-.wrap{max-width:1240px;margin:0 auto;padding:28px 20px 60px}
-header h1{font:600 clamp(26px,3.4vw,38px)/1.15 var(--serif);margin:0 0 6px;letter-spacing:-.01em}
-header p{margin:0;color:var(--muted);max-width:72ch}
-nav.tabs{display:flex;gap:4px;margin:22px 0 18px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
-nav.tabs button{font:500 14px var(--sans);background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);padding:9px 12px;cursor:pointer;margin-bottom:-1px}
-nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
-button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--sel);outline-offset:2px}
-.grid{display:grid;grid-template-columns:270px minmax(0,1fr);gap:18px;align-items:start}
-@media (max-width:860px){.grid{grid-template-columns:1fr}}
-.panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px}
-.controls label{display:block;font-size:13px;color:var(--muted);margin:10px 0 3px}
-.controls .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-.controls .row2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-select,input[type=number],textarea{width:100%;font:14px var(--sans);color:var(--ink);background:var(--field);border:1px solid var(--rule);border-radius:6px;padding:6px 8px}
-textarea{font-size:13px;line-height:1.4;resize:vertical}
-input[type=range]{width:100%;accent-color:var(--omega)}
-.btn{font:600 14px var(--sans);padding:9px 14px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:var(--panel);cursor:pointer;width:100%;margin-top:14px}
-.btn.secondary{background:transparent;color:var(--ink)}
-.btn:disabled{opacity:.5;cursor:default}
-.progress{height:4px;background:var(--rule);border-radius:2px;margin-top:10px;overflow:hidden}
-.progress>div{height:100%;width:0;background:var(--omega);transition:width .1s}
-.note{font-size:12.5px;color:var(--muted);margin-top:8px}
-.hint{font-size:13px;color:var(--muted)}
-.chartHead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-.chartHead h2,.panel h2{font:600 18px/1.3 var(--serif);margin:0}
-.legend{display:flex;gap:14px;font-size:13px;color:var(--muted);flex-wrap:wrap;align-items:center}
-.legend i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px}
-#chartBox{position:relative;width:100%;overflow-x:auto}
-#chart{display:block;width:100%;height:auto;touch-action:manipulation}
-#chart:focus{outline:none} #chart:focus-visible{outline:2px solid var(--sel)}
-.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:10px;border-top:1px solid var(--rule);padding-top:12px}
-.readout div b{display:block;font:600 20px/1.2 var(--serif)}
-.readout div span{font-size:12.5px;color:var(--muted)}
-.lower{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;margin-top:18px}
-@media (max-width:980px){.lower{grid-template-columns:1fr}}
-#netBox{position:relative}
-#net{display:block;width:100%;aspect-ratio:4/3;background:var(--field);border-radius:8px;cursor:crosshair}
-.netbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}
-.netbar select{width:auto}
-.netbar label{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
-.ramp{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
-.ramp span.bar{width:110px;height:10px;border:1px solid var(--rule);border-radius:2px}
-#tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:6px 9px;font-size:12.5px;display:none;white-space:nowrap;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-table{border-collapse:collapse;width:100%;font-size:13.5px}
-th{font-weight:500;color:var(--muted);text-align:left;border-bottom:1px solid var(--rule);padding:5px 6px}
-td{border-bottom:1px solid var(--rule);padding:5px 6px}
-td.num,th.num{text-align:right}
-.tableBox{overflow-x:auto;max-height:420px;overflow-y:auto}
-.barcell{width:38%}
-.minibar{height:8px;border-radius:2px;background:var(--omega)}
-.minibar.phi{background:var(--nc)}
-.explain{max-width:74ch}
-.explain h3{font:600 17px var(--serif);margin:26px 0 6px}
-.explain p{margin:0 0 10px}
-.eq{font-family:var(--serif);font-size:16px;background:var(--panel);border-left:3px solid var(--omega);padding:8px 14px;margin:8px 0 12px;overflow-x:auto;white-space:nowrap}
-.hidden{display:none!important}
-header a,.credit a{color:inherit}
-.credit{margin-top:36px;border-top:1px solid var(--rule);padding-top:14px;font-size:13px;color:var(--muted);max-width:80ch}
-.credit p{margin:0}
-.stack>*+*{margin-top:18px}
-.err{color:#B3261E;font-size:13px;margin-top:8px}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .err{color:#F2B8B5} }
-@media (prefers-reduced-motion: reduce){ .progress>div{transition:none} }
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background-color:var(--paper);color:var(--ink);font-family:var(--text);font-size:16.5px;line-height:1.62;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;background-attachment:fixed;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+a{color:var(--link)}
+:focus-visible{outline:2.5px solid var(--marker);outline-offset:2px;border-radius:3px}
+
+.toc{position:fixed;left:0;top:0;bottom:0;width:232px;padding:calc(28px + env(safe-area-inset-top,0px)) 18px 24px 26px;overflow:auto;font-size:14.5px;border-right:1.5px solid var(--rule);background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(4px)}
+.toc .brand{font-family:var(--hand);font-size:21px;font-weight:600;line-height:1.1;margin:0 0 18px}
+.toc ol{list-style:none;padding:0;margin:0;counter-reset:ch}
+.toc li{counter-increment:ch;margin:0}
+.toc a{display:flex;gap:10px;padding:6px 6px;border-radius:4px;color:var(--muted);text-decoration:none;line-height:1.3}
+.toc a::before{content:counter(ch);font-family:var(--hand);font-size:14px;min-width:18px;color:var(--muted);opacity:.6;font-weight:600;line-height:1.3;font-variant-numeric:lining-nums}
+.toc a:hover{color:var(--ink)}
+.toc a.on{color:var(--ink);font-weight:500}
+.toc a.on::before{color:var(--marker)}
+.toc .theme{margin-top:22px;font-size:13px}
+.toc .by{font-family:var(--text);font-weight:400;font-size:13px;color:var(--muted)}
+.credit{font-size:13.5px;color:var(--muted);margin:0 0 4px}
+main{margin-left:232px;padding:0 40px 80px}
+@media (max-width:1100px){.toc{display:none}main{margin-left:0;padding:0 20px 60px}}
+
+.hero{max-width:1180px;margin:0 auto;padding:56px 0 30px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:40px;align-items:center}
+.hero h1{font-family:var(--hand);font-weight:600;font-size:clamp(40px,5.2vw,68px);line-height:1;margin:0 0 12px;letter-spacing:-1px}
+.hero .ko{font-family:var(--hand);font-style:italic;font-size:clamp(18px,2vw,22px);color:var(--muted);margin:0 0 22px}
+.hero p{max-width:46ch}
+.def{font-family:var(--hand);font-size:22px;line-height:1.35;color:var(--ink);margin:22px 0 10px;max-width:30ch}
+.def em{font-style:normal;color:var(--marker)}
+.hero .net{background:transparent}
+@media (max-width:860px){.hero{grid-template-columns:1fr;padding-top:36px}}
+
+.chapter{max-width:1180px;margin:0 auto;padding:64px 0 24px;border-top:1.5px dashed var(--rule);display:grid;grid-template-columns:minmax(0,40ch) minmax(0,1fr);gap:24px 48px;align-items:start}
+.chapter>header{grid-column:1/-1}
+.chapter h2{font-family:var(--hand);font-weight:600;font-size:clamp(28px,3.2vw,38px);line-height:1.1;letter-spacing:-.4px;flex-wrap:wrap;margin:0;display:flex;align-items:baseline;gap:16px}
+.chapter h2 .n{font-size:.62em;color:var(--marker);min-width:1.2em}
+.chapter h2 small{font-size:.52em;color:var(--muted);font-weight:400;font-style:italic;letter-spacing:0}
+.prose p{margin:0 0 14px}
+.prose h3{font-size:16.5px;font-weight:600;margin:22px 0 6px}
+.prose ul{padding-left:20px;margin:0 0 14px}
+.prose li{margin-bottom:6px}
+.note{font-family:var(--hand);font-style:italic;color:var(--marker);font-size:18px;line-height:1.4;margin:14px 0}
+.note.blue{color:var(--link)}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px;background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;overflow-x:auto;white-space:pre;margin:10px 0 14px}
+.math{overflow-x:auto;overflow-y:hidden;margin:10px 0 16px}
+.bench{margin:0;background:var(--panel);border:1.5px solid var(--ink);border-radius:6px;padding:16px 18px 18px;position:relative;min-width:0}
+.bench>.how{font-family:var(--hand);font-style:italic;font-size:17px;line-height:1.35;color:var(--muted);margin:0 0 8px}
+@media (max-width:960px){.chapter{grid-template-columns:minmax(0,1fr);padding-top:48px}.chapter>*{min-width:0}}
+
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+button{font:inherit;font-size:14px;color:var(--ink);background:transparent;border:1.5px solid var(--ink);border-radius:4px;padding:6px 12px;cursor:pointer;line-height:1.2}
+button:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+button.primary{background:var(--ink);color:var(--paper)}
+button.primary:hover{background:color-mix(in srgb,var(--ink) 85%,var(--paper))}
+button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+button:disabled{opacity:.4;cursor:default}
+label.slider{display:flex;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap}
+label.slider input{flex:1;min-width:140px;accent-color:var(--marker)}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:4px;overflow:hidden}
+.seg button{border:0;border-radius:0;border-right:1.5px solid var(--ink)}
+.seg button:last-child{border-right:0}
+
+.readout{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px 16px;margin:12px 0 4px}
+.readout div{font-size:13px;color:var(--muted);line-height:1.3}
+.readout b{display:block;font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.verdict{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.pill{font-size:13.5px;border:1.5px solid currentColor;border-radius:999px;padding:3px 10px}
+.pill.yes{color:var(--ok-text)}.pill.no{color:var(--marker)}
+.ann{font-family:var(--hand);font-style:italic;color:var(--marker);font-size:17px;line-height:1.35;min-height:1.2em;margin:4px 0}
+.log{font-size:13.5px;color:var(--muted);min-height:1.4em;margin:6px 0 0}
+.big{font-size:40px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1;word-break:break-all}
+
+svg.net{display:block;width:100%;height:auto;touch-action:manipulation}
+.edge{stroke:var(--edge);stroke-width:1.4}
+.node circle{fill:var(--none);stroke:var(--panel);stroke-width:1.6}
+.hero .node circle{stroke:var(--paper)}
+.node.click{cursor:pointer}
+.node.click:hover circle{stroke:var(--ink);stroke-width:2.2}
+.node.sel circle{stroke:var(--ink);stroke-width:3}
+.node:focus-visible{outline:none}.node:focus-visible circle{stroke:var(--marker);stroke-width:3}
+.nlabel{font-size:9px;fill:#fff;pointer-events:none;font-weight:600;font-family:var(--text)}
+.ring{fill:none;stroke:var(--marker);stroke-width:2.5}
+.wide{overflow-x:auto}
+table.stats{border-collapse:collapse;font-size:13.5px;width:100%;font-variant-numeric:tabular-nums}
+table.stats th,table.stats td{padding:4px 8px;text-align:right;border-bottom:1px solid var(--rule)}
+table.stats th:first-child,table.stats td:first-child{text-align:left}
+table.stats th{font-weight:500;color:var(--muted)}
+.sw{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px}
+.brush{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.brush button{width:30px;height:30px;padding:0;border-radius:50%;border:2px solid transparent}
+.brush button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 3px var(--panel)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:620px){.two{grid-template-columns:1fr}}
+.cap{font-size:12.5px;color:var(--muted);margin:2px 0 0}
+.chart text,.dendro text{font-size:11px;fill:var(--muted);font-family:var(--text)}
+.axis{stroke:var(--rule);stroke-width:1}
+.matrix rect.cell{cursor:pointer}
+footer{max-width:1180px;margin:40px auto 0;padding-top:24px;border-top:1.5px dashed var(--rule);color:var(--muted);font-size:14px}
+.closing{font-family:var(--hand);font-style:italic;font-size:clamp(21px,2.4vw,27px);line-height:1.3;color:var(--ink);max-width:36ch;margin:0 0 14px}
+</style>
+<script>try { const t = localStorage.getItem("netsci-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<style>
+button.theme-btn{position:fixed; z-index:20; top:calc(env(safe-area-inset-top, 0px) + 12px); right:calc(env(safe-area-inset-right, 0px) + 12px);
+  width:40px; height:40px; padding:0; border-radius:50%; display:grid; place-items:center; cursor:pointer;
+  background:var(--panel); color:var(--ink); border:1px solid var(--rule); box-shadow:0 1px 4px rgba(0,0,0,.12)}
+button.theme-btn:hover{background:var(--panel); color:var(--ink); border-color:var(--ink)}
+button.theme-btn:focus-visible{outline:3px solid var(--link); outline-offset:2px}
+button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@600&family=Noto+Serif+KR:wght@400&display=swap" rel="stylesheet">
+<style>
+/* Course-wide demo title: the same on every demo page and on the course landing page */
+h1.course-title{font-family:"STIX Two Text","Noto Serif KR",Cambria,"Times New Roman",serif !important;font-weight:600 !important;font-style:normal !important;font-size:clamp(30px,3.6vw,44px) !important;line-height:1.08 !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink) !important;word-break:keep-all}
+h1.course-title .course-title-ko{display:block;font-family:"Noto Serif KR","STIX Two Text",serif;font-weight:400;font-size:.5em;line-height:1.3;letter-spacing:0;color:var(--muted);margin:.3em 0 0}
+/* space above the title, so it starts about 48px (phones: 32px) below the top of the page */
+.hero{padding-top:48px !important}
+@media (max-width:860px){.hero{padding-top:32px !important}}
+</style>
+<style>
+:root{--lo:#D5DCE7;--hi:#C2185B;--om:#7B3FB0;--nc:#1D8A5A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--lo:#2E3850;--hi:#FF5C9A;--om:#B98CF0;--nc:#3CC383}}
+:root[data-theme="dark"]{--lo:#2E3850;--hi:#FF5C9A;--om:#B98CF0;--nc:#3CC383}
+.multiples{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:8px 0}
+.multiples .cell{border:1px solid var(--rule);border-radius:4px;padding:2px;min-width:0;position:relative}
+.multiples .cell span{position:absolute;left:4px;top:1px;font-size:10.5px;color:var(--muted)}
+@media (max-width:520px){.multiples{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cfgs{list-style:none;padding:0;margin:8px 0;font-size:13px}
+.cfgs li{display:grid;grid-template-columns:96px minmax(0,1fr) 48px;gap:8px;align-items:center;margin:3px 0}
+.cfgs .bar{height:10px;background:var(--ink);border-radius:2px}
+.cfgs .num{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.cbar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin:6px 0 0}
+.cbar i{display:block;height:10px;flex:1;max-width:220px;border-radius:2px}
+.netlbl{font-size:13px;font-weight:500;margin:6px 0 2px}
+.chapter.wide-prose .prose{grid-column:1/-1;max-width:78ch}
+.landscape{cursor:crosshair}
+@media (max-width:860px){.hero h1.course-title{padding-right:100px}}
+.landscape text{font-size:15px;fill:var(--muted);font-family:var(--text)}
+table.stats td.mx{font-size:12.5px}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <h1>Consistency landscape explorer</h1>
-  <p>Run a stochastic community detection algorithm many times at each resolution γ, then measure how much the results disagree. Implements the partition, membership and companionship inconsistency from Daekyung Lee, Sang Hoon Lee, Beom Jun Kim and Heetae Kim, “Consistency landscape of network communities,” <i>Phys. Rev. E</i> <b>103</b>, 052306 (2021), <a href="https://doi.org/10.1103/PhysRevE.103.052306">doi:10.1103/PhysRevE.103.052306</a>.</p>
-</header>
-
-<nav class="tabs" role="tablist">
-  <button role="tab" aria-selected="true" data-tab="scan">Scan a network</button>
-  <button role="tab" aria-selected="false" data-tab="own">Measure your own partitions</button>
-  <button role="tab" aria-selected="false" data-tab="how">How it's computed</button>
+<!-- lang-link:body -->
+<a id="langBtn" href="ko.html" hreflang="ko" lang="ko" aria-label="한국어로 보기" title="한국어로 보기">한국어</a>
+<script>document.getElementById("langBtn").addEventListener("click",function(){try{localStorage.setItem("lshlj82-demo-lang","ko")}catch(e){}});</script>
+<!-- lang-link:body-end -->
+<button id="themeBtn" class="theme-btn" type="button" aria-label="Switch to light mode"></button>
+<nav class="toc" aria-label="Chapters">
+  <p class="brand">Inconsistency<br><span class="by">Interactive notes</span></p>
+  <ol>
+    <li><a href="#top">“The” community structure?</a></li>
+    <li><a href="#ensemble">An ensemble of answers</a></li>
+    <li><a href="#cooc">Co-occurrence matrix</a></li>
+    <li><a href="#coi">Companionship inconsistency</a></li>
+    <li><a href="#pai">Partition &amp; membership</a></li>
+    <li><a href="#landscape">Consistency landscape</a></li>
+    <li><a href="#bulk">Bulk and boundary</a></li>
+    <li><a href="#real">In real networks</a></li>
+  </ol>
 </nav>
-
-<!-- ============ SCAN TAB ============ -->
-<section id="tab-scan">
-<div class="grid">
-  <aside class="panel controls">
-    <h2>Network</h2>
-    <label for="netSel">Choose a network</label>
-    <select id="netSel">
-      <option value="karate">Zachary's karate club</option>
-      <option value="single">Single-level planted model</option>
-      <option value="double">Double-level hierarchical model</option>
-      <option value="custom">Paste an edge list</option>
-    </select>
-    <div id="p-single" class="hidden">
-      <div class="row">
-        <div><label for="sN">Nodes</label><input id="sN" type="number" min="30" max="600" value="150"></div>
-        <div><label for="sL">Groups</label><input id="sL" type="number" min="1" max="12" value="3"></div>
-        <div><label for="sD">Density</label><input id="sD" type="number" min="0.02" max="0.6" step="0.01" value="0.24"></div>
-      </div>
-      <p class="note">Each node's externality E<sub>i</sub> is drawn from [0, (l−1)/l], as in Sec. III A 1.</p>
-    </div>
-    <div id="p-double" class="hidden">
-      <div class="row2">
-        <div><label for="dN">Nodes per subgroup</label><input id="dN" type="number" min="8" max="60" value="30"></div>
-        <div><label for="dD">Density</label><input id="dD" type="number" min="0.02" max="0.6" step="0.01" value="0.2"></div>
-      </div>
-      <p class="note">3 groups of 3 subgroups; E<sub>i;1</sub> ∈ [1/3, 2/3], E<sub>i;2</sub> = 1 − E<sub>i;1</sub>.</p>
-    </div>
-    <div id="p-custom" class="hidden">
-      <label for="edgeText">One edge per line: <i>source target [weight]</i></label>
-      <textarea id="edgeText" rows="7" placeholder="a b&#10;a c 2.5&#10;b c"></textarea>
-    </div>
-
-    <h2 style="margin-top:18px">Resolution scan</h2>
-    <div class="row">
-      <div><label for="gMin">γ from</label><input id="gMin" type="number" step="0.01" value="0.1"></div>
-      <div><label for="gMax">to</label><input id="gMax" type="number" step="0.01" value="1.5"></div>
-      <div><label for="gStep">step</label><input id="gStep" type="number" step="0.01" min="0.005" value="0.02"></div>
-    </div>
-    <div class="row2">
-      <div><label for="runs">Runs per γ</label><input id="runs" type="number" min="10" max="1000" value="100"></div>
-      <div><label for="seed">Seed</label><input id="seed" type="number" value="7"></div>
-    </div>
-    <label for="thr">Consistency threshold Ω ≤ <span id="thrVal">1.02</span></label>
-    <input id="thr" type="range" min="1.001" max="1.2" step="0.001" value="1.02">
-    <button class="btn" id="runBtn">Run scan</button>
-    <div class="progress" aria-hidden="true"><div id="prog"></div></div>
-    <p class="note" id="status">Ready.</p>
-    <p class="err hidden" id="scanErr"></p>
-  </aside>
-
-  <div class="stack">
-    <div class="panel">
-      <div class="chartHead">
-        <h2>Inconsistency landscape</h2>
-        <div class="legend">
-          <span><i style="background:var(--omega);border-radius:50%"></i>Partition inconsistency Ω</span>
-          <span><i style="background:var(--nc)"></i>Mean number of communities ⟨n<sub>c</sub>⟩</span>
-          <span><i style="background:var(--band)"></i>Consistent range</span>
-        </div>
-      </div>
-      <div id="chartBox"><svg id="chart" tabindex="0" role="img" aria-label="Partition inconsistency and number of communities versus resolution. Click or use arrow keys to pick a resolution."></svg></div>
-      <p class="hint">Click the chart or use ← → to pick a resolution. Error bars are standard errors (⟨n<sub>c</sub>⟩ over runs, Ω over 10 random subsamples).</p>
-      <div class="readout" id="readout"></div>
-    </div>
-
-    <div class="lower">
-      <div class="panel">
-        <div class="chartHead"><h2 id="netTitle">Nodes at the selected γ</h2></div>
-        <div class="netbar">
-          <label>Color <select id="colorBy">
-            <option value="comm">Community (most frequent configuration)</option>
-            <option value="psi">Membership inconsistency Ψ</option>
-            <option value="phi">Companionship inconsistency Φ</option>
-            <option value="truth">Planted / known groups</option>
-          </select></label>
-          <label><input type="checkbox" id="showEdges" checked> Edges</label>
-          <button class="btn secondary" id="relayout" style="width:auto;margin:0;padding:5px 10px;font-size:13px">Redo layout</button>
-        </div>
-        <div id="netBox"><canvas id="net"></canvas><div id="tip"></div></div>
-        <div class="netbar"><div class="ramp" id="ramp"></div></div>
-        <p class="hint">Node size grows with √(Ψ − 1), as in Fig. 7 of the paper. Hover a node for its values.</p>
-      </div>
-      <div class="panel">
-        <h2>Most inconsistent nodes</h2>
-        <p class="hint" id="nodeSummary"></p>
-        <div class="tableBox"><table id="nodeTable"></table></div>
-      </div>
-    </div>
+<main>
+<section class="hero" id="top" data-ch="0">
+  <div>
+    <h1 class="course-title">Inconsistent communities<span class="course-title-ko" lang="ko">비일관적인 커뮤니티</span></h1>
+    <p class="ko">Created by Claude Opus 5.5, based on the lecture slides and papers by Sang Hoon Lee and colleagues</p>
+    <p>Most community detection algorithms are stochastic: the Louvain algorithm, for instance, visits the nodes in a random order. Run it twice on the same network and you may get two different answers. The usual reaction is to call this a defect and pick one answer.</p>
+    <p class="def">Instead, detect <em>an ensemble</em> of community structures, not “the” community structure.</p>
+    <p>How often the answers disagree, and about which nodes, turns out to be useful information: it points out bridge nodes, outsiders and multiplayers, and it tells you which resolution gives communities you can trust. Half empty, or half full?</p>
+    <div class="controls"><button class="primary" id="heroPlay" type="button" aria-pressed="true">Pause</button><span class="cap" id="heroCap"></span></div>
   </div>
-</div>
+  <div id="heroNet"></div>
 </section>
 
-<!-- ============ OWN PARTITIONS TAB ============ -->
-<section id="tab-own" class="hidden">
-<div class="grid">
-  <aside class="panel controls">
-    <h2>Your community ensemble</h2>
-    <label for="partText">One detection result per line, one label per node (space or comma separated). Labels are arbitrary.</label>
-    <textarea id="partText" rows="12"></textarea>
-    <label for="nodeNamesText">Node names (optional, one line)</label>
-    <textarea id="nodeNamesText" rows="2" placeholder="Leave empty to number nodes 1…N"></textarea>
-    <button class="btn" id="calcBtn">Calculate measures</button>
-    <p class="err hidden" id="ownErr"></p>
-    <p class="note">The example is 5 runs on 12 nodes: one configuration appears 3 times and a second, where nodes 6 and 7 swap sides, appears twice.</p>
-  </aside>
-  <div class="stack">
-    <div class="panel">
-      <h2>Ensemble summary</h2>
-      <div class="readout" id="ownReadout"></div>
-    </div>
-    <div class="lower" style="margin-top:0">
-      <div class="panel">
-        <h2>Per-node inconsistency</h2>
-        <div class="tableBox"><table id="ownNodes"></table></div>
-      </div>
-      <div class="panel">
-        <h2>Unique configurations</h2>
-        <div class="tableBox"><table id="ownConfigs"></table></div>
-        <h2 style="margin-top:16px">Similarity matrix S<sub>αβ</sub></h2>
-        <div class="tableBox"><table id="ownSim"></table></div>
-      </div>
-    </div>
+<section class="chapter" id="ensemble" data-ch="1">
+  <header><h2><span class="n">2</span>An ensemble of answers <small>many runs of a stochastic algorithm</small></h2></header>
+  <div class="prose">
+    <p>Take a small network with two dense groups, nodes 1–5 on the left and 9–13 on the right, joined through nodes 6, 7 and 8. Run the Louvain algorithm (modularity maximization with resolution \(\gamma\)) many times, each time with a different random order of the nodes. Each run, or <em>realization</em>, gives one community <em>configuration</em>.</p>
+    <p>The two groups come out the same every time. Nodes 6, 7 and 8 do not: sometimes they join the left group, sometimes the right, sometimes they form their own. With \(n_d\) realizations, the distinct configurations \(\alpha = 1, 2, \ldots, C\) and how often each appears, \(p_\alpha = m_\alpha/n_d\), make up a statistical <em>community ensemble</em>.</p>
+    <p>Only the grouping matters, not the labels. Here, the community containing node 1 is always drawn red, so the same configuration always looks the same.</p>
+    <p class="note">Nothing is wrong with the algorithm. It is fundamentally impossible to define the exact boundary of some nodes’ communities in the first place.</p>
   </div>
-</div>
+  <figure class="bench">
+    <p class="how">Run the algorithm and watch the bridge nodes change sides. The last ten realizations are shown.</p>
+    <div class="controls">
+      <button class="primary" id="exRun1" type="button">Run once</button><button id="exRun10" type="button">Run 10 times</button><button id="exRun100" type="button">Run 100 times</button><button id="exReset" type="button">Start over</button>
+    </div>
+    <label class="slider">Resolution \(\gamma\) <input type="range" id="exG" min="0.3" max="1.5" step="0.05" value="0.6"> <output id="exGo">0.60</output></label>
+    <div class="multiples" id="exMult"></div>
+    <div class="readout" id="exRead"></div>
+    <p class="netlbl" id="exCfgH">Distinct configurations</p>
+    <ul class="cfgs" id="exCfgs"></ul>
+  </figure>
 </section>
 
-<!-- ============ HOW TAB ============ -->
-<section id="tab-how" class="hidden">
-<div class="panel explain">
-  <h3>Community ensemble</h3>
-  <p>Running a stochastic algorithm m times gives C distinct configurations α, each appearing with frequency p<sub>α</sub> = m<sub>α</sub>/m. Configurations are compared only by which nodes sit together; the label numbers themselves are ignored.</p>
-  <p>The scan uses the Louvain method for modularity with resolution γ, Q = Σ<sub>ij</sub>[A<sub>ij</sub> − γ k<sub>i</sub>k<sub>j</sub>/2m] δ(g<sub>i</sub>, g<sub>j</sub>), visiting nodes in a fresh random order on every run. This mirrors the randomized node ordering of GenLouvain used in the paper, so results will be qualitatively similar but not numerically identical. Edge weights are used when given.</p>
-
-  <h3>Partition inconsistency Ω (Eq. 2)</h3>
-  <div class="eq">Ω = ( Σ<sub>α</sub> Σ<sub>β</sub> p<sub>α</sub> p<sub>β</sub> S<sub>αβ</sub> )<sup>−1</sup></div>
-  <p>S<sub>αβ</sub> is the element-centric similarity (Eq. 1). For a partition, personalized PageRank on the cluster-induced element graph has the closed form f<sub>ij</sub> = d/|C<sub>i</sub>| + (1 − d)δ<sub>ij</sub> for j in node i's cluster, so the 1/(2d) normalization cancels d and</p>
-  <div class="eq">S<sub>αβ</sub> = 1 − (1/2N) Σ<sub>i</sub> Σ<sub>j</sub> | 𝟙[j∈ψ<sub>iα</sub>]/|ψ<sub>iα</sub>| − 𝟙[j∈ψ<sub>iβ</sub>]/|ψ<sub>iβ</sub>| |</div>
-  <p>which only needs the overlap |ψ<sub>iα</sub> ∩ ψ<sub>iβ</sub>| for each node. Ω = 1 when every run agrees and approaches C when all configurations are equally likely and unrelated, so it reads as the effective number of independent configurations.</p>
-
-  <h3>Membership inconsistency Ψ<sub>i</sub> (Eqs. 3–5)</h3>
-  <div class="eq">Ψ<sub>i</sub> = ( Σ<sub>α</sub> Σ<sub>β</sub> p(ψ<sub>iα</sub>) p(ψ<sub>iβ</sub>) J<sub>iαβ</sub> )<sup>−1</sup>, &nbsp; J<sub>iαβ</sub> = |ψ<sub>iα</sub> ∩ ψ<sub>iβ</sub>| / |ψ<sub>iα</sub> ∪ ψ<sub>iβ</sub>|</div>
-  <p>ψ<sub>iα</sub> is the set of nodes sharing node i's community in configuration α. Ψ<sub>i</sub> is the effective number of distinct memberships node i has; it highlights the bulk of unstable regions.</p>
-
-  <h3>Companionship inconsistency Φ<sub>i</sub> (Eqs. 6–7)</h3>
-  <div class="eq">W<sub>ij</sub> = Σ<sub>α</sub> p<sub>α</sub> δ(g<sub>iα</sub>, g<sub>jα</sub>), &nbsp; Φ<sub>i</sub> = 1 − (1/(N−1)) Σ<sub>j≠i</sub> (1 − 2W<sub>ij</sub>)<sup>2</sup></div>
-  <p>The printed Eq. (7) shows 1/(m − 1); this demo normalizes by N − 1, the number of other nodes, which gives the stated bounds 0 ≤ Φ<sub>i</sub> ≤ 1 and matches the original definition in Kim &amp; Lee, <i>Phys. Rev. E</i> <b>100</b>, 022311 (2019). Φ peaks at the boundary of unstable regions.</p>
-
-  <h3>Reading the landscape</h3>
-  <p>Resolutions where Ω returns close to 1 while ⟨n<sub>c</sub>⟩ sits on an integer plateau above 1 are marked as consistent ranges. The threshold is adjustable because, as the paper notes, it is an arbitrary choice. Hierarchical networks show several such ranges at different ⟨n<sub>c</sub>⟩.</p>
-</div>
+<section class="chapter" id="cooc" data-ch="2">
+  <header><h2><span class="n">3</span>Who goes with whom <small>the co-occurrence matrix</small></h2></header>
+  <div class="prose">
+    <p>Forget the community labels and keep only pairs. The co-occurrence matrix counts, for every pair of nodes, the fraction of realizations in which they land in the same community:</p>
+    <div class="math">\[ \phi_{ij} = \frac{1}{n_d}\sum_{\alpha=1}^{n_d} \delta_\alpha(g_i, g_j), \]</div>
+    <p>where \(g_i\) is the community of node \(i\) in realization \(\alpha\). A value of 1 means <em>always accompanied</em>, 0 means <em>always separated</em>. Both extremes are consistent; values in between are not.</p>
+    <p>The ensemble on the right is the same one as in the previous section, so running more realizations there updates this matrix too.</p>
+  </div>
+  <figure class="bench">
+    <p class="how">Hover over (or tap) a cell to read off how often two nodes were found together.</p>
+    <div class="wide"><svg id="mat" class="net matrix" viewBox="0 0 440 440" role="img" aria-label="Co-occurrence matrix of the example network"></svg></div>
+    <div class="cbar"><span>always separated 0</span><i style="background:linear-gradient(90deg,#2F6BDB,#F2D04B,#E5484D)"></i><span>1 always accompanied</span></div>
+    <p class="ann" id="matAnn"></p>
+  </figure>
 </section>
-<footer class="credit">
-  <p>Method: Daekyung Lee, Sang Hoon Lee, Beom Jun Kim and Heetae Kim, <i>Phys. Rev. E</i> <b>103</b>, 052306 (2021). This interactive implementation was built with Claude Opus 5.5 by Anthropic. It is an independent demo and is not affiliated with the authors.</p>
+
+<section class="chapter" id="coi" data-ch="3">
+  <header><h2><span class="n">4</span>Companionship inconsistency <small>CoI, a node’s relational flexibility</small></h2></header>
+  <div class="prose">
+    <p>To turn the row of node \(i\) into a single number, measure how far each \(\phi_{ij}\) is from the undecided value 1/2:</p>
+    <div class="math">\[ \Phi_i = 1 - \frac{1}{N-1}\sum_{j \ne i}\left(1 - 2\phi_{ij}\right)^2 . \]</div>
+    <p>\(\Phi_i = 0\) when node \(i\) always forms communities with the same nodes, and \(\Phi_i = 1\) when it goes with every other node exactly half the time. The CoI asks: how inconsistently is the node clustered with the others, or how weak is its community membership?</p>
+    <p>Compare it with betweenness centrality, which also looks for “bridge” nodes. Betweenness counts shortest paths, and most of them run through node 8, so nodes 6 and 7 look hardly different from the inside of a group. The CoI flags all three bridge nodes, because it looks at the functional relationship between nodes, not at paths.</p>
+    <p>It also differs from a node’s externality \(E_i\), the fraction of its neighbors outside its own community. A node that switches between communities has a large CoI even if, on average, half its neighbors are always outside.</p>
+  </div>
+  <figure class="bench">
+    <p class="how">Same ensemble as above. Stronger color means larger.</p>
+    <div class="two">
+      <div><p class="netlbl">Companionship inconsistency \(\Phi_i\)</p><div id="coiNet"></div></div>
+      <div><p class="netlbl">Betweenness centrality</p><div id="bcNet"></div></div>
+    </div>
+    <div class="cbar"><span>min</span><i id="coiBar"></i><span>max</span></div>
+    <div class="wide"><table class="stats" id="coiTab"></table></div>
+  </figure>
+</section>
+
+<section class="chapter" id="pai" data-ch="4">
+  <header><h2><span class="n">5</span>Partition and membership <small>effective numbers of answers</small></h2></header>
+  <div class="prose">
+    <p>The CoI is built from pairs. Two more measures look at whole configurations and at whole memberships. Both need a way to compare two configurations \(\alpha\) and \(\beta\). The element-centric similarity (ECS) does this node by node: in configuration \(\alpha\), a random walker starting at node \(i\) and restarting there with probability \(1-d\) ends up at node \(j\) with probability \(f^\alpha_{ij}\). For non-overlapping communities, \(f^\alpha_{ij} = (1-d)\,\delta_{ij} + d/|g_{i\alpha}|\) for every \(j\) in the community \(g_{i\alpha}\) of node \(i\). Then</p>
+    <div class="math">\[ S_{\alpha\beta} = \frac{1}{N}\sum_{i=1}^{N}\left(1 - \frac{1}{2d}\sum_{j=1}^{N}\left|f^\alpha_{ij} - f^\beta_{ij}\right|\right), \qquad d = 0.9, \]</div>
+    <p>which is 1 for identical configurations and 0 for completely different ones. The <b>partition inconsistency</b> (PaI) of the ensemble is</p>
+    <div class="math">\[ \Omega = \left(\sum_{\alpha=1}^{C}\sum_{\beta=1}^{C} p_\alpha p_\beta S_{\alpha\beta}\right)^{-1} . \]</div>
+    <p>If every realization gives the same configuration, \(\Omega = 1\). If \(C\) configurations are equally likely and completely different, \(\Omega = C\). So \(\Omega\) is the effective number of independent configurations.</p>
+    <p>The same logic works for a single node. Let \(\psi_{i\alpha}\) be the set of nodes in node \(i\)’s community in configuration \(\alpha\), compare two such sets with the Jaccard index \(J_{i\alpha\beta} = |\psi_{i\alpha}\cap\psi_{i\beta}| / |\psi_{i\alpha}\cup\psi_{i\beta}|\), and define the <b>membership inconsistency</b> (MeI)</p>
+    <div class="math">\[ \Psi_i = \left(\sum_{\alpha,\beta} p(\psi_{i\alpha})\, p(\psi_{i\beta})\, J_{i\alpha\beta}\right)^{-1}, \]</div>
+    <p>the effective number of independent memberships of node \(i\).</p>
+  </div>
+  <figure class="bench">
+    <p class="how">Computed from the same ensemble as above. Rows and columns of the table are the distinct configurations.</p>
+    <div class="readout" id="paiRead"></div>
+    <div class="wide"><table class="stats" id="paiTab"></table></div>
+    <p class="netlbl" style="margin-top:12px">Membership inconsistency \(\Psi_i\)</p>
+    <div id="meiNet"></div>
+    <div class="cbar"><span>1</span><i id="meiBar"></i><span id="meiMax">max</span></div>
+  </figure>
+</section>
+
+<section class="chapter" id="landscape" data-ch="5">
+  <header><h2><span class="n">6</span>The consistency landscape <small>which resolution to trust</small></h2></header>
+  <div class="prose">
+    <p>Modularity has a free parameter, the resolution \(\gamma\): larger \(\gamma\) gives more, smaller communities. Which value is right is usually decided by rather ad hoc heuristics. The consistency landscape uses \(\Omega\) instead. Scan \(\gamma\), build an ensemble at each value, and plot \(\Omega\) together with the average number of communities \(\langle n_c\rangle\).</p>
+    <ul>
+      <li>At very small \(\gamma\) the whole network is one community: \(\Omega = \langle n_c\rangle = 1\), trivially consistent.</li>
+      <li>As \(\gamma\) grows, the network starts to break up, at first along rather arbitrary lines, and \(\Omega\) rises.</li>
+      <li>When \(\gamma\) matches an intrinsic scale of communities, the configurations agree again: \(\Omega \approx 1\) and \(\langle n_c\rangle\) sits on a plateau at an integer.</li>
+      <li>Beyond that, the algorithm finds spurious, smaller communities and \(\Omega\) grows again.</li>
+    </ul>
+    <p>A plateau of \(\langle n_c\rangle\) alone is not enough; it has to come with a small \(\Omega\). In the karate club, \(\langle n_c\rangle\) also has plateaus at 3 and 4, but only the two-community range is consistent, matching the two factions in Zachary’s original study. A network with communities inside communities shows one consistent range for each level.</p>
+    <p class="note blue">This page uses its own Louvain implementation, so the ranges of \(\gamma\) differ in detail from the GenLouvain results in the paper.</p>
+  </div>
+  <figure class="bench">
+    <p class="how">Choose a network and scan. Then click the chart to pick a resolution.</p>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Network"><button type="button" data-ln="karate" aria-pressed="true">Karate club</button><button type="button" data-ln="single">3 planted groups</button><button type="button" data-ln="double">Groups in groups</button></div>
+      <button class="primary" id="lsRun" type="button">Scan \(\gamma\)</button>
+    </div>
+    <svg id="lsChart" class="landscape" viewBox="0 0 600 260" role="img" aria-label="Partition inconsistency and average number of communities as functions of the resolution"></svg>
+    <div class="cbar"><span><i style="display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--om);vertical-align:-1px"></i> \(\Omega\) (left axis)</span><span><i style="display:inline-block;width:12px;height:12px;border-radius:2px;background:var(--nc);vertical-align:-1px"></i> \(\langle n_c\rangle\) (right axis)</span><span>shaded: \(\Omega &lt; 1.03\) with \(\langle n_c\rangle &gt; 1\)</span></div>
+    <p class="log" id="lsLog"></p>
+    <div class="controls"><span style="font-size:14px;color:var(--muted)">Color nodes by</span><div class="seg" role="group" aria-label="Node shading"><button type="button" data-lsh="mei">MeI \(\Psi_i\)</button><button type="button" data-lsh="coi">CoI \(\Phi_i\)</button><button type="button" data-lsh="none" aria-pressed="true">community</button></div></div>
+    <div id="lsNet"></div>
+    <p class="cap" id="lsCap"></p>
+    <div class="readout" id="lsRead"></div>
+  </figure>
+</section>
+
+<section class="chapter" id="bulk" data-ch="6">
+  <header><h2><span class="n">7</span>Bulk and boundary <small>MeI versus CoI</small></h2></header>
+  <div class="prose">
+    <p>The MeI and the CoI both describe a node’s membership, but they see different things. Take a network of three planted groups, 60 nodes each, in which every node \(i\) has its own externality \(E_i\), drawn uniformly between 0 and 0.5: the probability that a new link of node \(i\) goes to another group.</p>
+    <p>Push the resolution beyond the consistent range so that the algorithm hunts for spurious smaller communities. In the pictures each group fills one third of the disk, and nodes with more external links sit closer to the center, much as a force-directed layout would place them. Those central nodes then belong to many different small communities and get a large MeI. The CoI behaves differently: a node in that middle region goes with many different nodes, so its \(\phi_{ij}\) are mostly close to 0 rather than 1/2, and its CoI is not the largest. The largest CoI values sit at the edge of the inconsistent region.</p>
+    <p class="note">Simply put, MeI finds the “bulk” of an inconsistent region and CoI finds its “boundary.”</p>
+  </div>
+  <figure class="bench">
+    <p class="how">Each change of \(\gamma\) runs 60 realizations. Each panel is shaded from its own smallest value (faint) to its largest (strong color); links are not drawn.</p>
+    <label class="slider">Resolution \(\gamma\) <input type="range" id="buG" min="0.8" max="2.4" step="0.1" value="1.9"> <output id="buGo">1.9</output></label>
+    <div class="two">
+      <div><p class="netlbl">MeI \(\Psi_i\)</p><div id="buMei"></div><svg id="buSc1" class="net chart" viewBox="0 0 300 170" role="img" aria-label="Membership inconsistency against externality"></svg></div>
+      <div><p class="netlbl">CoI \(\Phi_i\)</p><div id="buCoi"></div><svg id="buSc2" class="net chart" viewBox="0 0 300 170" role="img" aria-label="Companionship inconsistency against externality"></svg></div>
+    </div>
+    <div class="readout" id="buRead"></div>
+    <p class="cap">Below each picture, every node is plotted against its measured externality (the fraction of its links that leave its planted group). Correlations are Pearson coefficients over the 180 nodes.</p>
+  </figure>
+</section>
+
+<section class="chapter wide-prose" id="real" data-ch="7">
+  <header><h2><span class="n">8</span>In real networks <small>outsiders, multiplayers and hierarchies</small></h2></header>
+  <div class="prose">
+    <p>The CoI is not just degree or betweenness in disguise: across the model and real networks of the 2019 paper it correlates weakly, or not at all, with them, and more strongly with the mean externality. What it adds is the role a node plays with respect to the communities.</p>
+    <ul>
+      <li><b>Social networks.</b> In Zachary’s karate club, the most inconsistent node is an “outsider” without a firm membership, sitting on the boundary between the two factions. In the Star Wars character network, the most inconsistent characters are “multiplayers” with ties to several groups.</li>
+      <li><b>Infrastructure.</b> In the Chilean power grid, the CoI shows how evenly the connections are balanced between regions. Its consistency landscape has long stretches of \(\Omega \approx 1\) over several integer values of \(\langle n_c\rangle\): communities split into smaller ones nested inside them, a hierarchical structure.</li>
+      <li><b>Biology.</b> The weighted photosystem II network has narrow consistent ranges separated by wide inconsistent ones, again with hierarchically nested communities.</li>
+    </ul>
+    <p>Inconsistency is a property of the ensemble, so it depends on the algorithm and on \(\gamma\). The point is not that one algorithm is right, but that the disagreement among its runs is a source of information rather than an error to be averaged away. Overlapping communities, for example by link clustering, are another way to give nodes more than one membership.</p>
+  </div>
+</section>
+
+<footer>
+  <p class="closing">Half empty, or half full? The inconsistency of community detection is information.</p>
+  <p>Created by Claude Opus 5.5, based on the lecture slides “Appendix: inconsistency of network communities” by Sang Hoon Lee and the papers below. The demos use their own implementation of the Louvain algorithm with a random node order, so the numbers differ in detail from the papers, which use GenLouvain.</p>
+  <ol>
+    <li>H. Kim and S. H. Lee, “Relational flexibility of network elements based on inconsistent community detection,” <i>Physical Review E</i> 100, 022311 (2019).</li>
+    <li>D. Lee, S. H. Lee, B. J. Kim, and H. Kim, “Consistency landscape of network communities,” <i>Physical Review E</i> 103, 052306 (2021).</li>
+    <li>A. J. Gates, I. B. Wood, W. P. Hetrick, and Y.-Y. Ahn, “Element-centric clustering comparison unifies overlaps and hierarchy,” <i>Scientific Reports</i> 9, 8574 (2019).</li>
+    <li>V. D. Blondel, J.-L. Guillaume, R. Lambiotte, and E. Lefebvre, “Fast unfolding of communities in large networks,” <i>Journal of Statistical Mechanics</i> P10008 (2008).</li>
+    <li>W. W. Zachary, “An information flow model for conflict and fission in small groups,” <i>Journal of Anthropological Research</i> 33, 452–473 (1977).</li>
+  </ol>
+  <p>See also the companion demos on <a href="https://lshlj82.github.io/network-community/">network communities</a> and <a href="https://lshlj82.github.io/Louvain-algorithm/">the Louvain algorithm</a>.</p>
 </footer>
-</div>
-
+</main>
 <script>
-// ===== Core: RNG, graphs, Louvain, inconsistency measures =====
-function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-function shuffle(arr,rng){for(let i=arr.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));const t=arr[i];arr[i]=arr[j];arr[j]=t;}}
-
-// edges: [[u,v,w],...] with 0-based u,v. Merges duplicates, drops self-loops.
-function buildGraph(n, edges, names, truth){
-  const maps=Array.from({length:n},()=>new Map());
-  let E=0;
-  for(const [u,v,w0] of edges){ if(u===v) continue; const w=(w0==null?1:w0); if(!(w>0)) continue;
-    if(!maps[u].has(v)) E++;
-    maps[u].set(v,(maps[u].get(v)||0)+w); maps[v].set(u,(maps[v].get(u)||0)+w); }
-  const nbr=[], wts=[];
-  for(let i=0;i<n;i++){ nbr.push(Int32Array.from(maps[i].keys())); wts.push(Float64Array.from(maps[i].values())); }
-  return {n, nbr, wts, E, names: names||Array.from({length:n},(_,i)=>String(i+1)), truth: truth||null};
-}
-
-// Louvain with resolution gamma, random node order. Returns Int32Array labels (original nodes).
-function louvain(g, gamma, rng){
-  let n=g.n;
-  let nbr=g.nbr.map(a=>Array.from(a)), wt=g.wts.map(a=>Array.from(a));
-  let loop=new Float64Array(n);
-  const member=new Int32Array(g.n); for(let i=0;i<g.n;i++) member[i]=i;
-  for(let level=0; level<100; level++){
-    const k=new Float64Array(n); let m2=0;
-    for(let i=0;i<n;i++){ let s=2*loop[i]; const w=wt[i]; for(let t=0;t<w.length;t++) s+=w[t]; k[i]=s; m2+=s; }
-    if(m2<=0) break;
-    const comm=new Int32Array(n), cnt=new Int32Array(n), tot=new Float64Array(n);
-    for(let i=0;i<n;i++){ comm[i]=i; cnt[i]=1; tot[i]=k[i]; }
-    const empty=[];
+"use strict";
+(function(){
+function mulberry(a){a=a>>>0;return function(){a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuffle(arr,rand){for(let i=arr.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));const t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
+class Graph{constructor(n,edges){this.n=n;this.edges=edges.map(e=>[e[0],e[1]]);this.adj=Array.from({length:n},()=>[]);for(const [a,b] of this.edges){this.adj[a].push(b);this.adj[b].push(a)}this.L=this.edges.length}deg(i){return this.adj[i].length}}
+/* Louvain with random node order (one realization of a stochastic algorithm) */
+function louvain(G,gamma,rand){
+  let n=G.n,nb=Array.from({length:n},()=>new Map()),self=new Float64Array(n);
+  for(const [a,b] of G.edges){nb[a].set(b,(nb[a].get(b)||0)+1);nb[b].set(a,(nb[b].get(a)||0)+1)}
+  const m2=2*G.L;let member=Array.from({length:G.n},(_,i)=>i);
+  for(let level=0;level<30;level++){
+    const k=new Float64Array(n);for(let i=0;i<n;i++){let s=2*self[i];for(const w of nb[i].values())s+=w;k[i]=s}
+    const comm=Int32Array.from({length:n},(_,i)=>i),tot=Float64Array.from(k);let moved=false,imp=true,sweeps=0;
     const order=Array.from({length:n},(_,i)=>i);
-    const wc=new Float64Array(n), mark=new Uint8Array(n); const touched=[];
-    let moved=false;
-    for(let pass=0; pass<100; pass++){
-      let improved=false; shuffle(order,rng);
-      for(const i of order){
-        const ci=comm[i], ni=nbr[i], wi=wt[i];
-        touched.length=0;
-        for(let t=0;t<ni.length;t++){ const c=comm[ni[t]]; if(!mark[c]){mark[c]=1;touched.push(c);} wc[c]+=wi[t]; }
-        tot[ci]-=k[i]; cnt[ci]--;
-        const ki=k[i]/m2*gamma;
-        let best=ci, bestGain=wc[ci]-tot[ci]*ki;
-        for(const c of touched){ if(c===ci) continue; const gn=wc[c]-tot[c]*ki; if(gn>bestGain+1e-12){best=c;bestGain=gn;} }
-        if(bestGain< -1e-12 && cnt[ci]>0 && empty.length){ best=empty.pop(); }
-        if(best!==ci){ comm[i]=best; improved=true; moved=true; if(cnt[ci]===0) empty.push(ci); }
-        tot[best]+=k[i]; cnt[best]++;
-        for(const c of touched){ wc[c]=0; mark[c]=0; }
-      }
-      if(!improved) break;
-    }
-    if(!moved) break;
-    // aggregate
-    const nid=new Int32Array(n).fill(-1); let K=0;
-    for(let i=0;i<n;i++){ const c=comm[i]; if(nid[c]<0) nid[c]=K++; }
-    for(let o=0;o<g.n;o++) member[o]=nid[comm[member[o]]];
-    const loopN=new Float64Array(K), mp=Array.from({length:K},()=>new Map());
-    for(let i=0;i<n;i++){ const ci=nid[comm[i]]; loopN[ci]+=loop[i];
-      const ni=nbr[i], wi=wt[i];
-      for(let t=0;t<ni.length;t++){ const cj=nid[comm[ni[t]]];
-        if(cj===ci) loopN[ci]+=wi[t]/2; else mp[ci].set(cj,(mp[ci].get(cj)||0)+wi[t]); } }
-    n=K; loop=loopN; nbr=mp.map(m=>Array.from(m.keys())); wt=mp.map(m=>Array.from(m.values()));
+    while(imp&&sweeps++<100){imp=false;shuffle(order,rand);
+      for(const i of order){const ci=comm[i],kin=new Map();for(const [j,w] of nb[i]){const c=comm[j];kin.set(c,(kin.get(c)||0)+w)}
+        tot[ci]-=k[i];let best=ci,bg=(kin.get(ci)||0)-gamma*tot[ci]*k[i]/m2;
+        for(const [c,w] of kin){if(c===ci)continue;const g=w-gamma*tot[c]*k[i]/m2;if(g>bg+1e-12){bg=g;best=c}}
+        tot[best]+=k[i];if(best!==ci){comm[i]=best;imp=true;moved=true}}}
+    if(!moved)break;
+    const ids=new Map();for(let i=0;i<n;i++)if(!ids.has(comm[i]))ids.set(comm[i],ids.size);
+    const nn=ids.size,nnb=Array.from({length:nn},()=>new Map()),ns=new Float64Array(nn);
+    for(let i=0;i<n;i++){const a=ids.get(comm[i]);ns[a]+=self[i];for(const [j,w] of nb[i]){const b=ids.get(comm[j]);if(a===b){if(j>i)ns[a]+=w}else nnb[a].set(b,(nnb[a].get(b)||0)+w)}}
+    member=member.map(v=>ids.get(comm[v]));n=nn;nb=nnb;self=ns;
   }
-  return member;
+  return canon(member);
+}
+function canon(p){const mp=new Map();return p.map(c=>{if(!mp.has(c))mp.set(c,mp.size);return mp.get(c)})}
+function ensemble(G,gamma,m,rand){const parts=[];for(let a=0;a<m;a++)parts.push(louvain(G,gamma,rand));return parts}
+function configs(parts){const mp=new Map();for(const p of parts){const k=p.join(',');const e=mp.get(k);if(e)e.count++;else mp.set(k,{part:p,count:1})}
+  return [...mp.values()].sort((a,b)=>b.count-a.count).map(e=>({part:e.part,p:e.count/parts.length,count:e.count}))}
+function cooc(parts,N){const f=Array.from({length:N},()=>new Float64Array(N));for(const p of parts)for(let i=0;i<N;i++)for(let j=0;j<N;j++)if(p[i]===p[j])f[i][j]++;
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++)f[i][j]/=parts.length;return f}
+function coi(f){const N=f.length;return f.map((r,i)=>{let s=0;for(let j=0;j<N;j++)if(j!==i)s+=(1-2*r[j])**2;return 1-s/(N-1)})}
+/* element-centric similarity of two partitions (non-overlapping), d = 0.9 */
+function ecs(a,b,d=0.9){const N=a.length,sa=new Map(),sb=new Map(),ov=new Map();
+  for(let i=0;i<N;i++){sa.set(a[i],(sa.get(a[i])||0)+1);sb.set(b[i],(sb.get(b[i])||0)+1);const k=a[i]+'|'+b[i];ov.set(k,(ov.get(k)||0)+1)}
+  let S=0;for(let i=0;i<N;i++){const A=sa.get(a[i]),B=sb.get(b[i]),c=ov.get(a[i]+'|'+b[i]);
+    const diff=c*Math.abs(d/A-d/B)+(A-c)*d/A+(B-c)*d/B;S+=1-diff/(2*d)}return S/N}
+function pai(cf){let s=0;for(let x=0;x<cf.length;x++)for(let y=0;y<cf.length;y++)s+=cf[x].p*cf[y].p*(x===y?1:ecs(cf[x].part,cf[y].part));return 1/s}
+function mei(parts,N){const out=new Float64Array(N);
+  for(let i=0;i<N;i++){const mp=new Map();for(const p of parts){const ms=[];for(let j=0;j<N;j++)if(p[j]===p[i])ms.push(j);const k=ms.join(',');const e=mp.get(k);if(e)e.c++;else mp.set(k,{s:ms,c:1})}
+    const L=[...mp.values()];let s=0;for(const x of L)for(const y of L){let J=1;if(x!==y){const sy=new Set(y.s);let inter=0;for(const v of x.s)if(sy.has(v))inter++;J=inter/(x.s.length+y.s.length-inter)}s+=x.c*y.c*J}
+    out[i]=parts.length*parts.length/s}return out}
+function betweenness(G){const N=G.n,C=new Float64Array(N);for(let s=0;s<N;s++){const S=[],P=Array.from({length:N},()=>[]),sig=new Float64Array(N),dist=new Int32Array(N).fill(-1);sig[s]=1;dist[s]=0;const Q=[s];
+  while(Q.length){const v=Q.shift();S.push(v);for(const w of G.adj[v]){if(dist[w]<0){dist[w]=dist[v]+1;Q.push(w)}if(dist[w]===dist[v]+1){sig[w]+=sig[v];P[w].push(v)}}}
+  const del=new Float64Array(N);while(S.length){const w=S.pop();for(const v of P[w])del[v]+=sig[v]/sig[w]*(1+del[w]);if(w!==s)C[w]+=del[w]}}
+  return Array.from(C,c=>c/2)}
+function sbm(sizes,P,rand){const lab=[];sizes.forEach((s,g)=>{for(let k=0;k<s;k++)lab.push(g)});const N=lab.length,E=[];
+  for(let i=0;i<N;i++)for(let j=i+1;j<N;j++)if(rand()<P(lab[i],lab[j],i,j))E.push([i,j]);return {G:new Graph(N,E),lab}}
+
+function layoutRun(G,{seed=1,iters=350,gravity=0.06,groups=null}={}){
+  const n=G.n,rand=mulberry(seed);const x=new Float64Array(n),y=new Float64Array(n);
+  for(let i=0;i<n;i++){
+    if(groups){const q=Math.max(...groups)+1,ang=2*Math.PI*groups[i]/q;x[i]=.5+.25*Math.cos(ang)+(rand()-.5)*.2;y[i]=.5+.25*Math.sin(ang)+(rand()-.5)*.2}
+    else{x[i]=rand();y[i]=rand()}}
+  const k=Math.sqrt(1/n)*0.9;let t=0.1;
+  const dx=new Float64Array(n),dy=new Float64Array(n);
+  for(let it=0;it<iters;it++){
+    dx.fill(0);dy.fill(0);let mv=0;
+    for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){let ex=x[i]-x[j],ey=y[i]-y[j];let d2=ex*ex+ey*ey+1e-6;const f=k*k/d2;dx[i]+=ex*f;dy[i]+=ey*f;dx[j]-=ex*f;dy[j]-=ey*f}
+    for(const [a,b] of G.edges){const ex=x[a]-x[b],ey=y[a]-y[b];const d=Math.sqrt(ex*ex+ey*ey)+1e-9;const f=d/k;dx[a]-=ex*f;dy[a]-=ey*f;dx[b]+=ex*f;dy[b]+=ey*f}
+    for(let i=0;i<n;i++){dx[i]-=(x[i]-.5)*gravity*n*0.3;dy[i]-=(y[i]-.5)*gravity*n*0.3;
+      const d=Math.sqrt(dx[i]*dx[i]+dy[i]*dy[i])+1e-9;const s=Math.min(d,t)/d;x[i]+=dx[i]*s;y[i]+=dy[i]*s;mv=Math.max(mv,Math.min(d,t))}
+    t=Math.max(0.002,t*0.985);
+    if(mv<1e-6)break;
+  }
+  let mnx=Infinity,mxx=-Infinity,mny=Infinity,mxy=-Infinity;for(let i=0;i<n;i++){mnx=Math.min(mnx,x[i]);mxx=Math.max(mxx,x[i]);mny=Math.min(mny,y[i]);mxy=Math.max(mxy,y[i])}
+  const sx=mxx-mnx||1,sy=mxy-mny||1;
+  return Array.from({length:n},(_,i)=>[(x[i]-mnx)/sx,(y[i]-mny)/sy]);
 }
 
-// Canonical relabeling by order of first appearance
-function canon(labels){ const map=new Map(); const out=new Int32Array(labels.length); let K=0;
-  for(let i=0;i<labels.length;i++){ const l=labels[i]; let v=map.get(l); if(v===undefined){v=K++;map.set(l,v);} out[i]=v; }
-  return {labels:out, K}; }
+const KE=[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,10],[0,11],[0,12],[0,13],[0,17],[0,19],[0,21],[0,31],[1,2],[1,3],[1,7],[1,13],[1,17],[1,19],[1,21],[1,30],[2,3],[2,7],[2,8],[2,9],[2,13],[2,27],[2,28],[2,32],[3,7],[3,12],[3,13],[4,6],[4,10],[5,6],[5,10],[5,16],[6,16],[8,30],[8,32],[8,33],[9,33],[13,33],[14,32],[14,33],[15,32],[15,33],[18,32],[18,33],[19,33],[20,32],[20,33],[22,32],[22,33],[23,25],[23,27],[23,29],[23,32],[23,33],[24,25],[24,27],[24,31],[25,31],[26,29],[26,33],[27,33],[28,31],[28,33],[29,32],[29,33],[30,32],[30,33],[31,32],[31,33],[32,33]];
 
-// Build ensemble of unique configurations from a list of label arrays
-function buildEnsemble(runs){
-  const m=runs.length, map=new Map(); const Ks=[];
-  for(const r of runs){ const c=canon(r); Ks.push(c.K); const key=c.labels.join(',');
-    let e=map.get(key); if(!e){ e={labels:c.labels,K:c.K,count:0}; map.set(key,e);} e.count++; }
-  const configs=Array.from(map.values()).sort((a,b)=>b.count-a.count);
-  for(const c of configs){ c.p=c.count/m; const s=new Int32Array(c.K); for(const l of c.labels) s[l]++; c.sizes=s; }
-  const meanK=Ks.reduce((a,b)=>a+b,0)/m;
-  const varK=Ks.reduce((a,b)=>a+(b-meanK)**2,0)/Math.max(1,m-1);
-  return {configs, m, meanK, seK:Math.sqrt(varK/m), Ks};
+/* ---------- helpers ---------- */
+const $=id=>document.getElementById(id);
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const col=k=>`var(--c${((k%8)+8)%8})`;
+function pressGroup(btns,active){btns.forEach(b=>b.setAttribute('aria-pressed',b===active?'true':'false'))}
+function readout(host,items){host.innerHTML=items.map(([l,v])=>`<div><b>${v}</b>${l}</div>`).join('')}
+function cssColor(name){const v=getComputedStyle(document.documentElement).getPropertyValue(name).trim();const m=v.match(/^#([0-9a-f]{6})$/i);return m?[parseInt(m[1].slice(0,2),16),parseInt(m[1].slice(2,4),16),parseInt(m[1].slice(4,6),16)]:[128,128,128]}
+let LO=cssColor('--lo'),HI=cssColor('--hi');
+function ramp(t){t=Math.max(0,Math.min(1,t||0));const c=LO.map((v,i)=>Math.round(v+(HI[i]-v)*t));return `rgb(${c[0]},${c[1]},${c[2]})`}
+function rampCss(){return `linear-gradient(90deg,${ramp(0)},${ramp(0.5)},${ramp(1)})`}
+function matColor(v){const a=[47,107,219],m=[242,208,75],b=[229,72,77];const [p,q,t]=v<0.5?[a,m,v*2]:[m,b,(v-0.5)*2];return `rgb(${p.map((x,i)=>Math.round(x+(q[i]-x)*t)).join(',')})`}
+function colorsFor(part){const sz=new Map();part.forEach(c=>sz.set(c,(sz.get(c)||0)+1));const order=[...sz.keys()].sort((a,b)=>sz.get(b)-sz.get(a));const m=new Map(order.map((c,k)=>[c,k]));
+  return part.map(c=>sz.get(c)===1?'var(--none)':col(m.get(c)))}
+const pearson=(a,b)=>{const n=a.length,ma=a.reduce((x,y)=>x+y,0)/n,mb=b.reduce((x,y)=>x+y,0)/n;let s=0,sa=0,sb=0;for(let i=0;i<n;i++){s+=(a[i]-ma)*(b[i]-mb);sa+=(a[i]-ma)**2;sb+=(b[i]-mb)**2}return sa&&sb?s/Math.sqrt(sa*sb):0};
+const avgNc=parts=>parts.reduce((a,p)=>a+Math.max(...p)+1,0)/parts.length;
+
+class NetView{
+  constructor(host,{W=600,H=420,pad=22,r=7,labels=false,label='',edges=true}={}){
+    Object.assign(this,{W,H,pad,r,labels,edges});
+    this.svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'net',role:'img','aria-label':label});host.appendChild(this.svg);
+    this.gE=el('g',null,this.svg);this.gN=el('g',null,this.svg);
+  }
+  P(p){return [this.pad+p[0]*(this.W-2*this.pad),this.pad+p[1]*(this.H-2*this.pad)]}
+  set(G,pos){this.G=G;this.gE.textContent='';this.gN.textContent='';
+    if(this.edges)G.edges.forEach(([a,b])=>{const [x1,y1]=this.P(pos[a]),[x2,y2]=this.P(pos[b]);el('line',{x1,y1,x2,y2,class:'edge'},this.gE)});
+    this.nodes=pos.map((p,i)=>{const [cx,cy]=this.P(p);const g=el('g',{class:'node',transform:`translate(${cx.toFixed(1)},${cy.toFixed(1)})`},this.gN);
+      const c=el('circle',{r:this.r},g);if(this.labels){const t=el('text',{class:'nlabel','text-anchor':'middle',dy:'0.35em'},g);t.textContent=i+1}
+      const tt=el('title',null,g);return {g,c,tt}})}
+  fill(arr){this.nodes.forEach((n,i)=>{n.c.style.fill=arr[i]})}
+  tips(arr){this.nodes.forEach((n,i)=>{n.tt.textContent=arr[i]})}
+  sizes(arr){this.nodes.forEach((n,i)=>n.c.setAttribute('r',arr[i]))}
 }
 
-// Per-node intersection sizes n_i = |psi_ia ∩ psi_ib|
-function overlap(A,B,N,out){
-  const kb=B.K;
-  if(A.K*kb<=4e6){ const tab=new Int32Array(A.K*kb); const a=A.labels,b=B.labels;
-    for(let i=0;i<N;i++) tab[a[i]*kb+b[i]]++;
-    for(let i=0;i<N;i++) out[i]=tab[a[i]*kb+b[i]]; }
-  else { const tab=new Map(); const a=A.labels,b=B.labels;
-    for(let i=0;i<N;i++){ const key=a[i]*kb+b[i]; tab.set(key,(tab.get(key)||0)+1); }
-    for(let i=0;i<N;i++) out[i]=tab.get(a[i]*kb+b[i]); }
+/* ---------- the example network (after Fig. 1 of Kim & Lee 2019) ---------- */
+const EX=new Graph(13,[[1,2],[1,3],[2,3],[2,4],[2,5],[3,4],[3,5],[4,5],[4,6],[6,7],[7,10],[4,8],[5,8],[8,9],[8,10],[9,10],[9,11],[9,13],[10,11],[10,12],[11,12],[11,13],[12,13]].map(([a,b])=>[a-1,b-1]));
+const EXPOS=[[0,.6],[.17,.38],[.19,.82],[.35,.33],[.37,.82],[.4,0],[.6,.04],[.52,.56],[.7,.84],[.67,.36],[.83,.6],[.97,.3],[1,.86]];
+const EXBC=betweenness(EX);
+const EXS={gamma:0.6,parts:[],rand:mulberry(2026)};
+
+/* hero: one realization after another */
+const hero=new NetView($('heroNet'),{W:600,H:400,pad:30,r:15,labels:true,label:'The example network, colored by one realization of community detection after another'});
+hero.set(EX,EXPOS);let heroOn=!reduceMotion,heroTimer=0,heroN=0;const heroRand=mulberry(7);
+function heroStep(){const p=louvain(EX,0.6,heroRand);hero.fill(p.map(c=>col(c)));heroN++;$('heroCap').textContent=`Realization ${heroN}`}
+function heroPlay(on){heroOn=on;$('heroPlay').setAttribute('aria-pressed',String(on));$('heroPlay').textContent=on?'Pause':'Play';clearInterval(heroTimer);if(on)heroTimer=setInterval(heroStep,1400)}
+$('heroPlay').onclick=()=>heroPlay(!heroOn);heroStep();heroPlay(heroOn);
+hero.nodes.forEach(n=>n.c.style.transition='fill .5s');
+
+/* ---------- ensemble on the example ---------- */
+const mult=[];for(let k=0;k<10;k++){const cell=document.createElement('div');cell.className='cell';$('exMult').appendChild(cell);const v=new NetView(cell,{W:200,H:130,pad:12,r:7,label:'one realization'});v.set(EX,EXPOS);const s=document.createElement('span');cell.appendChild(s);mult.push({v,s,cell})}
+const coiView=new NetView($('coiNet'),{W:300,H:200,pad:16,r:11,labels:true,label:'Example network shaded by companionship inconsistency'});coiView.set(EX,EXPOS);
+const bcView=new NetView($('bcNet'),{W:300,H:200,pad:16,r:11,labels:true,label:'Example network shaded by betweenness centrality'});bcView.set(EX,EXPOS);
+const meiView=new NetView($('meiNet'),{W:600,H:300,pad:22,r:14,labels:true,label:'Example network shaded by membership inconsistency'});meiView.set(EX,EXPOS);
+function exRun(k){for(let a=0;a<k;a++)EXS.parts.push(louvain(EX,EXS.gamma,EXS.rand));exRender()}
+function exRender(){
+  const P=EXS.parts,n=P.length;
+  mult.forEach((m,k)=>{const idx=n-10+k;if(idx>=0){m.v.fill(P[idx].map(c=>col(c)));m.s.textContent='#'+(idx+1);m.cell.style.opacity=1}else{m.v.fill(Array(13).fill('var(--none)'));m.s.textContent='';m.cell.style.opacity=.45}});
+  if(!n){readout($('exRead'),[['realizations n_d',0],['distinct configurations C','–'],['partition inconsistency Ω','–']]);$('exCfgs').innerHTML='';drawMatrix(null);drawCoi(null);drawPai(null);return}
+  const cf=configs(P),om=pai(cf);
+  readout($('exRead'),[['realizations n_d',n],['distinct configurations C',cf.length],['partition inconsistency Ω',om.toFixed(3)]]);
+  $('exCfgs').innerHTML=cf.slice(0,8).map(c=>`<li><svg viewBox="0 0 130 10" width="96" height="8" aria-hidden="true">${c.part.map((g,i)=>`<rect x="${i*10}" y="0" width="9" height="10" fill="${col(g)}"/>`).join('')}</svg><div class="bar" style="width:${(c.p*100).toFixed(1)}%"></div><span class="num">${(c.p*100).toFixed(0)}%</span></li>`).join('')+(cf.length>8?`<li><span></span><span class="cap">+ ${cf.length-8} more</span><span></span></li>`:'');
+  const f=cooc(P,13);drawMatrix(f);drawCoi(f);drawPai(cf);
+}
+$('exG').oninput=()=>{EXS.gamma=+$('exG').value;$('exGo').textContent=EXS.gamma.toFixed(2)};
+$('exG').onchange=()=>{EXS.parts=[];exRun(20)};
+$('exRun1').onclick=()=>exRun(1);$('exRun10').onclick=()=>exRun(10);$('exRun100').onclick=()=>exRun(100);$('exReset').onclick=()=>{EXS.parts=[];exRender()};
+
+/* co-occurrence matrix */
+function drawMatrix(f){
+  const svg=$('mat');svg.textContent='';const N=13,o=30,c=(440-o-6)/N;
+  for(let i=0;i<N;i++){const t1=el('text',{x:o-6,y:o+c*(i+.5)+4,'text-anchor':'end'},svg);t1.textContent=i+1;const t2=el('text',{x:o+c*(i+.5),y:o-8,'text-anchor':'middle'},svg);t2.textContent=i+1}
+  svg.querySelectorAll('text').forEach(t=>{t.setAttribute('font-size','12');t.setAttribute('fill','var(--muted)')});
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){const v=f?f[i][j]:NaN;
+    const r=el('rect',{x:o+c*j,y:o+c*i,width:c-1,height:c-1,class:'cell',fill:f?matColor(v):'var(--grid)'},svg);
+    if(f){const tx=el('text',{x:o+c*(j+.5),y:o+c*(i+.5)+4,'text-anchor':'middle','font-size':'10.5','pointer-events':'none',fill:'#1B2238'},svg);tx.textContent=v===1?'1':v===0?'0':v.toFixed(1).replace(/^0/,'')}
+    const show=()=>{$('matAnn').textContent=f?(i===j?`φ(${i+1}, ${i+1}) = 1, trivially.`:`φ(${i+1}, ${j+1}) = ${f[i][j].toFixed(2)}: in the same community in ${(f[i][j]*100).toFixed(0)}% of the realizations.`):''};
+    r.addEventListener('pointerenter',show);r.addEventListener('click',show)}
+}
+/* CoI vs betweenness */
+function drawCoi(f){
+  const bcMax=Math.max(...EXBC);bcView.fill(EXBC.map(b=>ramp(b/bcMax)));bcView.tips(EXBC.map((b,i)=>`node ${i+1}: betweenness ${b.toFixed(1)}`));
+  $('coiBar').style.background=rampCss();
+  if(!f){coiView.fill(Array(13).fill('var(--none)'));$('coiTab').innerHTML='';return}
+  const phi=coi(f),pm=Math.max(0.5,...phi);coiView.fill(phi.map(p=>ramp(p/pm)));coiView.tips(phi.map((p,i)=>`node ${i+1}: CoI ${p.toFixed(2)}`));
+  $('coiTab').innerHTML=`<tr><th>node</th>${phi.map((_,i)=>`<th>${i+1}</th>`).join('')}</tr><tr><td>CoI Φ</td>${phi.map(p=>`<td class="mx">${p.toFixed(2)}</td>`).join('')}</tr><tr><td>betweenness</td>${EXBC.map(b=>`<td class="mx">${b.toFixed(1)}</td>`).join('')}</tr>`;
+}
+/* partition and membership inconsistency */
+function drawPai(cf){
+  $('meiBar').style.background=rampCss();
+  if(!cf){readout($('paiRead'),[['Ω','–']]);$('paiTab').innerHTML='';meiView.fill(Array(13).fill('var(--none)'));return}
+  const show=cf.slice(0,6),om=pai(cf);
+  readout($('paiRead'),[['distinct configurations C',cf.length],['partition inconsistency Ω',om.toFixed(3)]]);
+  const strip=c=>`<svg viewBox="0 0 130 10" width="78" height="7" aria-hidden="true">${c.part.map((g,i)=>`<rect x="${i*10}" y="0" width="9" height="10" fill="${col(g)}"/>`).join('')}</svg>`;
+  $('paiTab').innerHTML=`<tr><th>configuration</th><th>p<sub>α</sub></th>${show.map((_,b)=>`<th>S<sub>α${b+1}</sub></th>`).join('')}</tr>`+
+    show.map((c,a)=>`<tr><td>${a+1} ${strip(c)}</td><td>${c.p.toFixed(2)}</td>${show.map((d,b)=>`<td class="mx">${(a===b?1:ecs(c.part,d.part)).toFixed(3)}</td>`).join('')}</tr>`).join('')+(cf.length>6?`<tr><td colspan="${show.length+2}" class="cap" style="text-align:left">${cf.length-6} rarer configurations not shown</td></tr>`:'');
+  const psi=[...mei(EXS.parts,13)],mx=Math.max(2,...psi);
+  meiView.fill(psi.map(v=>ramp(mx>1?(v-1)/(mx-1):0)));meiView.tips(psi.map((v,i)=>`node ${i+1}: MeI ${v.toFixed(3)}`));$('meiMax').textContent=mx.toFixed(2);
 }
 
-// Element-centric similarity (Gates et al. 2019) for two partitions, closed form of Eq. (1).
-// For a cluster-induced element graph, PPR from i gives f_ij = d/|C| + (1-d) delta_ij on i's cluster,
-// so the (1-d) terms cancel and d drops out after the 1/(2d) normalization.
-function ecsAndJaccard(A,B,N,nbuf,jOut){
-  overlap(A,B,N,nbuf); let S=0; const sa=A.sizes, sb=B.sizes, a=A.labels, b=B.labels;
-  for(let i=0;i<N;i++){ const x=sa[a[i]], y=sb[b[i]], nn=nbuf[i];
-    const l1 = nn*Math.abs(1/x-1/y) + (x-nn)/x + (y-nn)/y;
-    S += 1 - 0.5*l1;
-    if(jOut) jOut[i]=nn/(x+y-nn); }
-  return S/N;
+/* ---------- model networks ---------- */
+function planted(seed){   // three groups of 60 nodes; node i links outside its group with probability E_i ~ U[0, 0.5]
+  const r=mulberry(seed),N=180,lab=[...Array(N)].map((_,i)=>Math.floor(i/60)),Ex=lab.map(()=>r()*0.5),E=[],has=new Set();
+  while(E.length<1700){const i=Math.floor(r()*N),out=r()<Ex[i];let j;do{j=Math.floor(r()*N)}while(j===i||(out?lab[j]===lab[i]:lab[j]!==lab[i]));
+    const k=Math.min(i,j)*N+Math.max(i,j);if(!has.has(k)){has.add(k);E.push([i,j])}}
+  return {G:new Graph(N,E),lab};
+}
+function nested(seed){   // three groups, each made of three subgroups of 20 nodes
+  const r=mulberry(seed);const {G,lab}=sbm(Array(9).fill(20),(a,b)=>a===b?0.5:(Math.floor(a/3)===Math.floor(b/3)?0.09:0.008),r);return {G,lab};
+}
+const NETS={};
+function getNet(key){
+  if(NETS[key])return NETS[key];
+  let o;
+  if(key==='karate'){const G=new Graph(34,KE);o={G,pos:layoutRun(G,{seed:7,iters:500,gravity:0.05}),r:9,grid:[0.1,1.2,0.025],m:100}}
+  else if(key==='single'){const {G,lab}=planted(11);const ext=[...Array(G.n)].map((_,i)=>G.adj[i].filter(j=>lab[j]!==lab[i]).length/Math.max(1,G.deg(i)));
+    const rr=mulberry(4);   // each group fills a third of the disk; more external links -> closer to the center
+    const rk=new Array(G.n);[...ext.keys()].sort((a,b)=>ext[a]-ext[b]).forEach((i,k)=>rk[i]=k/(G.n-1));
+    const pos=ext.map((e,i)=>{const rad=0.12+0.86*Math.sqrt(1-rk[i]),ang=2*Math.PI*(lab[i]+0.08+0.84*rr())/3;return [0.5+0.5*rad*Math.cos(ang),0.5+0.5*rad*Math.sin(ang)]});
+    o={G,lab,ext,pos,r:4.6,grid:[0.1,2.6,0.05],m:40}}
+  else{const {G,lab}=nested(5);o={G,lab,pos:layoutRun(G,{seed:3,iters:300,gravity:0.06,groups:lab.map(l=>Math.floor(l/3))}),r:4.6,grid:[0.1,5,0.1],m:40}}
+  o.scan=null;return NETS[key]=o;
 }
 
-// PaI (Eq. 2) and optionally MeI (Eq. 5) for every node
-function measures(configs, N, nodal){
-  const C=configs.length, nbuf=new Int32Array(N), jb=nodal?new Float64Array(N):null;
-  const Jsum=nodal?new Float64Array(N):null;
-  let Ssum=0;
-  for(let a=0;a<C;a++){ const pa=configs[a].p;
-    Ssum+=pa*pa; if(nodal) for(let i=0;i<N;i++) Jsum[i]+=pa*pa;
-    for(let b=a+1;b<C;b++){ const w=2*pa*configs[b].p;
-      const S=ecsAndJaccard(configs[a],configs[b],N,nbuf,jb);
-      Ssum+=w*S; if(nodal) for(let i=0;i<N;i++) Jsum[i]+=w*jb[i]; } }
-  const out={Omega:1/Ssum};
-  if(nodal){ out.Psi=Float64Array.from(Jsum,v=>1/v); }
-  return out;
+/* ---------- consistency landscape ---------- */
+const LS={key:'karate',sel:null,shade:'none',busy:false,token:0};
+const lsView={host:$('lsNet'),v:null,key:null};
+function lsShowNet(){
+  const net=getNet(LS.key);
+  if(lsView.key!==LS.key){lsView.host.textContent='';lsView.v=new NetView(lsView.host,{W:600,H:LS.key==='karate'?380:440,pad:16,r:net.r,label:'The selected network, colored by the most probable configuration at the chosen resolution'});lsView.v.set(net.G,net.pos);lsView.key=LS.key}
+  const pt=LS.sel;
+  if(!pt){lsView.v.fill(Array(net.G.n).fill('var(--none)'));$('lsCap').textContent='';readout($('lsRead'),[]);return}
+  const cf=configs(pt.parts),best=cf[0].part;
+  let fills=colorsFor(best),tips=best.map((c,i)=>`node ${i+1}`);
+  if(LS.shade!=='none'){
+    const vals=LS.shade==='mei'?[...mei(pt.parts,net.G.n)]:coi(cooc(pt.parts,net.G.n));
+    const lo=LS.shade==='mei'?1:0,hi=Math.max(LS.shade==='mei'?2:0.5,...vals);fills=vals.map(v=>ramp((v-lo)/(hi-lo)));
+    tips=vals.map((v,i)=>`node ${i+1}: ${LS.shade==='mei'?'MeI':'CoI'} ${v.toFixed(3)}`);
+    $('lsCap').textContent=LS.shade==='mei'?`Shade: membership inconsistency, from 1 (faint) to ${hi.toFixed(2)} (strong color).`:`Shade: companionship inconsistency, from 0 (faint) to ${hi.toFixed(2)} (strong color).`;
+  } else $('lsCap').textContent='Colors: the most probable configuration at this resolution. Gray nodes are alone in their community.';
+  lsView.v.fill(fills);lsView.v.tips(tips);
+  readout($('lsRead'),[['resolution γ',pt.g.toFixed(3)],['partition inconsistency Ω',pt.om.toFixed(3)],['average number ⟨n_c⟩',pt.nc.toFixed(2)],['distinct configurations C',cf.length],['share of the most probable',(cf[0].p*100).toFixed(0)+'%']]);
 }
-
-// CoI (Eq. 6-7), normalized by N-1 so that 0 <= Phi <= 1
-function coi(configs,N){
-  const W=new Float64Array(N*N);
-  for(const c of configs){ const groups=Array.from({length:c.K},()=>[]); c.labels.forEach((l,i)=>groups[l].push(i));
-    for(const g of groups) for(const i of g){ const row=i*N; for(const j of g) W[row+j]+=c.p; } }
-  const Phi=new Float64Array(N);
-  if(N<2) return Phi;
-  for(let i=0;i<N;i++){ let s=0; const row=i*N; for(let j=0;j<N;j++){ if(j===i) continue; const x=1-2*W[row+j]; s+=x*x; } Phi[i]=1-s/(N-1); }
-  return Phi;
+function lsChart(){
+  const svg=$('lsChart');svg.textContent='';const net=getNet(LS.key),[g0,g1]=net.grid,W=600,H=260,l=44,r=40,t=12,b=34;
+  const pts=net.scan||[];const omMax=Math.max(1.2,...pts.map(p=>p.om)),ncMax=Math.max(4,...pts.map(p=>p.nc));
+  const X=g=>l+(g-g0)/(g1-g0)*(W-l-r),YO=v=>H-b-(v-1)/(omMax-1)*(H-t-b),YN=v=>H-b-(v-1)/(ncMax-1)*(H-t-b);
+  // shading of consistent ranges
+  const dg=net.grid[2];pts.forEach(p=>{if(p.om<1.03&&p.nc>1.05&&Math.abs(p.nc-Math.round(p.nc))<0.06)el('rect',{x:X(p.g-dg/2),y:t,width:X(p.g+dg/2)-X(p.g-dg/2),height:H-t-b,fill:'var(--grid)'},svg)});
+  el('line',{x1:l,y1:H-b,x2:W-r,y2:H-b,class:'axis'},svg);el('line',{x1:l,y1:t,x2:l,y2:H-b,class:'axis'},svg);el('line',{x1:W-r,y1:t,x2:W-r,y2:H-b,class:'axis'},svg);
+  const txt=(x,y,s,a,fill)=>{const e=el('text',{x,y,'text-anchor':a},svg);e.textContent=s;if(fill)e.setAttribute('fill',fill);return e};
+  for(let k=0;k<=4;k++){const v=1+(omMax-1)*k/4;txt(l-6,YO(v)+4,v.toFixed(2),'end','var(--om)')}
+  const nstep=ncMax>12?4:ncMax>6?2:1;for(let v=1;v<=ncMax+1e-9;v+=nstep){txt(W-r+6,YN(v)+4,String(v),'start','var(--nc)')}
+  const gstep=g1-g0>3?1:g1-g0>1.5?0.5:0.2;for(let g=Math.ceil(g0/gstep)*gstep;g<=g1+1e-9;g+=gstep)txt(X(g),H-b+15,(+g.toFixed(2)).toString(),'middle');
+  txt((l+W-r)/2,H-4,'resolution γ','middle');
+  if(pts.length>1){
+    el('path',{d:pts.map((p,i)=>(i?'L':'M')+X(p.g).toFixed(1)+' '+YN(p.nc).toFixed(1)).join(''),fill:'none',stroke:'var(--nc)','stroke-width':1.6},svg);
+    el('path',{d:pts.map((p,i)=>(i?'L':'M')+X(p.g).toFixed(1)+' '+YO(p.om).toFixed(1)).join(''),fill:'none',stroke:'var(--om)','stroke-width':1.6},svg);
+  }
+  pts.forEach(p=>{el('rect',{x:X(p.g)-2.6,y:YN(p.nc)-2.6,width:5.2,height:5.2,fill:'none',stroke:'var(--nc)','stroke-width':1.2},svg);el('circle',{cx:X(p.g),cy:YO(p.om),r:2.8,fill:'none',stroke:'var(--om)','stroke-width':1.3},svg)});
+  if(LS.sel)el('line',{x1:X(LS.sel.g),x2:X(LS.sel.g),y1:t,y2:H-b,stroke:'var(--marker)','stroke-width':1.5,'stroke-dasharray':'4 3'},svg);
+  svg.onclick=e=>{if(!pts.length)return;const bb=svg.getBoundingClientRect(),gx=g0+((e.clientX-bb.left)/bb.width*W-l)/(W-l-r)*(g1-g0);
+    let best=pts[0];for(const p of pts)if(Math.abs(p.g-gx)<Math.abs(best.g-gx))best=p;LS.sel=best;lsChart();lsShowNet()};
 }
-
-// Standard error of Omega from B equal-sized random subsamples of the runs
-function omegaSE(runs, B, rng){
-  if(runs.length<2*B) return 0;
-  const idx=Array.from({length:runs.length},(_,i)=>i); shuffle(idx,rng);
-  const sz=Math.floor(runs.length/B), vals=[];
-  for(let b=0;b<B;b++){ const sub=idx.slice(b*sz,(b+1)*sz).map(i=>runs[i]); const ens=buildEnsemble(sub); vals.push(measures(ens.configs,runs[0].length,false).Omega); }
-  const mu=vals.reduce((a,b)=>a+b,0)/B; const v=vals.reduce((a,b)=>a+(b-mu)**2,0)/(B-1);
-  return Math.sqrt(v/B);
+async function lsScan(){
+  const net=getNet(LS.key),key=LS.key,tok=++LS.token,[g0,g1,dg]=net.grid,rand=mulberry(99);net.scan=[];LS.sel=null;$('lsRun').disabled=true;
+  const n=Math.round((g1-g0)/dg)+1;
+  for(let k=0;k<n;k++){if(tok!==LS.token)return;const g=+(g0+k*dg).toFixed(4),parts=ensemble(net.G,g,net.m,rand),cf=configs(parts);
+    net.scan.push({g,parts,om:pai(cf),nc:avgNc(parts)});
+    if(k%3===2||k===n-1){$('lsLog').textContent=`Scanning… γ = ${g.toFixed(2)} (${net.m} realizations per point)`;lsChart();await sleep(0)}}
+  if(tok!==LS.token)return;
+  // choose the middle of the widest consistent range with more than one community
+  const ok=net.scan.map(p=>p.om<1.03&&p.nc>1.05&&Math.abs(p.nc-Math.round(p.nc))<0.06);let bi=-1,bl=0;
+  for(let i=0;i<ok.length;){if(!ok[i]){i++;continue}let j=i;while(j<ok.length&&ok[j])j++;if(j-i>bl){bl=j-i;bi=i}i=j}
+  LS.sel=bi>=0?net.scan[bi+Math.floor(bl/2)]:net.scan[Math.floor(net.scan.length/2)];
+  const rng=bi>=0?`widest consistent range: γ ≈ ${net.scan[bi].g.toFixed(2)}–${net.scan[bi+bl-1].g.toFixed(2)}, with ⟨n_c⟩ = ${Math.round(net.scan[bi].nc)}.`:'no consistent range with more than one community.';
+  $('lsLog').textContent=`Done: ${n} values of γ, ${net.m} realizations each; ${rng}`;
+  $('lsRun').disabled=false;lsChart();lsShowNet();
 }
+document.querySelectorAll('[data-ln]').forEach(b=>b.onclick=()=>{LS.token++;$('lsRun').disabled=false;pressGroup([...document.querySelectorAll('[data-ln]')],b);LS.key=b.dataset.ln;const net=getNet(LS.key);
+  LS.sel=net.scan&&net.scan.length?net.scan[Math.floor(net.scan.length/2)]:null;$('lsLog').textContent=net.scan?'':'Press “Scan γ” to compute the landscape for this network.';lsChart();lsShowNet()});
+document.querySelectorAll('[data-lsh]').forEach(b=>b.onclick=()=>{pressGroup([...document.querySelectorAll('[data-lsh]')],b);LS.shade=b.dataset.lsh;lsShowNet()});
+$('lsRun').onclick=lsScan;
 
-// ===== Networks =====
-const KARATE=`1 2 3 4 5 6 7 8 9 11 12 13 14 18 20 22 32
-2 3 4 8 14 18 20 22 31
-3 4 8 9 10 14 28 29 33
-4 8 13 14
-5 7 11
-6 7 11 17
-7 17
-9 31 33 34
-10 34
-14 34
-15 33 34
-16 33 34
-19 33 34
-20 34
-21 33 34
-23 33 34
-24 26 28 30 33 34
-25 26 28 32
-26 32
-27 30 34
-28 34
-29 32 34
-30 33 34
-31 33 34
-32 33 34
-33 34`;
-const KARATE_FACTION=[0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1]; // Zachary's observed split (node 9 disputed)
-function karate(){ const edges=[]; for(const line of KARATE.split('\n')){ const p=line.trim().split(/\s+/).map(Number); for(let t=1;t<p.length;t++) edges.push([p[0]-1,p[t]-1,1]); }
-  return buildGraph(34,edges,null,KARATE_FACTION); }
-
-// Single-level planted model (Sec. III A 1)
-function singleLevel(N,l,density,rng){
-  const comm=Array.from({length:N},(_,i)=>Math.floor(i*l/N)); const groups=Array.from({length:l},()=>[]); comm.forEach((c,i)=>groups[c].push(i));
-  const Emax=(l-1)/l, E=Array.from({length:N},()=>rng()*Emax);
-  const target=Math.round(density*N*(N-1)/2), seen=new Set(), edges=[]; let guard=0;
-  while(edges.length<target && guard<target*50){ guard++;
-    const i=Math.floor(rng()*N); let j;
-    if(l>1 && rng()<E[i]){ let c; do{c=Math.floor(rng()*l);}while(c===comm[i]); const g=groups[c]; j=g[Math.floor(rng()*g.length)]; }
-    else { const g=groups[comm[i]]; j=g[Math.floor(rng()*g.length)]; }
-    if(i===j) continue; const key=i<j?i*N+j:j*N+i; if(seen.has(key)) continue; seen.add(key); edges.push([i,j,1]); }
-  return buildGraph(N,edges,null,comm);
+/* ---------- bulk and boundary ---------- */
+const BU={timer:0,tok:0};
+const buMei=new NetView($('buMei'),{W:300,H:300,pad:10,r:4.4,edges:false,label:'Planted network shaded by membership inconsistency'});
+const buCoi=new NetView($('buCoi'),{W:300,H:300,pad:10,r:4.4,edges:false,label:'Planted network shaded by companionship inconsistency'});
+function buSetup(){const net=getNet('single');buMei.set(net.G,net.pos);buCoi.set(net.G,net.pos);
+  net.ready=true}
+async function buRun(){const tok=++BU.tok,net=getNet('single'),g=+$('buG').value;$('buRead').innerHTML='<div><b>…</b>computing</div>';await sleep(30);if(tok!==BU.tok)return;
+  const parts=ensemble(net.G,g,60,mulberry(123)),psi=[...mei(parts,net.G.n)],phi=coi(cooc(parts,net.G.n));if(tok!==BU.tok)return;
+  const pm=Math.max(...psi),cm=Math.max(...phi,1e-9),pn=Math.min(...psi),cn=Math.min(...phi);buMei.fill(psi.map(v=>ramp(pm>pn?(v-pn)/(pm-pn):0)));buCoi.fill(phi.map(v=>ramp(cm>cn?(v-cn)/(cm-cn):0)));
+  buMei.tips(psi.map((v,i)=>`node ${i+1}: MeI ${v.toFixed(2)}`));buCoi.tips(phi.map((v,i)=>`node ${i+1}: CoI ${v.toFixed(3)}`));
+  scatter($('buSc1'),net.ext,psi,'MeI');scatter($('buSc2'),net.ext,phi,'CoI');
+  readout($('buRead'),[['average number ⟨n_c⟩',avgNc(parts).toFixed(1)],['partition inconsistency Ω',pai(configs(parts)).toFixed(2)],['corr(MeI, externality)',pearson(psi,net.ext).toFixed(2)],['corr(CoI, externality)',pearson(phi,net.ext).toFixed(2)]]);
 }
+function scatter(svg,xs,ys,lab){svg.textContent='';const W=300,H=170,l=40,r=8,t=8,b=30,xm=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const X=x=>l+x/xm*(W-l-r),Y=y=>H-b-(y1>y0?(y-y0)/(y1-y0):0.5)*(H-t-b);
+  el('line',{x1:l,y1:H-b,x2:W-r,y2:H-b,class:'axis'},svg);el('line',{x1:l,y1:t,x2:l,y2:H-b,class:'axis'},svg);
+  xs.forEach((x,i)=>el('circle',{cx:X(x).toFixed(1),cy:Y(ys[i]).toFixed(1),r:2.4,fill:ramp(y1>y0?(ys[i]-y0)/(y1-y0):0),opacity:.9},svg));
+  const tx=(x,y,s,a)=>{const e=el('text',{x,y,'text-anchor':a,style:'font-size:14px'},svg);e.textContent=s};
+  tx((l+W-r)/2,H-6,'externality','middle');tx(l-4,t+8,y1.toFixed(lab==='MeI'?1:2),'end');tx(l-4,H-b,y0.toFixed(lab==='MeI'?1:2),'end');tx(l,H-b+13,'0','middle');tx(W-r,H-b+13,xm.toFixed(2),'end')}
+$('buG').oninput=()=>{$('buGo').textContent=(+$('buG').value).toFixed(1);clearTimeout(BU.timer);BU.timer=setTimeout(buRun,250)};
 
-// Double-level hierarchical model (Sec. III A 2): 3 higher-level groups x 3 lower-level groups
-function doubleLevel(perLower,density,rng){
-  const H=3,L=3,N=H*L*perLower; const low=Array.from({length:N},(_,i)=>Math.floor(i/perLower)); const high=low.map(c=>Math.floor(c/L));
-  const lowG=Array.from({length:H*L},()=>[]); low.forEach((c,i)=>lowG[c].push(i));
-  const E1=Array.from({length:N},()=>1/3+rng()/3);
-  const target=Math.round(density*N*(N-1)/2), seen=new Set(), edges=[]; let guard=0;
-  const pick=g=>g[Math.floor(rng()*g.length)];
-  while(edges.length<target && guard<target*50){ guard++;
-    const i=Math.floor(rng()*N), e1=E1[i], e2=1-e1, r=rng(); let j;
-    if(r<1-e1) j=pick(lowG[low[i]]);
-    else if(r<1-e1+e1*(1-e2)){ let c; do{c=high[i]*L+Math.floor(rng()*L);}while(c===low[i]); j=pick(lowG[c]); }
-    else { let h; do{h=Math.floor(rng()*H);}while(h===high[i]); j=pick(lowG[h*L+Math.floor(rng()*L)]); }
-    if(i===j) continue; const key=i<j?i*N+j:j*N+i; if(seen.has(key)) continue; seen.add(key); edges.push([i,j,1]); }
-  const g=buildGraph(N,edges,null,low); g.truthHigh=high; return g;
-}
+/* ---------- start ---------- */
+exRun(20);
+lsShowNet();lsChart();
+const lazy=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;lazy.unobserve(e.target);
+  if(e.target.id==='landscape')lsScan();if(e.target.id==='bulk'){buSetup();buRun()}}),{rootMargin:'200px'});
+lazy.observe($('landscape'));lazy.observe($('bulk'));
+function recolor(){LO=cssColor('--lo');HI=cssColor('--hi');exRender();lsShowNet();if(getNet('single').ready)buRun()}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',recolor);
+new MutationObserver(recolor).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 
-function parseEdgeList(text){
-  const idx=new Map(), names=[], edges=[];
-  const id=s=>{ if(!idx.has(s)){ idx.set(s,names.length); names.push(s);} return idx.get(s); };
-  let bad=0;
-  for(const raw of text.split(/\r?\n/)){ const line=raw.replace(/#.*/,'').trim(); if(!line) continue;
-    const p=line.split(/[\s,;]+/); if(p.length<2){bad++;continue;}
-    const w=p.length>2?parseFloat(p[2]):1; edges.push([id(p[0]),id(p[1]),isFinite(w)?w:1]); }
-  return {g:buildGraph(names.length,edges,names), bad};
-}
+/* table of contents highlighting */
+(function(){const links=[...document.querySelectorAll('.toc a')];const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+  if(!('IntersectionObserver' in window))return;
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=secs.indexOf(e.target);links.forEach((a,k)=>a.classList.toggle('on',k===i))}})},{rootMargin:'-35% 0px -60% 0px'});
+  secs.forEach(s=>s&&io.observe(s))})();
 
-
+})();
 </script>
 <script>
-(function(){
-const $=id=>document.getElementById(id);
-const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-const PAL=['#E07B24','#2E8B57','#3B6FB6','#C23B6E','#8C6BB1','#D4A20A','#1FA3A3','#8B5A2B','#6B8E23','#E0524A','#5E6C84','#B07AA1'];
-const fmt=(v,d=3)=>Number.isFinite(v)?v.toFixed(d):'–';
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-// ---------- tabs ----------
-document.querySelectorAll('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('nav.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b?'true':'false'));
-  ['scan','own','how'].forEach(t=>$('tab-'+t).classList.toggle('hidden',t!==b.dataset.tab));
-  if(b.dataset.tab==='scan'){ drawChart(); drawNet(); }
-}));
-
-// ---------- state ----------
-const S={g:null, layout:null, results:[], sel:-1, nodal:null, running:false, cancel:false, refs:[]};
-const PRESETS={karate:{gMin:0.1,gMax:1.5,gStep:0.02,runs:100}, single:{gMin:0.3,gMax:3.0,gStep:0.05,runs:50}, double:{gMin:0.3,gMax:3.0,gStep:0.05,runs:50}, custom:{gMin:0.1,gMax:2.0,gStep:0.05,runs:100}};
-function applyPreset(k){ const p=PRESETS[k]; $('gMin').value=p.gMin; $('gMax').value=p.gMax; $('gStep').value=p.gStep; $('runs').value=p.runs; }
-$('netSel').addEventListener('change',()=>{ const v=$('netSel').value; ['single','double','custom'].forEach(k=>$('p-'+k).classList.toggle('hidden',k!==v)); applyPreset(v); });
-$('thr').addEventListener('input',()=>{ $('thrVal').textContent=(+$('thr').value).toFixed(3); drawChart(); });
-$('edgeText').value=`# Two triangles joined by a bridge, plus a 4-clique
-a b
-b c
-c a
-c d
-d e
-e f
-f d
-f g
-g h
-h i
-i g
-g j
-h j
-i j`;
-
-function makeGraph(){
-  const v=$('netSel').value, rng=mulberry32(+$('seed').value||1);
-  if(v==='karate'){ S.refs=[2]; return karate(); }
-  if(v==='single'){ const N=Math.max(30,Math.min(600,+$('sN').value|0)), l=Math.max(1,Math.min(12,+$('sL').value|0)); S.refs=[l]; return singleLevel(N,l,Math.max(0.01,Math.min(0.9,+$('sD').value)),rng); }
-  if(v==='double'){ const n=Math.max(4,Math.min(60,+$('dN').value|0)); S.refs=[3,9]; return doubleLevel(n,Math.max(0.01,Math.min(0.9,+$('dD').value)),rng); }
-  const r=parseEdgeList($('edgeText').value); S.refs=[];
-  if(r.g.n<2||r.g.E<1) throw new Error('The edge list needs at least one edge between two distinct nodes.');
-  if(r.g.n>1500) throw new Error('This demo handles up to 1500 nodes; the pasted list has '+r.g.n+'.');
-  return r.g;
-}
-
-// ---------- scan ----------
-const tick=()=>new Promise(r=>setTimeout(r,0));
-async function runScan(){
-  if(S.running){ S.cancel=true; return; }
-  $('scanErr').classList.add('hidden');
-  let g; try{ g=makeGraph(); }catch(e){ $('scanErr').textContent=e.message; $('scanErr').classList.remove('hidden'); return; }
-  const gMin=+$('gMin').value, gMax=+$('gMax').value, gStep=+$('gStep').value, runs=Math.max(10,Math.min(1000,+$('runs').value|0));
-  if(!(gStep>0)||!(gMax>=gMin)||gMin<0){ $('scanErr').textContent='Set γ from ≥ 0, “to” ≥ “from”, and a positive step.'; $('scanErr').classList.remove('hidden'); return; }
-  const gammas=[]; for(let x=gMin; x<=gMax+1e-9; x+=gStep) gammas.push(+x.toFixed(6));
-  if(gammas.length>400){ $('scanErr').textContent='That is '+gammas.length+' resolution values; use a larger step (400 at most).'; $('scanErr').classList.remove('hidden'); return; }
-  S.g=g; S.results=[]; S.sel=-1; S.nodal=null;
-  $('status').textContent='Laying out the network…'; await tick();
-  S.layout=layoutFR(g, +$('seed').value||1);
-  $('showEdges').checked = g.E<=3000;
-  $('colorBy').querySelector('option[value=truth]').disabled=!g.truth;
-  if(!g.truth && $('colorBy').value==='truth') $('colorBy').value='comm';
-  S.running=true; S.cancel=false; $('runBtn').textContent='Stop scan';
-  const rng=mulberry32((+$('seed').value||1)*7919+13);
-  const total=gammas.length*runs; let done=0, t0=performance.now(), last=performance.now();
-  for(const gamma of gammas){
-    const rr=[];
-    for(let r=0;r<runs;r++){ rr.push(louvain(g,gamma,rng)); done++;
-      if(performance.now()-last>30){ $('prog').style.width=(100*done/total)+'%'; $('status').textContent=`γ = ${gamma.toFixed(3)} · ${done} of ${total} runs`; await tick(); last=performance.now(); if(S.cancel) break; } }
-    if(S.cancel) break;
-    const ens=buildEnsemble(rr), M=measures(ens.configs,g.n,true);
-    const meanPsi=M.Psi.reduce((a,b)=>a+b,0)/g.n;
-    S.results.push({gamma, ens, Omega:M.Omega, seO:omegaSE(rr,10,rng), nc:ens.meanK, seK:ens.seK, meanPsi, Psi:M.Psi});
-    drawChart();
-  }
-  S.running=false; $('runBtn').textContent='Run scan'; $('prog').style.width='100%';
-  const secs=((performance.now()-t0)/1000).toFixed(1);
-  $('status').textContent=(S.cancel?'Stopped after ':'Finished ')+`${S.results.length} resolution values in ${secs} s. ${g.n} nodes, ${g.E} edges.`;
-  if(S.results.length){ selectIndex(defaultSelection()); }
-}
-$('runBtn').addEventListener('click',runScan);
-
-function bands(){
-  const thr=+$('thr').value, R=S.results, out=[]; let cur=null;
-  R.forEach((r,i)=>{ const k=Math.round(r.nc); const ok=r.Omega<=thr && k>1 && Math.abs(r.nc-k)<0.1;
-    if(ok){ if(cur && cur.k===k && cur.j===i-1){ cur.j=i; } else { cur={i,j:i,k}; out.push(cur); } } });
-  return out;
-}
-function defaultSelection(){
-  const b=bands(); if(!b.length){ let best=0; S.results.forEach((r,i)=>{ if(r.nc>1.5 && (S.results[best].nc<=1.5 || r.Omega<S.results[best].Omega)) best=i; }); return best; }
-  b.sort((x,y)=>(y.j-y.i)-(x.j-x.i)); return Math.floor((b[0].i+b[0].j)/2);
-}
-
-// ---------- chart ----------
-const chart=$('chart');
-let geom=null;
-function drawChart(){
-  const R=S.results, W=Math.max(520,$('chartBox').clientWidth), H=Math.round(Math.min(380,Math.max(280,W*0.42)));
-  const m={l:58,r:52,t:14,b:42}, iw=W-m.l-m.r, ih=H-m.t-m.b;
-  chart.setAttribute('viewBox',`0 0 ${W} ${H}`); chart.setAttribute('width',W); chart.setAttribute('height',H);
-  if(!R.length){ chart.innerHTML=`<text x="${W/2}" y="${H/2}" text-anchor="middle" fill="${css('--muted')}" font-size="14">Run a scan to draw the landscape.</text>`; geom=null; renderReadout(); return; }
-  const gMin=+$('gMin').value, gMax=Math.max(+$('gMax').value, gMin+1e-6);
-  const oMax=Math.max(1.02,...R.map(r=>r.Omega+r.seO))*1.01;
-  const kMaxData=Math.max(2,...R.map(r=>r.nc+r.seK),...S.refs);
-  const kMax=Math.ceil(kMaxData*1.05);
-  const x=g=>m.l+(g-gMin)/(gMax-gMin)*iw, yO=o=>m.t+ih-(o-1)/(oMax-1)*ih, yK=k=>m.t+ih-(k-1)/(kMax-1)*ih;
-  const muted=css('--muted'), rule=css('--rule'), omega=css('--omega'), nc=css('--nc'), band=css('--band'), sel=css('--sel'), ink=css('--ink'), panel=css('--panel');
-  let s='';
-  const step=R.length>1?(R[1].gamma-R[0].gamma):(gMax-gMin);
-  for(const b of bands()){ const x0=Math.max(m.l,x(R[b.i].gamma-step/2)), x1=Math.min(m.l+iw,x(R[b.j].gamma+step/2));
-    s+=`<rect x="${x0}" y="${m.t}" width="${x1-x0}" height="${ih}" fill="${band}"/>`;
-    s+=`<text x="${(x0+x1)/2}" y="${m.t+14}" text-anchor="middle" font-size="11.5" fill="${muted}">${b.k}</text>`; }
-  // axes & ticks
-  const nice=(lo,hi,n)=>{ const raw=(hi-lo)/n, p=Math.pow(10,Math.floor(Math.log10(raw))), f=raw/p; const st=(f<1.5?1:f<3?2:f<7?5:10)*p; const out=[]; for(let v=Math.ceil(lo/st)*st; v<=hi+1e-9; v+=st) out.push(+v.toFixed(10)); return out; };
-  for(const t of nice(gMin,gMax,8)){ s+=`<line x1="${x(t)}" x2="${x(t)}" y1="${m.t+ih}" y2="${m.t+ih+4}" stroke="${muted}"/><text x="${x(t)}" y="${m.t+ih+17}" text-anchor="middle" font-size="12" fill="${muted}">${+t.toFixed(3)}</text>`; }
-  for(const t of nice(1,oMax,5)){ s+=`<line x1="${m.l}" x2="${m.l+iw}" y1="${yO(t)}" y2="${yO(t)}" stroke="${rule}" stroke-width="0.6"/><text x="${m.l-7}" y="${yO(t)+4}" text-anchor="end" font-size="12" fill="${omega}">${+t.toFixed(3)}</text>`; }
-  for(const t of nice(1,kMax,5).filter(t=>Number.isInteger(t))){ s+=`<text x="${m.l+iw+7}" y="${yK(t)+4}" font-size="12" fill="${nc}">${t}</text>`; }
-  for(const k of S.refs){ if(k>=1&&k<=kMax) s+=`<line x1="${m.l}" x2="${m.l+iw}" y1="${yK(k)}" y2="${yK(k)}" stroke="${ink}" stroke-dasharray="4 4" stroke-width="1" opacity=".55"/>`; }
-  s+=`<rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="none" stroke="${muted}" stroke-width="1"/>`;
-  s+=`<text x="${m.l+iw/2}" y="${H-6}" text-anchor="middle" font-size="13" fill="${ink}" font-style="italic">resolution γ</text>`;
-  s+=`<text transform="translate(16 ${m.t+ih/2}) rotate(-90)" text-anchor="middle" font-size="13" fill="${omega}">Ω</text>`;
-  s+=`<text transform="translate(${W-12} ${m.t+ih/2}) rotate(90)" text-anchor="middle" font-size="13" fill="${nc}">⟨n<tspan font-size="10" dy="3">c</tspan><tspan dy="-3">⟩</tspan></text>`;
-  // selection
-  if(S.sel>=0 && R[S.sel]) s+=`<line x1="${x(R[S.sel].gamma)}" x2="${x(R[S.sel].gamma)}" y1="${m.t}" y2="${m.t+ih}" stroke="${sel}" stroke-width="2"/>`;
-  // series
-  const clampY=v=>Math.max(m.t,Math.min(m.t+ih,v));
-  for(const r of R){ const cx=x(r.gamma);
-    if(r.seK>0) s+=`<line x1="${cx}" x2="${cx}" y1="${clampY(yK(r.nc-r.seK))}" y2="${clampY(yK(r.nc+r.seK))}" stroke="${nc}"/>`;
-    s+=`<rect x="${cx-3.2}" y="${clampY(yK(r.nc))-3.2}" width="6.4" height="6.4" fill="${panel}" stroke="${nc}" stroke-width="1.4"/>`; }
-  for(const r of R){ const cx=x(r.gamma);
-    if(r.seO>0) s+=`<line x1="${cx}" x2="${cx}" y1="${clampY(yO(r.Omega-r.seO))}" y2="${clampY(yO(r.Omega+r.seO))}" stroke="${omega}"/>`;
-    s+=`<circle cx="${cx}" cy="${clampY(yO(r.Omega))}" r="3.4" fill="${panel}" stroke="${omega}" stroke-width="1.4"/>`; }
-  chart.innerHTML=s;
-  geom={x, m, iw, gMin, gMax, W};
-  renderReadout();
-}
-function pickFromEvent(ev){
-  if(!geom||!S.results.length) return;
-  const rect=chart.getBoundingClientRect(); const px=(ev.clientX-rect.left)*(geom.W/rect.width);
-  let best=0, bd=Infinity; S.results.forEach((r,i)=>{ const d=Math.abs(geom.x(r.gamma)-px); if(d<bd){bd=d;best=i;} });
-  selectIndex(best);
-}
-chart.addEventListener('click',pickFromEvent);
-chart.addEventListener('keydown',e=>{ if(!S.results.length) return;
-  if(e.key==='ArrowRight'){ selectIndex(Math.min(S.results.length-1,S.sel+1)); e.preventDefault(); }
-  if(e.key==='ArrowLeft'){ selectIndex(Math.max(0,S.sel-1)); e.preventDefault(); } });
-window.addEventListener('resize',()=>{ drawChart(); drawNet(); });
-
-function renderReadout(){
-  const r=S.results[S.sel];
-  if(!r){ $('readout').innerHTML=''; return; }
-  $('readout').innerHTML=[
-    ['γ',fmt(r.gamma,3)],['Ω (PaI)',fmt(r.Omega,4)+' <small style="font:12px var(--sans);color:var(--muted)">± '+fmt(r.seO,4)+'</small>'],['⟨n<sub>c</sub>⟩',fmt(r.nc,2)],
-    ['Unique configurations C',r.ens.configs.length],['Most frequent share',(100*r.ens.configs[0].p).toFixed(0)+'%'],['Mean Ψ over nodes',fmt(r.meanPsi,3)]
-  ].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('');
-}
-
-function selectIndex(i){
-  if(i<0||!S.results[i]) return; S.sel=i; const r=S.results[i];
-  S.nodal={Psi:r.Psi, Phi:coi(r.ens.configs,S.g.n), top:r.ens.configs[0].labels};
-  drawChart(); drawNet(); renderNodeTable();
-  $('netTitle').textContent=`Nodes at γ = ${r.gamma.toFixed(3)}`;
-}
-
-// ---------- layout ----------
-function layoutFR(g,seed){
-  const n=g.n, rng=mulberry32(seed*31+5), X=new Float64Array(n), Y=new Float64Array(n);
-  for(let i=0;i<n;i++){ X[i]=rng()-.5; Y[i]=rng()-.5; }
-  const k=Math.sqrt(1/n), iters=n<=60?500:n<=300?300:n<=800?150:80;
-  let maxw=0; for(const w of g.wts) for(const v of w) maxw=Math.max(maxw,v);
-  const dx=new Float64Array(n), dy=new Float64Array(n); let temp=0.1;
-  for(let it=0;it<iters;it++){ dx.fill(0); dy.fill(0);
-    for(let i=0;i<n;i++) for(let j=i+1;j<n;j++){ let ex=X[i]-X[j], ey=Y[i]-Y[j]; let d2=ex*ex+ey*ey; if(d2<1e-9){ex=1e-3;ey=0;d2=1e-6;} const f=k*k/d2; dx[i]+=ex*f; dy[i]+=ey*f; dx[j]-=ex*f; dy[j]-=ey*f; }
-    for(let i=0;i<n;i++){ const nb=g.nbr[i], w=g.wts[i]; for(let t=0;t<nb.length;t++){ const j=nb[t]; if(j<i) continue; const ex=X[i]-X[j], ey=Y[i]-Y[j]; const d=Math.sqrt(ex*ex+ey*ey)+1e-9; const f=d/k*(w[t]/maxw); dx[i]-=ex*f; dy[i]-=ey*f; dx[j]+=ex*f; dy[j]+=ey*f; } }
-    for(let i=0;i<n;i++){ const d=Math.sqrt(dx[i]*dx[i]+dy[i]*dy[i])+1e-9; const s=Math.min(d,temp)/d; X[i]+=dx[i]*s; Y[i]+=dy[i]*s; }
-    temp*=0.985; }
-  let x0=Infinity,x1=-Infinity,y0=Infinity,y1=-Infinity; for(let i=0;i<n;i++){x0=Math.min(x0,X[i]);x1=Math.max(x1,X[i]);y0=Math.min(y0,Y[i]);y1=Math.max(y1,Y[i]);}
-  const sc=Math.max(x1-x0,y1-y0)||1; return {X:Array.from(X,v=>(v-(x0+x1)/2)/sc), Y:Array.from(Y,v=>(v-(y0+y1)/2)/sc)};
-}
-$('relayout').addEventListener('click',()=>{ if(!S.g) return; S.layout=layoutFR(S.g, Math.floor(Math.random()*1e6)); drawNet(); });
-
-// ---------- network canvas ----------
-const cv=$('net'); let pts=[];
-function gray(t){ // 0 -> field-ish white, 1 -> ink
-  const light=document.documentElement.dataset.theme!=='dark' && !matchMedia('(prefers-color-scheme: dark)').matches || document.documentElement.dataset.theme==='light';
-  const a=light?[255,255,255]:[40,48,58], b=light?[24,34,46]:[235,240,245];
-  const c=a.map((v,i)=>Math.round(v+(b[i]-v)*t)); return `rgb(${c})`; }
-function drawNet(){
-  const ctx=cv.getContext('2d'), dpr=window.devicePixelRatio||1, W=cv.clientWidth, H=cv.clientHeight;
-  if(!W) return; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
-  const g=S.g, L=S.layout;
-  if(!g||!L){ ctx.fillStyle=css('--muted'); ctx.font='14px '+css('--sans'); ctx.textAlign='center'; ctx.fillText('The network appears here after a scan.',W/2,H/2); $('ramp').innerHTML=''; return; }
-  const pad=22, sc=Math.min(W,H)-2*pad; pts=L.X.map((x,i)=>[W/2+x*sc, H/2+L.Y[i]*sc]);
-  if($('showEdges').checked){ ctx.strokeStyle=css('--muted'); ctx.globalAlpha=g.E>1500?0.06:g.E>300?0.15:0.4; ctx.lineWidth=1; ctx.beginPath();
-    for(let i=0;i<g.n;i++){ for(const j of g.nbr[i]) if(j>i){ ctx.moveTo(pts[i][0],pts[i][1]); ctx.lineTo(pts[j][0],pts[j][1]); } } ctx.stroke(); ctx.globalAlpha=1; }
-  const mode=$('colorBy').value, N=S.nodal; const base=g.n<=50?7:g.n<=200?4.2:3;
-  let maxPsi=1, maxPhi=0; if(N){ for(let i=0;i<g.n;i++){ maxPsi=Math.max(maxPsi,N.Psi[i]); maxPhi=Math.max(maxPhi,N.Phi[i]); } }
-  const order=Array.from({length:g.n},(_,i)=>i); if(N) order.sort((a,b)=>N.Psi[a]-N.Psi[b]);
-  for(const i of order){ let r=base, fill=css('--muted');
-    if(N){ r=base*(1+Math.min(1.6,Math.sqrt(Math.max(0,N.Psi[i]-1))));
-      if(mode==='comm') fill=PAL[N.top[i]%PAL.length];
-      else if(mode==='psi') fill=gray(maxPsi>1?(N.Psi[i]-1)/(maxPsi-1):0);
-      else if(mode==='phi') fill=gray(maxPhi>0?N.Phi[i]/maxPhi:0);
-      else if(mode==='truth'&&g.truth) fill=PAL[g.truth[i]%PAL.length]; }
-    ctx.beginPath(); ctx.arc(pts[i][0],pts[i][1],r,0,Math.PI*2); ctx.fillStyle=fill; ctx.fill(); ctx.lineWidth=0.8; ctx.strokeStyle=css('--ink'); ctx.globalAlpha=.55; ctx.stroke(); ctx.globalAlpha=1; pts[i][2]=r; }
-  if(g.n<=50){ ctx.fillStyle=css('--ink'); ctx.font='10px '+css('--sans'); ctx.textAlign='center'; for(let i=0;i<g.n;i++) ctx.fillText(g.names[i],pts[i][0],pts[i][1]-pts[i][2]-3); }
-  const ramp=$('ramp');
-  if(N && (mode==='psi'||mode==='phi')){ const mx=mode==='psi'?maxPsi:maxPhi, mn=mode==='psi'?1:0;
-    ramp.innerHTML=`<span>${fmt(mn,2)}</span><span class="bar" style="background:linear-gradient(90deg,${gray(0)},${gray(1)})"></span><span>${fmt(mx,2)}</span><span>${mode==='psi'?'Ψ':'Φ'}: consistent → inconsistent</span>`; }
-  else ramp.innerHTML='';
-}
-$('colorBy').addEventListener('change',drawNet); $('showEdges').addEventListener('change',drawNet);
-cv.addEventListener('mousemove',e=>{ const tip=$('tip'); if(!S.nodal||!pts.length){tip.style.display='none';return;}
-  const rc=cv.getBoundingClientRect(), mx=e.clientX-rc.left, my=e.clientY-rc.top; let best=-1,bd=144;
-  pts.forEach((p,i)=>{ const d=(p[0]-mx)**2+(p[1]-my)**2; if(d<bd){bd=d;best=i;} });
-  if(best<0){ tip.style.display='none'; return; }
-  const g=S.g; tip.innerHTML=`Node <b>${esc(g.names[best])}</b><br>Ψ = ${fmt(S.nodal.Psi[best])} · Φ = ${fmt(S.nodal.Phi[best])}<br>Community ${S.nodal.top[best]+1} · degree ${g.nbr[best].length}`;
-  tip.style.display='block'; const left=Math.min(mx+14, rc.width-tip.offsetWidth-4); tip.style.left=Math.max(0,left)+'px'; tip.style.top=(my+14)+'px'; });
-cv.addEventListener('mouseleave',()=>{$('tip').style.display='none';});
-
-function renderNodeTable(){
-  const N=S.nodal, g=S.g; if(!N) return;
-  const idx=Array.from({length:g.n},(_,i)=>i).sort((a,b)=>N.Psi[b]-N.Psi[a]||N.Phi[b]-N.Phi[a]);
-  const maxP=Math.max(...idx.map(i=>N.Psi[i])), mxPhi=Math.max(1e-9,...idx.map(i=>N.Phi[i]));
-  const nIncons=idx.filter(i=>N.Psi[i]>1.05).length, nAny=idx.filter(i=>N.Psi[i]>1+1e-9).length;
-  $('nodeSummary').textContent=!nAny? `Every node keeps the same comembers in every run (Ψ = 1 for all nodes).` : `${nIncons} of ${g.n} nodes have Ψ above 1.05${nAny>nIncons?`; ${nAny-nIncons} more shift only in rare runs`:''}. Showing the top ${Math.min(25,g.n)}.`;
-  $('nodeTable').innerHTML=`<thead><tr><th>Node</th><th class="num">Ψ</th><th class="num">Φ</th><th class="barcell">Ψ − 1</th></tr></thead><tbody>`+
-    idx.slice(0,25).map(i=>`<tr><td>${esc(g.names[i])}</td><td class="num">${fmt(N.Psi[i])}</td><td class="num">${fmt(N.Phi[i])}</td><td class="barcell"><div class="minibar" style="width:${maxP>1?100*(N.Psi[i]-1)/(maxP-1):0}%"></div></td></tr>`).join('')+'</tbody>';
-}
-
-// ---------- own partitions ----------
-$('partText').value=`1 1 1 1 1 1 2 2 2 2 2 2
-A A A A A A B B B B B B
-2 2 2 2 2 2 1 1 1 1 1 1
-1 1 1 1 1 2 1 2 2 2 2 2
-x x x x x y x y y y y y`;
-function calcOwn(){
-  const err=$('ownErr'); err.classList.add('hidden');
-  const lines=$('partText').value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-  const rows=lines.map(l=>l.split(/[\s,;]+/));
-  if(rows.length<1){ err.textContent='Paste at least one partition.'; err.classList.remove('hidden'); return; }
-  const N=rows[0].length; const badRow=rows.findIndex(r=>r.length!==N);
-  if(badRow>=0){ err.textContent=`Line ${badRow+1} has ${rows[badRow].length} labels, but line 1 has ${N}. Every line needs one label per node.`; err.classList.remove('hidden'); return; }
-  if(N>3000){ err.textContent='Up to 3000 nodes are supported here.'; err.classList.remove('hidden'); return; }
-  let names=$('nodeNamesText').value.trim().split(/[\s,;]+/).filter(Boolean);
-  if(names.length && names.length!==N){ err.textContent=`There are ${names.length} node names but ${N} nodes. Leave the names empty or give exactly ${N}.`; err.classList.remove('hidden'); return; }
-  if(!names.length) names=Array.from({length:N},(_,i)=>String(i+1));
-  const ens=buildEnsemble(rows), M=measures(ens.configs,N,true), Phi=coi(ens.configs,N), C=ens.configs.length;
-  $('ownReadout').innerHTML=[['Runs m',ens.m],['Unique configurations C',C],['Ω (PaI)',fmt(M.Omega,4)],['⟨n<sub>c</sub>⟩',fmt(ens.meanK,2)],['Mean Ψ',fmt(M.Psi.reduce((a,b)=>a+b,0)/N,3)],['Mean Φ',fmt(Phi.reduce((a,b)=>a+b,0)/N,3)]].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('');
-  const idx=Array.from({length:N},(_,i)=>i).sort((a,b)=>M.Psi[b]-M.Psi[a]||Phi[b]-Phi[a]);
-  const mxPsi=Math.max(...M.Psi), mxPhi=Math.max(1e-9,...Phi);
-  $('ownNodes').innerHTML=`<thead><tr><th>Node</th><th class="num">Ψ</th><th class="num">Φ</th><th class="barcell">Ψ − 1 and Φ</th></tr></thead><tbody>`+idx.slice(0,500).map(i=>`<tr><td>${esc(names[i])}</td><td class="num">${fmt(M.Psi[i])}</td><td class="num">${fmt(Phi[i])}</td><td class="barcell"><div class="minibar" style="width:${mxPsi>1?100*(M.Psi[i]-1)/(mxPsi-1):0}%"></div><div class="minibar phi" style="margin-top:2px;width:${100*Phi[i]/mxPhi}%"></div></td></tr>`).join('')+'</tbody>';
-  const show=ens.configs.slice(0,40);
-  $('ownConfigs').innerHTML=`<thead><tr><th>α</th><th class="num">p<sub>α</sub></th><th class="num">Communities</th><th>Groups</th></tr></thead><tbody>`+show.map((c,a)=>{ const gr=Array.from({length:c.K},()=>[]); c.labels.forEach((l,i)=>gr[l].push(names[i]));
-    const txt=gr.map(x=>'{'+(x.length>8?x.slice(0,8).join(' ')+' …':x.join(' '))+'}').join(' ');
-    return `<tr><td>${a+1}</td><td class="num">${fmt(c.p,2)}</td><td class="num">${c.K}</td><td style="font-size:12.5px">${esc(txt)}</td></tr>`; }).join('')+'</tbody>'+(C>40?`<caption class="hint" style="caption-side:bottom;text-align:left">Showing 40 of ${C}.</caption>`:'');
-  const k=Math.min(C,12), nb=new Int32Array(N);
-  let sim='<thead><tr><th></th>'+Array.from({length:k},(_,b)=>`<th class="num">${b+1}</th>`).join('')+'</tr></thead><tbody>';
-  for(let a=0;a<k;a++){ sim+=`<tr><th>${a+1}</th>`; for(let b=0;b<k;b++){ const v=a===b?1:ecsAndJaccard(ens.configs[a],ens.configs[b],N,nb,null); sim+=`<td class="num">${fmt(v,2)}</td>`; } sim+='</tr>'; }
-  $('ownSim').innerHTML=sim+'</tbody>';
-}
-$('calcBtn').addEventListener('click',calcOwn);
-
-// ---------- boot ----------
-drawChart(); drawNet(); calcOwn();
-runScan();
+(() => {
+  // light/dark switch; the choice is remembered across all of the course demos
+  const btn = document.getElementById("themeBtn"), root = document.documentElement, mq = matchMedia("(prefers-color-scheme: dark)");
+  const SUN = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+  const MOON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>';
+  const current = () => root.dataset.theme || (mq.matches ? "dark" : "light");
+  const sync = () => { const dark = current() === "dark", label = dark ? "Switch to light mode" : "Switch to dark mode";
+    btn.innerHTML = dark ? SUN : MOON; btn.setAttribute("aria-label", label); btn.title = label; };
+  btn.addEventListener("click", () => { const next = current() === "dark" ? "light" : "dark"; root.dataset.theme = next;
+    try { localStorage.setItem("netsci-theme", next); } catch (e) {} sync(); });
+  mq.addEventListener("change", sync);
+  sync();
 })();
-
 </script>
 </body>
 </html>

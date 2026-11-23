@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<!-- lang-link:head -->
+<script>(function(){var p=null;try{p=localStorage.getItem("lshlj82-demo-lang")}catch(e){}if(p&&p!=="ko"&&!/[?&]stay\b/.test(location.search))location.replace("index.html"+location.hash);})();</script>
+<style>
+#langBtn{position:fixed;z-index:21;top:calc(env(safe-area-inset-top,0px) + 12px);right:calc(env(safe-area-inset-right,0px) + 60px);min-width:40px;height:40px;padding:0 10px;border-radius:20px;display:grid;place-items:center;cursor:pointer;text-decoration:none;font:600 14px/1 system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;background:var(--lb-bg,rgba(255,255,255,.92));color:var(--lb-fg,#1d2633);border:1px solid var(--lb-bd,rgba(20,30,45,.18));box-shadow:0 1px 4px rgba(0,0,0,.12)}
+#langBtn:hover{border-color:currentColor}
+#langBtn:focus-visible{outline:2px solid #3b82f6;outline-offset:2px}
+:root[data-theme="dark"] #langBtn{--lb-bg:rgba(22,28,38,.92);--lb-fg:#e8eef6;--lb-bd:rgba(255,255,255,.18)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #langBtn{--lb-bg:rgba(22,28,38,.92);--lb-fg:#e8eef6;--lb-bd:rgba(255,255,255,.18)}}
+@media print{#langBtn{display:none}}
+html[lang="ko"] body{word-break:keep-all;overflow-wrap:break-word}
+</style>
+<!-- lang-link:head-end -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>비일관적인 커뮤니티 · Inconsistent communities | 네트워크 과학 데모</title>
+<meta name="description" content="네트워크 커뮤니티의 비일관성에 관한 인터랙티브 노트: 동반 비일관성, 소속 비일관성, 분할 비일관성, 일관성 지형. 이상훈 교수와 공동 연구자들의 강의 슬라이드와 논문을 바탕으로 Claude Opus 5.5가 만들었습니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},startup:{typeset:true}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<style>
+:root{
+  --paper:#F1F4F8;--grid:#DFE5EE;--panel:#FFFFFF;--ink:#1B2238;--muted:#566079;--rule:#C7CFDC;
+  --marker:#D11F3A;--edge:#AEB7C7;--edge-strong:#1B2238;--none:#BAC2D0;--magenta:#C2399F;--link:#285FC8;--ok-text:#1D7A4A;
+  --c0:#E5484D;--c1:#2F6BDB;--c2:#2A9D63;--c3:#E39B0B;--c4:#8E44C8;--c5:#0F9DB0;--c6:#9A6136;--c7:#D9488F;
+  --hand:"IBM Plex Sans KR","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --text:"IBM Plex Sans KR",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#111726;--grid:#1B2335;--panel:#161E30;--ink:#E6EAF3;--muted:#9AA5BC;--rule:#2C3750;
+  --marker:#FF5A6E;--edge:#3E4A63;--edge-strong:#E6EAF3;--none:#4B566D;--magenta:#E163C3;--link:#6C9BFF;--ok-text:#3CC383;
+  --c0:#FF6B6F;--c1:#5B8DEF;--c2:#3CC383;--c3:#F5B53A;--c4:#B07AF0;--c5:#2DC3D6;--c6:#C98A5C;--c7:#F07AB3;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#111726;--grid:#1B2335;--panel:#161E30;--ink:#E6EAF3;--muted:#9AA5BC;--rule:#2C3750;
+  --marker:#FF5A6E;--edge:#3E4A63;--edge-strong:#E6EAF3;--none:#4B566D;--magenta:#E163C3;--link:#6C9BFF;--ok-text:#3CC383;
+  --c0:#FF6B6F;--c1:#5B8DEF;--c2:#3CC383;--c3:#F5B53A;--c4:#B07AF0;--c5:#2DC3D6;--c6:#C98A5C;--c7:#F07AB3;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background-color:var(--paper);color:var(--ink);font-family:var(--text);font-size:16.5px;line-height:1.62;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;background-attachment:fixed;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+a{color:var(--link)}
+:focus-visible{outline:2.5px solid var(--marker);outline-offset:2px;border-radius:3px}
+
+.toc{position:fixed;left:0;top:0;bottom:0;width:232px;padding:calc(28px + env(safe-area-inset-top,0px)) 18px 24px 26px;overflow:auto;font-size:14.5px;border-right:1.5px solid var(--rule);background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(4px)}
+.toc .brand{font-family:var(--hand);font-size:21px;font-weight:600;line-height:1.1;margin:0 0 18px}
+.toc ol{list-style:none;padding:0;margin:0;counter-reset:ch}
+.toc li{counter-increment:ch;margin:0}
+.toc a{display:flex;gap:10px;padding:6px 6px;border-radius:4px;color:var(--muted);text-decoration:none;line-height:1.3}
+.toc a::before{content:counter(ch);font-family:var(--hand);font-size:14px;min-width:18px;color:var(--muted);opacity:.6;font-weight:600;line-height:1.3;font-variant-numeric:lining-nums}
+.toc a:hover{color:var(--ink)}
+.toc a.on{color:var(--ink);font-weight:500}
+.toc a.on::before{color:var(--marker)}
+.toc .theme{margin-top:22px;font-size:13px}
+.toc .by{font-family:var(--text);font-weight:400;font-size:13px;color:var(--muted)}
+.credit{font-size:13.5px;color:var(--muted);margin:0 0 4px}
+main{margin-left:232px;padding:0 40px 80px}
+@media (max-width:1100px){.toc{display:none}main{margin-left:0;padding:0 20px 60px}}
+
+.hero{max-width:1180px;margin:0 auto;padding:56px 0 30px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:40px;align-items:center}
+.hero h1{font-family:var(--hand);font-weight:600;font-size:clamp(40px,5.2vw,68px);line-height:1;margin:0 0 12px;letter-spacing:-1px}
+.hero .ko{font-family:var(--hand);font-style:italic;font-size:clamp(18px,2vw,22px);color:var(--muted);margin:0 0 22px}
+.hero p{max-width:46ch}
+.def{font-family:var(--hand);font-size:22px;line-height:1.35;color:var(--ink);margin:22px 0 10px;max-width:30ch}
+.def em{font-style:normal;color:var(--marker)}
+.hero .net{background:transparent}
+@media (max-width:860px){.hero{grid-template-columns:1fr;padding-top:36px}}
+
+.chapter{max-width:1180px;margin:0 auto;padding:64px 0 24px;border-top:1.5px dashed var(--rule);display:grid;grid-template-columns:minmax(0,40ch) minmax(0,1fr);gap:24px 48px;align-items:start}
+.chapter>header{grid-column:1/-1}
+.chapter h2{font-family:var(--hand);font-weight:600;font-size:clamp(28px,3.2vw,38px);line-height:1.1;letter-spacing:-.4px;flex-wrap:wrap;margin:0;display:flex;align-items:baseline;gap:16px}
+.chapter h2 .n{font-size:.62em;color:var(--marker);min-width:1.2em}
+.chapter h2 small{font-size:.52em;color:var(--muted);font-weight:400;font-style:italic;letter-spacing:0}
+.prose p{margin:0 0 14px}
+.prose h3{font-size:16.5px;font-weight:600;margin:22px 0 6px}
+.prose ul{padding-left:20px;margin:0 0 14px}
+.prose li{margin-bottom:6px}
+.note{font-family:var(--hand);font-style:italic;color:var(--marker);font-size:18px;line-height:1.4;margin:14px 0}
+.note.blue{color:var(--link)}
+.code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px;background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;overflow-x:auto;white-space:pre;margin:10px 0 14px}
+.math{overflow-x:auto;overflow-y:hidden;margin:10px 0 16px}
+.bench{margin:0;background:var(--panel);border:1.5px solid var(--ink);border-radius:6px;padding:16px 18px 18px;position:relative;min-width:0}
+.bench>.how{font-family:var(--hand);font-style:italic;font-size:17px;line-height:1.35;color:var(--muted);margin:0 0 8px}
+@media (max-width:960px){.chapter{grid-template-columns:minmax(0,1fr);padding-top:48px}.chapter>*{min-width:0}}
+
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+button{font:inherit;font-size:14px;color:var(--ink);background:transparent;border:1.5px solid var(--ink);border-radius:4px;padding:6px 12px;cursor:pointer;line-height:1.2}
+button:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+button.primary{background:var(--ink);color:var(--paper)}
+button.primary:hover{background:color-mix(in srgb,var(--ink) 85%,var(--paper))}
+button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+button:disabled{opacity:.4;cursor:default}
+label.slider{display:flex;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap}
+label.slider input{flex:1;min-width:140px;accent-color:var(--marker)}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:4px;overflow:hidden}
+.seg button{border:0;border-radius:0;border-right:1.5px solid var(--ink)}
+.seg button:last-child{border-right:0}
+
+.readout{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px 16px;margin:12px 0 4px}
+.readout div{font-size:13px;color:var(--muted);line-height:1.3}
+.readout b{display:block;font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.verdict{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.pill{font-size:13.5px;border:1.5px solid currentColor;border-radius:999px;padding:3px 10px}
+.pill.yes{color:var(--ok-text)}.pill.no{color:var(--marker)}
+.ann{font-family:var(--hand);font-style:italic;color:var(--marker);font-size:17px;line-height:1.35;min-height:1.2em;margin:4px 0}
+.log{font-size:13.5px;color:var(--muted);min-height:1.4em;margin:6px 0 0}
+.big{font-size:40px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1;word-break:break-all}
+
+svg.net{display:block;width:100%;height:auto;touch-action:manipulation}
+.edge{stroke:var(--edge);stroke-width:1.4}
+.node circle{fill:var(--none);stroke:var(--panel);stroke-width:1.6}
+.hero .node circle{stroke:var(--paper)}
+.node.click{cursor:pointer}
+.node.click:hover circle{stroke:var(--ink);stroke-width:2.2}
+.node.sel circle{stroke:var(--ink);stroke-width:3}
+.node:focus-visible{outline:none}.node:focus-visible circle{stroke:var(--marker);stroke-width:3}
+.nlabel{font-size:9px;fill:#fff;pointer-events:none;font-weight:600;font-family:var(--text)}
+.ring{fill:none;stroke:var(--marker);stroke-width:2.5}
+.wide{overflow-x:auto}
+table.stats{border-collapse:collapse;font-size:13.5px;width:100%;font-variant-numeric:tabular-nums}
+table.stats th,table.stats td{padding:4px 8px;text-align:right;border-bottom:1px solid var(--rule)}
+table.stats th:first-child,table.stats td:first-child{text-align:left}
+table.stats th{font-weight:500;color:var(--muted)}
+.sw{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px}
+.brush{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.brush button{width:30px;height:30px;padding:0;border-radius:50%;border:2px solid transparent}
+.brush button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 3px var(--panel)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:620px){.two{grid-template-columns:1fr}}
+.cap{font-size:12.5px;color:var(--muted);margin:2px 0 0}
+.chart text,.dendro text{font-size:11px;fill:var(--muted);font-family:var(--text)}
+.axis{stroke:var(--rule);stroke-width:1}
+.matrix rect.cell{cursor:pointer}
+footer{max-width:1180px;margin:40px auto 0;padding-top:24px;border-top:1.5px dashed var(--rule);color:var(--muted);font-size:14px}
+.closing{font-family:var(--hand);font-style:italic;font-size:clamp(21px,2.4vw,27px);line-height:1.3;color:var(--ink);max-width:36ch;margin:0 0 14px}
+</style>
+<script>try { const t = localStorage.getItem("netsci-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}</script>
+<style>
+button.theme-btn{position:fixed; z-index:20; top:calc(env(safe-area-inset-top, 0px) + 12px); right:calc(env(safe-area-inset-right, 0px) + 12px);
+  width:40px; height:40px; padding:0; border-radius:50%; display:grid; place-items:center; cursor:pointer;
+  background:var(--panel); color:var(--ink); border:1px solid var(--rule); box-shadow:0 1px 4px rgba(0,0,0,.12)}
+button.theme-btn:hover{background:var(--panel); color:var(--ink); border-color:var(--ink)}
+button.theme-btn:focus-visible{outline:3px solid var(--link); outline-offset:2px}
+button.theme-btn svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@600&family=Noto+Serif+KR:wght@400&display=swap" rel="stylesheet">
+<style>
+/* Course-wide demo title: the same on every demo page and on the course landing page */
+h1.course-title{font-family:"STIX Two Text","Noto Serif KR",Cambria,"Times New Roman",serif !important;font-weight:600 !important;font-style:normal !important;font-size:clamp(30px,3.6vw,44px) !important;line-height:1.08 !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink) !important;word-break:keep-all}
+h1.course-title .course-title-ko{display:block;font-family:"Noto Serif KR","STIX Two Text",serif;font-weight:400;font-size:.5em;line-height:1.3;letter-spacing:0;color:var(--muted);margin:.3em 0 0}
+/* space above the title, so it starts about 48px (phones: 32px) below the top of the page */
+.hero{padding-top:48px !important}
+@media (max-width:860px){.hero{padding-top:32px !important}}
+</style>
+<style>
+:root{--lo:#D5DCE7;--hi:#C2185B;--om:#7B3FB0;--nc:#1D8A5A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--lo:#2E3850;--hi:#FF5C9A;--om:#B98CF0;--nc:#3CC383}}
+:root[data-theme="dark"]{--lo:#2E3850;--hi:#FF5C9A;--om:#B98CF0;--nc:#3CC383}
+.multiples{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:8px 0}
+.multiples .cell{border:1px solid var(--rule);border-radius:4px;padding:2px;min-width:0;position:relative}
+.multiples .cell span{position:absolute;left:4px;top:1px;font-size:10.5px;color:var(--muted)}
+@media (max-width:520px){.multiples{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cfgs{list-style:none;padding:0;margin:8px 0;font-size:13px}
+.cfgs li{display:grid;grid-template-columns:96px minmax(0,1fr) 48px;gap:8px;align-items:center;margin:3px 0}
+.cfgs .bar{height:10px;background:var(--ink);border-radius:2px}
+.cfgs .num{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.cbar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin:6px 0 0}
+.cbar i{display:block;height:10px;flex:1;max-width:220px;border-radius:2px}
+.netlbl{font-size:13px;font-weight:500;margin:6px 0 2px}
+.chapter.wide-prose .prose{grid-column:1/-1;max-width:78ch}
+.landscape{cursor:crosshair}
+@media (max-width:860px){.hero h1.course-title{padding-right:100px}}
+.landscape text{font-size:15px;fill:var(--muted);font-family:var(--text)}
+table.stats td.mx{font-size:12.5px}
+</style>
+</head>
+<body>
+<!-- lang-link:body -->
+<a id="langBtn" href="index.html" hreflang="en" lang="en" aria-label="View in English" title="View in English">EN</a>
+<script>document.getElementById("langBtn").addEventListener("click",function(){try{localStorage.setItem("lshlj82-demo-lang","en")}catch(e){}});</script>
+<!-- lang-link:body-end -->
+<button id="themeBtn" class="theme-btn" type="button" aria-label="밝은 화면으로 전환"></button>
+<nav class="toc" aria-label="장">
+  <p class="brand">비일관성<br><span class="by">인터랙티브 노트</span></p>
+  <ol>
+    <li><a href="#top">“그” 커뮤니티 구조?</a></li>
+    <li><a href="#ensemble">답의 앙상블</a></li>
+    <li><a href="#cooc">동시 출현 행렬</a></li>
+    <li><a href="#coi">동반 비일관성</a></li>
+    <li><a href="#pai">분할과 소속</a></li>
+    <li><a href="#landscape">일관성 지형</a></li>
+    <li><a href="#bulk">내부와 경계</a></li>
+    <li><a href="#real">실제 네트워크에서</a></li>
+  </ol>
+</nav>
+<main>
+<section class="hero" id="top" data-ch="0">
+  <div>
+    <h1 class="course-title">비일관적인 커뮤니티<span class="course-title-ko" lang="en">Inconsistent communities</span></h1>
+    <p class="ko">이상훈 교수와 공동 연구자들의 강의 슬라이드와 논문을 바탕으로 Claude Opus 5.5가 만들었습니다</p>
+    <p>커뮤니티를 찾는 알고리즘은 대부분 확률적입니다. 예를 들어 루뱅 알고리즘은 노드를 무작위 순서로 방문합니다. 같은 네트워크에 두 번 돌리면 서로 다른 답이 나올 수 있습니다. 흔히 이것을 결함으로 여기고 답 하나를 고르고 맙니다.</p>
+    <p class="def">대신 “그” 커뮤니티 구조가 아니라 커뮤니티 구조의 <em>앙상블</em>을 찾아봅시다.</p>
+    <p>답들이 얼마나 자주, 어떤 노드에 대해 엇갈리는지가 쓸모 있는 정보가 됩니다. 다리 역할을 하는 노드, 아웃사이더, 멀티플레이어를 짚어 주고, 어떤 해상도에서 믿을 만한 커뮤니티가 나오는지도 알려 줍니다. 물이 반이나 비었을까요, 반이나 찼을까요?</p>
+    <div class="controls"><button class="primary" id="heroPlay" type="button" aria-pressed="true">Pause</button><span class="cap" id="heroCap"></span></div>
+  </div>
+  <div id="heroNet"></div>
+</section>
+
+<section class="chapter" id="ensemble" data-ch="1">
+  <header><h2><span class="n">2</span>답의 앙상블 <small>확률적 알고리즘을 여러 번 돌리기</small></h2></header>
+  <div class="prose">
+    <p>빽빽한 두 무리, 곧 왼쪽의 노드 1–5와 오른쪽의 노드 9–13이 노드 6, 7, 8을 거쳐 이어진 작은 네트워크를 생각해 봅시다. 루뱅 알고리즘(해상도 \(\gamma\)의 모듈성 최대화)을 매번 노드 순서를 무작위로 바꿔 가며 여러 번 돌립니다. 한 번 돌릴 때마다, 곧 <em>실현</em>마다 커뮤니티 <em>구성</em>이 하나씩 나옵니다.</p>
+    <p>두 무리는 매번 똑같이 나옵니다. 노드 6, 7, 8은 그렇지 않습니다: 왼쪽 무리에 붙기도 하고, 오른쪽에 붙기도 하고, 따로 무리를 이루기도 합니다. \(n_d\)번의 실현에서 나온 서로 다른 구성 \(\alpha = 1, 2, \ldots, C\)와 각각이 나온 비율 \(p_\alpha = m_\alpha/n_d\)가 통계적인 <em>커뮤니티 앙상블</em>을 이룹니다.</p>
+    <p>중요한 것은 무엇끼리 묶였는지이지 이름표가 아닙니다. 여기서는 노드 1이 속한 커뮤니티를 늘 빨간색으로 칠하므로, 같은 구성은 늘 같은 모양으로 보입니다.</p>
+    <p class="note">알고리즘에는 아무 잘못이 없습니다. 어떤 노드의 커뮤니티 경계는 애초에 정확히 정할 수가 없습니다.</p>
+  </div>
+  <figure class="bench">
+    <p class="how">알고리즘을 돌려 다리 노드들이 편을 바꾸는 것을 보세요. 마지막 열 번의 실현을 보여 줍니다.</p>
+    <div class="controls">
+      <button class="primary" id="exRun1" type="button">한 번 돌리기</button><button id="exRun10" type="button">10번 돌리기</button><button id="exRun100" type="button">100번 돌리기</button><button id="exReset" type="button">처음부터</button>
+    </div>
+    <label class="slider"><span>해상도 \(\gamma\)</span> <input type="range" id="exG" min="0.3" max="1.5" step="0.05" value="0.6"> <output id="exGo">0.60</output></label>
+    <div class="multiples" id="exMult"></div>
+    <div class="readout" id="exRead"></div>
+    <p class="netlbl" id="exCfgH">서로 다른 구성</p>
+    <ul class="cfgs" id="exCfgs"></ul>
+  </figure>
+</section>
+
+<section class="chapter" id="cooc" data-ch="2">
+  <header><h2><span class="n">3</span>누가 누구와 함께하나 <small>동시 출현 행렬</small></h2></header>
+  <div class="prose">
+    <p>커뮤니티 이름표는 잊고 쌍만 봅시다. 동시 출현 행렬은 모든 노드 쌍에 대해 둘이 같은 커뮤니티에 들어간 실현의 비율을 셉니다:</p>
+    <div class="math">\[ \phi_{ij} = \frac{1}{n_d}\sum_{\alpha=1}^{n_d} \delta_\alpha(g_i, g_j), \]</div>
+    <p>여기서 \(g_i\)는 실현 \(\alpha\)에서 노드 \(i\)가 속한 커뮤니티입니다. 1은 <em>늘 함께</em>, 0은 <em>늘 따로</em>라는 뜻입니다. 두 극단은 일관적이고, 그 사이 값은 비일관적입니다.</p>
+    <p>오른쪽의 앙상블은 앞 절의 것과 같으므로, 거기서 실현을 더 돌리면 이 행렬도 바뀝니다.</p>
+  </div>
+  <figure class="bench">
+    <p class="how">칸에 마우스를 올리거나 칸을 누르면 두 노드가 얼마나 자주 함께 나왔는지 볼 수 있습니다.</p>
+    <div class="wide"><svg id="mat" class="net matrix" viewBox="0 0 440 440" role="img" aria-label="예제 네트워크의 동시 출현 행렬"></svg></div>
+    <div class="cbar"><span>늘 따로 0</span><i style="background:linear-gradient(90deg,#2F6BDB,#F2D04B,#E5484D)"></i><span>1 늘 함께</span></div>
+    <p class="ann" id="matAnn"></p>
+  </figure>
+</section>
+
+<section class="chapter" id="coi" data-ch="3">
+  <header><h2><span class="n">4</span>동반 비일관성 <small>CoI, 노드의 관계적 유연성</small></h2></header>
+  <div class="prose">
+    <p>노드 \(i\)의 행을 숫자 하나로 바꾸기 위해, 각 \(\phi_{ij}\)가 결정되지 않은 값 1/2에서 얼마나 떨어져 있는지 잽니다:</p>
+    <div class="math">\[ \Phi_i = 1 - \frac{1}{N-1}\sum_{j \ne i}\left(1 - 2\phi_{ij}\right)^2 . \]</div>
+    <p>노드 \(i\)가 늘 같은 노드들과 커뮤니티를 이루면 \(\Phi_i = 0\)이고, 다른 모든 노드와 정확히 반반의 확률로 함께하면 \(\Phi_i = 1\)입니다. CoI가 묻는 것은 이것입니다: 이 노드는 다른 노드들과 얼마나 비일관적으로 묶이는가, 곧 커뮤니티 소속이 얼마나 약한가?</p>
+    <p>역시 “다리” 노드를 찾는 사이 중심도와 비교해 보세요. 사이 중심도는 최단 경로를 세는데, 대부분이 노드 8을 지나므로 노드 6과 7은 무리 안쪽 노드와 별로 다르지 않아 보입니다. CoI는 경로가 아니라 노드 사이의 기능적 관계를 보므로 다리 노드 셋을 모두 짚어 냅니다.</p>
+    <p>CoI는 노드의 외부성 \(E_i\), 곧 이웃 가운데 자기 커뮤니티 밖에 있는 이웃의 비율과도 다릅니다. 커뮤니티를 오가는 노드는, 평균적으로 이웃의 절반이 늘 바깥에 있더라도, CoI가 큽니다.</p>
+  </div>
+  <figure class="bench">
+    <p class="how">위와 같은 앙상블입니다. 색이 강할수록 큰 값입니다.</p>
+    <div class="two">
+      <div><p class="netlbl">동반 비일관성 \(\Phi_i\)</p><div id="coiNet"></div></div>
+      <div><p class="netlbl">사이 중심도</p><div id="bcNet"></div></div>
+    </div>
+    <div class="cbar"><span>최소</span><i id="coiBar"></i><span>최대</span></div>
+    <div class="wide"><table class="stats" id="coiTab"></table></div>
+  </figure>
+</section>
+
+<section class="chapter" id="pai" data-ch="4">
+  <header><h2><span class="n">5</span>분할과 소속 <small>답의 유효 개수</small></h2></header>
+  <div class="prose">
+    <p>CoI는 쌍에서 출발합니다. 다른 두 측정량은 구성 전체와 소속 전체를 봅니다. 둘 다 두 구성 \(\alpha\)와 \(\beta\)를 비교하는 방법이 필요합니다. 원소 중심 유사도(ECS)는 노드마다 비교합니다: 구성 \(\alpha\)에서 노드 \(i\)에서 출발해 확률 \(1-d\)로 다시 \(i\)로 돌아가는 무작위 걸음꾼이 노드 \(j\)에 있을 확률을 \(f^\alpha_{ij}\)라 합니다. 겹치지 않는 커뮤니티에서는 노드 \(i\)의 커뮤니티 \(g_{i\alpha}\)에 속한 모든 \(j\)에 대해 \(f^\alpha_{ij} = (1-d)\,\delta_{ij} + d/|g_{i\alpha}|\)입니다. 그러면</p>
+    <div class="math">\[ S_{\alpha\beta} = \frac{1}{N}\sum_{i=1}^{N}\left(1 - \frac{1}{2d}\sum_{j=1}^{N}\left|f^\alpha_{ij} - f^\beta_{ij}\right|\right), \qquad d = 0.9, \]</div>
+    <p>이 값은 같은 구성끼리는 1, 완전히 다른 구성끼리는 0입니다. 앙상블의 <b>분할 비일관성</b>(PaI)은</p>
+    <div class="math">\[ \Omega = \left(\sum_{\alpha=1}^{C}\sum_{\beta=1}^{C} p_\alpha p_\beta S_{\alpha\beta}\right)^{-1} . \]</div>
+    <p>모든 실현이 같은 구성을 내면 \(\Omega = 1\)입니다. 서로 완전히 다른 구성 \(C\)개가 똑같은 확률로 나오면 \(\Omega = C\)입니다. 따라서 \(\Omega\)는 서로 독립인 구성의 유효 개수입니다.</p>
+    <p>같은 논리가 노드 하나에도 통합니다. 구성 \(\alpha\)에서 노드 \(i\)의 커뮤니티에 속한 노드들의 집합을 \(\psi_{i\alpha}\)라 하고, 두 집합을 자카드 지수 \(J_{i\alpha\beta} = |\psi_{i\alpha}\cap\psi_{i\beta}| / |\psi_{i\alpha}\cup\psi_{i\beta}|\)로 비교해 <b>소속 비일관성</b>(MeI)을 정의합니다:</p>
+    <div class="math">\[ \Psi_i = \left(\sum_{\alpha,\beta} p(\psi_{i\alpha})\, p(\psi_{i\beta})\, J_{i\alpha\beta}\right)^{-1}, \]</div>
+    <p>이것은 노드 \(i\)가 가진 서로 독립인 소속의 유효 개수입니다.</p>
+  </div>
+  <figure class="bench">
+    <p class="how">위와 같은 앙상블로 계산합니다. 표의 행과 열은 서로 다른 구성입니다.</p>
+    <div class="readout" id="paiRead"></div>
+    <div class="wide"><table class="stats" id="paiTab"></table></div>
+    <p class="netlbl" style="margin-top:12px">소속 비일관성 \(\Psi_i\)</p>
+    <div id="meiNet"></div>
+    <div class="cbar"><span>1</span><i id="meiBar"></i><span id="meiMax">최대</span></div>
+  </figure>
+</section>
+
+<section class="chapter" id="landscape" data-ch="5">
+  <header><h2><span class="n">6</span>일관성 지형 <small>어떤 해상도를 믿을까</small></h2></header>
+  <div class="prose">
+    <p>모듈성에는 자유 매개변수인 해상도 \(\gamma\)가 있습니다: \(\gamma\)가 클수록 더 많고 더 작은 커뮤니티가 나옵니다. 어떤 값이 맞는지는 보통 꽤 임시방편적인 기준으로 정합니다. 일관성 지형은 그 대신 \(\Omega\)를 씁니다. \(\gamma\)를 훑으면서 값마다 앙상블을 만들고, \(\Omega\)와 평균 커뮤니티 수 \(\langle n_c\rangle\)를 함께 그립니다.</p>
+    <ul>
+      <li>\(\gamma\)가 아주 작으면 네트워크 전체가 커뮤니티 하나입니다: \(\Omega = \langle n_c\rangle = 1\)로, 자명하게 일관적입니다.</li>
+      <li>\(\gamma\)가 커지면 네트워크가 쪼개지기 시작하는데, 처음에는 꽤 제멋대로 쪼개지므로 \(\Omega\)가 올라갑니다.</li>
+      <li>\(\gamma\)가 커뮤니티의 고유한 크기와 맞으면 구성들이 다시 일치합니다: \(\Omega \approx 1\)이고 \(\langle n_c\rangle\)가 정수 값의 평탄 구간에 머뭅니다.</li>
+      <li>그보다 커지면 알고리즘이 가짜의 더 작은 커뮤니티를 찾아내고 \(\Omega\)가 다시 커집니다.</li>
+    </ul>
+    <p>\(\langle n_c\rangle\)의 평탄 구간만으로는 부족하고, 작은 \(\Omega\)가 함께 있어야 합니다. 가라테 클럽에서는 \(\langle n_c\rangle\)가 3과 4에서도 평탄 구간을 보이지만, 일관적인 것은 커뮤니티 두 개인 구간뿐이며, 이것은 재커리의 원래 연구에 나온 두 파벌과 맞습니다. 커뮤니티 안에 커뮤니티가 있는 네트워크는 층마다 일관적인 구간을 하나씩 보여 줍니다.</p>
+    <p class="note blue">이 페이지는 자체 루뱅 구현을 쓰므로, \(\gamma\) 구간은 논문의 GenLouvain 결과와 세부적으로 다릅니다.</p>
+  </div>
+  <figure class="bench">
+    <p class="how">네트워크를 고르고 훑어보세요. 그다음 그래프를 눌러 해상도를 고르세요.</p>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="네트워크"><button type="button" data-ln="karate" aria-pressed="true">가라테 클럽</button><button type="button" data-ln="single">심어 둔 그룹 3개</button><button type="button" data-ln="double">그룹 속 그룹</button></div>
+      <button class="primary" id="lsRun" type="button">\(\gamma\) 훑기</button>
+    </div>
+    <svg id="lsChart" class="landscape" viewBox="0 0 600 260" role="img" aria-label="해상도에 따른 분할 비일관성과 평균 커뮤니티 수"></svg>
+    <div class="cbar"><span><i style="display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--om);vertical-align:-1px"></i> \(\Omega\) (왼쪽 축)</span><span><i style="display:inline-block;width:12px;height:12px;border-radius:2px;background:var(--nc);vertical-align:-1px"></i> \(\langle n_c\rangle\) (오른쪽 축)</span><span>음영: \(\langle n_c\rangle &gt; 1\)이면서 \(\Omega &lt; 1.03\)</span></div>
+    <p class="log" id="lsLog"></p>
+    <div class="controls"><span><span style="font-size:14px;color:var(--muted)">노드 색</span></span><div class="seg" role="group" aria-label="노드 색"><button type="button" data-lsh="mei">MeI \(\Psi_i\)</button><button type="button" data-lsh="coi">CoI \(\Phi_i\)</button><button type="button" data-lsh="none" aria-pressed="true">커뮤니티</button></div></div>
+    <div id="lsNet"></div>
+    <p class="cap" id="lsCap"></p>
+    <div class="readout" id="lsRead"></div>
+  </figure>
+</section>
+
+<section class="chapter" id="bulk" data-ch="6">
+  <header><h2><span class="n">7</span>내부와 경계 <small>MeI 대 CoI</small></h2></header>
+  <div class="prose">
+    <p>MeI와 CoI는 둘 다 노드의 소속을 나타내지만, 보는 것이 다릅니다. 노드 60개짜리 그룹 셋을 심어 둔 네트워크를 생각해 봅시다. 노드 \(i\)마다 고유한 외부성 \(E_i\)가 0과 0.5 사이에서 균일하게 정해지는데, 이것은 노드 \(i\)의 새 링크가 다른 그룹으로 갈 확률입니다.</p>
+    <p>해상도를 일관적인 구간 너머로 밀어서 알고리즘이 가짜의 더 작은 커뮤니티를 찾게 해 보세요. 그림에서 각 그룹은 원의 3분의 1을 차지하고, 바깥 링크가 많은 노드일수록 중심에 가깝게 놓입니다. 힘 기반 배치를 해도 대체로 이렇게 놓입니다. 그러면 중심의 노드들은 서로 다른 여러 작은 커뮤니티에 속하게 되어 MeI가 커집니다. CoI는 다르게 행동합니다: 중심 영역의 노드는 매우 여러 노드와 함께하므로 \(\phi_{ij}\)가 1/2보다는 대부분 0에 가깝고, 따라서 CoI가 가장 크지는 않습니다. 가장 큰 CoI 값은 비일관적인 영역의 가장자리에 있습니다.</p>
+    <p class="note">간단히 말해 MeI는 비일관적인 영역의 “내부”를, CoI는 그 “경계”를 찾습니다.</p>
+  </div>
+  <figure class="bench">
+    <p class="how">\(\gamma\)를 바꿀 때마다 실현 60번을 돌립니다. 각 그림은 저마다의 가장 작은 값(흐리게)부터 가장 큰 값(강한 색)까지로 칠했고, 링크는 그리지 않았습니다.</p>
+    <label class="slider"><span>해상도 \(\gamma\)</span> <input type="range" id="buG" min="0.8" max="2.4" step="0.1" value="1.9"> <output id="buGo">1.9</output></label>
+    <div class="two">
+      <div><p class="netlbl">MeI \(\Psi_i\)</p><div id="buMei"></div><svg id="buSc1" class="net chart" viewBox="0 0 300 170" role="img" aria-label="외부성에 대한 소속 비일관성"></svg></div>
+      <div><p class="netlbl">CoI \(\Phi_i\)</p><div id="buCoi"></div><svg id="buSc2" class="net chart" viewBox="0 0 300 170" role="img" aria-label="외부성에 대한 동반 비일관성"></svg></div>
+    </div>
+    <div class="readout" id="buRead"></div>
+    <p class="cap">각 그림 아래에는 모든 노드를 측정된 외부성(링크 가운데 심어 둔 그룹 밖으로 나가는 비율)에 대해 그렸습니다. 상관 계수는 노드 180개에 대한 피어슨 계수입니다.</p>
+  </figure>
+</section>
+
+<section class="chapter wide-prose" id="real" data-ch="7">
+  <header><h2><span class="n">8</span>실제 네트워크에서 <small>아웃사이더, 멀티플레이어, 위계</small></h2></header>
+  <div class="prose">
+    <p>CoI는 연결선수나 사이 중심도의 변장이 아닙니다: 2019년 논문의 모형 네트워크와 실제 네트워크에서 CoI는 이들과 상관이 약하거나 없고, 평균 외부성과 더 강한 상관을 보입니다. CoI가 더해 주는 것은 노드가 커뮤니티들에 대해 하는 역할입니다.</p>
+    <ul>
+      <li><b>사회 네트워크.</b> 재커리의 가라테 클럽에서 가장 비일관적인 노드는 두 파벌의 경계에 있는, 소속이 분명하지 않은 “아웃사이더”입니다. 스타워즈 등장인물 네트워크에서 가장 비일관적인 인물들은 여러 그룹과 이어진 “멀티플레이어”입니다.</li>
+      <li><b>기반 시설.</b> 칠레 전력망에서 CoI는 연결이 지역 사이에 얼마나 고르게 나뉘어 있는지 보여 줍니다. 일관성 지형에는 \(\langle n_c\rangle\)의 여러 정수 값에 걸쳐 \(\Omega \approx 1\)인 긴 구간이 있습니다: 커뮤니티가 그 안에 포개진 더 작은 커뮤니티로 나뉘는 위계 구조입니다.</li>
+      <li><b>생물.</b> 가중치가 있는 광계 II 네트워크에는 좁은 일관적 구간들이 넓은 비일관적 구간들로 나뉘어 있고, 역시 위계적으로 포개진 커뮤니티가 있습니다.</li>
+    </ul>
+    <p>비일관성은 앙상블의 성질이므로 알고리즘과 \(\gamma\)에 따라 달라집니다. 요점은 어느 알고리즘이 옳다는 것이 아니라, 여러 번 돌린 결과 사이의 불일치가 평균 내어 없앨 오차가 아니라 정보의 원천이라는 것입니다. 링크 군집화 등으로 찾는 겹치는 커뮤니티도 노드에 소속을 하나보다 많이 주는 또 다른 방법입니다.</p>
+  </div>
+</section>
+
+<footer>
+  <p class="closing">반이나 비었을까요, 반이나 찼을까요? 커뮤니티 찾기의 비일관성은 정보입니다.</p>
+  <p>이상훈 교수의 강의 슬라이드 “Appendix: inconsistency of network communities”와 아래 논문들을 바탕으로 Claude Opus 5.5가 만들었습니다. 데모는 노드 순서를 무작위로 하는 자체 루뱅 알고리즘 구현을 쓰므로, GenLouvain을 쓴 논문들과 수치가 세부적으로 다릅니다.</p>
+  <ol>
+    <li>H. Kim and S. H. Lee, “Relational flexibility of network elements based on inconsistent community detection,” <i>Physical Review E</i> 100, 022311 (2019).</li>
+    <li>D. Lee, S. H. Lee, B. J. Kim, and H. Kim, “Consistency landscape of network communities,” <i>Physical Review E</i> 103, 052306 (2021).</li>
+    <li>A. J. Gates, I. B. Wood, W. P. Hetrick, and Y.-Y. Ahn, “Element-centric clustering comparison unifies overlaps and hierarchy,” <i>Scientific Reports</i> 9, 8574 (2019).</li>
+    <li>V. D. Blondel, J.-L. Guillaume, R. Lambiotte, and E. Lefebvre, “Fast unfolding of communities in large networks,” <i>Journal of Statistical Mechanics</i> P10008 (2008).</li>
+    <li>W. W. Zachary, “An information flow model for conflict and fission in small groups,” <i>Journal of Anthropological Research</i> 33, 452–473 (1977).</li>
+  </ol>
+  <p>함께 보면 좋은 데모: <a href="https://lshlj82.github.io/network-community/ko.html">네트워크 커뮤니티</a>, <a href="https://lshlj82.github.io/Louvain-algorithm/ko.html">루뱅 알고리즘</a>.</p>
+</footer>
+</main>
+<script>
+"use strict";
+(function(){
+function mulberry(a){a=a>>>0;return function(){a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuffle(arr,rand){for(let i=arr.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));const t=arr[i];arr[i]=arr[j];arr[j]=t}return arr}
+class Graph{constructor(n,edges){this.n=n;this.edges=edges.map(e=>[e[0],e[1]]);this.adj=Array.from({length:n},()=>[]);for(const [a,b] of this.edges){this.adj[a].push(b);this.adj[b].push(a)}this.L=this.edges.length}deg(i){return this.adj[i].length}}
+/* Louvain with random node order (one realization of a stochastic algorithm) */
+function louvain(G,gamma,rand){
+  let n=G.n,nb=Array.from({length:n},()=>new Map()),self=new Float64Array(n);
+  for(const [a,b] of G.edges){nb[a].set(b,(nb[a].get(b)||0)+1);nb[b].set(a,(nb[b].get(a)||0)+1)}
+  const m2=2*G.L;let member=Array.from({length:G.n},(_,i)=>i);
+  for(let level=0;level<30;level++){
+    const k=new Float64Array(n);for(let i=0;i<n;i++){let s=2*self[i];for(const w of nb[i].values())s+=w;k[i]=s}
+    const comm=Int32Array.from({length:n},(_,i)=>i),tot=Float64Array.from(k);let moved=false,imp=true,sweeps=0;
+    const order=Array.from({length:n},(_,i)=>i);
+    while(imp&&sweeps++<100){imp=false;shuffle(order,rand);
+      for(const i of order){const ci=comm[i],kin=new Map();for(const [j,w] of nb[i]){const c=comm[j];kin.set(c,(kin.get(c)||0)+w)}
+        tot[ci]-=k[i];let best=ci,bg=(kin.get(ci)||0)-gamma*tot[ci]*k[i]/m2;
+        for(const [c,w] of kin){if(c===ci)continue;const g=w-gamma*tot[c]*k[i]/m2;if(g>bg+1e-12){bg=g;best=c}}
+        tot[best]+=k[i];if(best!==ci){comm[i]=best;imp=true;moved=true}}}
+    if(!moved)break;
+    const ids=new Map();for(let i=0;i<n;i++)if(!ids.has(comm[i]))ids.set(comm[i],ids.size);
+    const nn=ids.size,nnb=Array.from({length:nn},()=>new Map()),ns=new Float64Array(nn);
+    for(let i=0;i<n;i++){const a=ids.get(comm[i]);ns[a]+=self[i];for(const [j,w] of nb[i]){const b=ids.get(comm[j]);if(a===b){if(j>i)ns[a]+=w}else nnb[a].set(b,(nnb[a].get(b)||0)+w)}}
+    member=member.map(v=>ids.get(comm[v]));n=nn;nb=nnb;self=ns;
+  }
+  return canon(member);
+}
+function canon(p){const mp=new Map();return p.map(c=>{if(!mp.has(c))mp.set(c,mp.size);return mp.get(c)})}
+function ensemble(G,gamma,m,rand){const parts=[];for(let a=0;a<m;a++)parts.push(louvain(G,gamma,rand));return parts}
+function configs(parts){const mp=new Map();for(const p of parts){const k=p.join(',');const e=mp.get(k);if(e)e.count++;else mp.set(k,{part:p,count:1})}
+  return [...mp.values()].sort((a,b)=>b.count-a.count).map(e=>({part:e.part,p:e.count/parts.length,count:e.count}))}
+function cooc(parts,N){const f=Array.from({length:N},()=>new Float64Array(N));for(const p of parts)for(let i=0;i<N;i++)for(let j=0;j<N;j++)if(p[i]===p[j])f[i][j]++;
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++)f[i][j]/=parts.length;return f}
+function coi(f){const N=f.length;return f.map((r,i)=>{let s=0;for(let j=0;j<N;j++)if(j!==i)s+=(1-2*r[j])**2;return 1-s/(N-1)})}
+/* element-centric similarity of two partitions (non-overlapping), d = 0.9 */
+function ecs(a,b,d=0.9){const N=a.length,sa=new Map(),sb=new Map(),ov=new Map();
+  for(let i=0;i<N;i++){sa.set(a[i],(sa.get(a[i])||0)+1);sb.set(b[i],(sb.get(b[i])||0)+1);const k=a[i]+'|'+b[i];ov.set(k,(ov.get(k)||0)+1)}
+  let S=0;for(let i=0;i<N;i++){const A=sa.get(a[i]),B=sb.get(b[i]),c=ov.get(a[i]+'|'+b[i]);
+    const diff=c*Math.abs(d/A-d/B)+(A-c)*d/A+(B-c)*d/B;S+=1-diff/(2*d)}return S/N}
+function pai(cf){let s=0;for(let x=0;x<cf.length;x++)for(let y=0;y<cf.length;y++)s+=cf[x].p*cf[y].p*(x===y?1:ecs(cf[x].part,cf[y].part));return 1/s}
+function mei(parts,N){const out=new Float64Array(N);
+  for(let i=0;i<N;i++){const mp=new Map();for(const p of parts){const ms=[];for(let j=0;j<N;j++)if(p[j]===p[i])ms.push(j);const k=ms.join(',');const e=mp.get(k);if(e)e.c++;else mp.set(k,{s:ms,c:1})}
+    const L=[...mp.values()];let s=0;for(const x of L)for(const y of L){let J=1;if(x!==y){const sy=new Set(y.s);let inter=0;for(const v of x.s)if(sy.has(v))inter++;J=inter/(x.s.length+y.s.length-inter)}s+=x.c*y.c*J}
+    out[i]=parts.length*parts.length/s}return out}
+function betweenness(G){const N=G.n,C=new Float64Array(N);for(let s=0;s<N;s++){const S=[],P=Array.from({length:N},()=>[]),sig=new Float64Array(N),dist=new Int32Array(N).fill(-1);sig[s]=1;dist[s]=0;const Q=[s];
+  while(Q.length){const v=Q.shift();S.push(v);for(const w of G.adj[v]){if(dist[w]<0){dist[w]=dist[v]+1;Q.push(w)}if(dist[w]===dist[v]+1){sig[w]+=sig[v];P[w].push(v)}}}
+  const del=new Float64Array(N);while(S.length){const w=S.pop();for(const v of P[w])del[v]+=sig[v]/sig[w]*(1+del[w]);if(w!==s)C[w]+=del[w]}}
+  return Array.from(C,c=>c/2)}
+function sbm(sizes,P,rand){const lab=[];sizes.forEach((s,g)=>{for(let k=0;k<s;k++)lab.push(g)});const N=lab.length,E=[];
+  for(let i=0;i<N;i++)for(let j=i+1;j<N;j++)if(rand()<P(lab[i],lab[j],i,j))E.push([i,j]);return {G:new Graph(N,E),lab}}
+
+function layoutRun(G,{seed=1,iters=350,gravity=0.06,groups=null}={}){
+  const n=G.n,rand=mulberry(seed);const x=new Float64Array(n),y=new Float64Array(n);
+  for(let i=0;i<n;i++){
+    if(groups){const q=Math.max(...groups)+1,ang=2*Math.PI*groups[i]/q;x[i]=.5+.25*Math.cos(ang)+(rand()-.5)*.2;y[i]=.5+.25*Math.sin(ang)+(rand()-.5)*.2}
+    else{x[i]=rand();y[i]=rand()}}
+  const k=Math.sqrt(1/n)*0.9;let t=0.1;
+  const dx=new Float64Array(n),dy=new Float64Array(n);
+  for(let it=0;it<iters;it++){
+    dx.fill(0);dy.fill(0);let mv=0;
+    for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){let ex=x[i]-x[j],ey=y[i]-y[j];let d2=ex*ex+ey*ey+1e-6;const f=k*k/d2;dx[i]+=ex*f;dy[i]+=ey*f;dx[j]-=ex*f;dy[j]-=ey*f}
+    for(const [a,b] of G.edges){const ex=x[a]-x[b],ey=y[a]-y[b];const d=Math.sqrt(ex*ex+ey*ey)+1e-9;const f=d/k;dx[a]-=ex*f;dy[a]-=ey*f;dx[b]+=ex*f;dy[b]+=ey*f}
+    for(let i=0;i<n;i++){dx[i]-=(x[i]-.5)*gravity*n*0.3;dy[i]-=(y[i]-.5)*gravity*n*0.3;
+      const d=Math.sqrt(dx[i]*dx[i]+dy[i]*dy[i])+1e-9;const s=Math.min(d,t)/d;x[i]+=dx[i]*s;y[i]+=dy[i]*s;mv=Math.max(mv,Math.min(d,t))}
+    t=Math.max(0.002,t*0.985);
+    if(mv<1e-6)break;
+  }
+  let mnx=Infinity,mxx=-Infinity,mny=Infinity,mxy=-Infinity;for(let i=0;i<n;i++){mnx=Math.min(mnx,x[i]);mxx=Math.max(mxx,x[i]);mny=Math.min(mny,y[i]);mxy=Math.max(mxy,y[i])}
+  const sx=mxx-mnx||1,sy=mxy-mny||1;
+  return Array.from({length:n},(_,i)=>[(x[i]-mnx)/sx,(y[i]-mny)/sy]);
+}
+
+const KE=[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,10],[0,11],[0,12],[0,13],[0,17],[0,19],[0,21],[0,31],[1,2],[1,3],[1,7],[1,13],[1,17],[1,19],[1,21],[1,30],[2,3],[2,7],[2,8],[2,9],[2,13],[2,27],[2,28],[2,32],[3,7],[3,12],[3,13],[4,6],[4,10],[5,6],[5,10],[5,16],[6,16],[8,30],[8,32],[8,33],[9,33],[13,33],[14,32],[14,33],[15,32],[15,33],[18,32],[18,33],[19,33],[20,32],[20,33],[22,32],[22,33],[23,25],[23,27],[23,29],[23,32],[23,33],[24,25],[24,27],[24,31],[25,31],[26,29],[26,33],[27,33],[28,31],[28,33],[29,32],[29,33],[30,32],[30,33],[31,32],[31,33],[32,33]];
+
+/* ---------- helpers ---------- */
+const $=id=>document.getElementById(id);
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const col=k=>`var(--c${((k%8)+8)%8})`;
+function pressGroup(btns,active){btns.forEach(b=>b.setAttribute('aria-pressed',b===active?'true':'false'))}
+function readout(host,items){host.innerHTML=items.map(([l,v])=>`<div><b>${v}</b>${l}</div>`).join('')}
+function cssColor(name){const v=getComputedStyle(document.documentElement).getPropertyValue(name).trim();const m=v.match(/^#([0-9a-f]{6})$/i);return m?[parseInt(m[1].slice(0,2),16),parseInt(m[1].slice(2,4),16),parseInt(m[1].slice(4,6),16)]:[128,128,128]}
+let LO=cssColor('--lo'),HI=cssColor('--hi');
+function ramp(t){t=Math.max(0,Math.min(1,t||0));const c=LO.map((v,i)=>Math.round(v+(HI[i]-v)*t));return `rgb(${c[0]},${c[1]},${c[2]})`}
+function rampCss(){return `linear-gradient(90deg,${ramp(0)},${ramp(0.5)},${ramp(1)})`}
+function matColor(v){const a=[47,107,219],m=[242,208,75],b=[229,72,77];const [p,q,t]=v<0.5?[a,m,v*2]:[m,b,(v-0.5)*2];return `rgb(${p.map((x,i)=>Math.round(x+(q[i]-x)*t)).join(',')})`}
+function colorsFor(part){const sz=new Map();part.forEach(c=>sz.set(c,(sz.get(c)||0)+1));const order=[...sz.keys()].sort((a,b)=>sz.get(b)-sz.get(a));const m=new Map(order.map((c,k)=>[c,k]));
+  return part.map(c=>sz.get(c)===1?'var(--none)':col(m.get(c)))}
+const pearson=(a,b)=>{const n=a.length,ma=a.reduce((x,y)=>x+y,0)/n,mb=b.reduce((x,y)=>x+y,0)/n;let s=0,sa=0,sb=0;for(let i=0;i<n;i++){s+=(a[i]-ma)*(b[i]-mb);sa+=(a[i]-ma)**2;sb+=(b[i]-mb)**2}return sa&&sb?s/Math.sqrt(sa*sb):0};
+const avgNc=parts=>parts.reduce((a,p)=>a+Math.max(...p)+1,0)/parts.length;
+
+class NetView{
+  constructor(host,{W=600,H=420,pad=22,r=7,labels=false,label='',edges=true}={}){
+    Object.assign(this,{W,H,pad,r,labels,edges});
+    this.svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'net',role:'img','aria-label':label});host.appendChild(this.svg);
+    this.gE=el('g',null,this.svg);this.gN=el('g',null,this.svg);
+  }
+  P(p){return [this.pad+p[0]*(this.W-2*this.pad),this.pad+p[1]*(this.H-2*this.pad)]}
+  set(G,pos){this.G=G;this.gE.textContent='';this.gN.textContent='';
+    if(this.edges)G.edges.forEach(([a,b])=>{const [x1,y1]=this.P(pos[a]),[x2,y2]=this.P(pos[b]);el('line',{x1,y1,x2,y2,class:'edge'},this.gE)});
+    this.nodes=pos.map((p,i)=>{const [cx,cy]=this.P(p);const g=el('g',{class:'node',transform:`translate(${cx.toFixed(1)},${cy.toFixed(1)})`},this.gN);
+      const c=el('circle',{r:this.r},g);if(this.labels){const t=el('text',{class:'nlabel','text-anchor':'middle',dy:'0.35em'},g);t.textContent=i+1}
+      const tt=el('title',null,g);return {g,c,tt}})}
+  fill(arr){this.nodes.forEach((n,i)=>{n.c.style.fill=arr[i]})}
+  tips(arr){this.nodes.forEach((n,i)=>{n.tt.textContent=arr[i]})}
+  sizes(arr){this.nodes.forEach((n,i)=>n.c.setAttribute('r',arr[i]))}
+}
+
+/* ---------- the example network (after Fig. 1 of Kim & Lee 2019) ---------- */
+const EX=new Graph(13,[[1,2],[1,3],[2,3],[2,4],[2,5],[3,4],[3,5],[4,5],[4,6],[6,7],[7,10],[4,8],[5,8],[8,9],[8,10],[9,10],[9,11],[9,13],[10,11],[10,12],[11,12],[11,13],[12,13]].map(([a,b])=>[a-1,b-1]));
+const EXPOS=[[0,.6],[.17,.38],[.19,.82],[.35,.33],[.37,.82],[.4,0],[.6,.04],[.52,.56],[.7,.84],[.67,.36],[.83,.6],[.97,.3],[1,.86]];
+const EXBC=betweenness(EX);
+const EXS={gamma:0.6,parts:[],rand:mulberry(2026)};
+
+/* hero: one realization after another */
+const hero=new NetView($('heroNet'),{W:600,H:400,pad:30,r:15,labels:true,label:'이 예제 네트워크를 커뮤니티 찾기의 실현마다 차례로 칠한 그림'});
+hero.set(EX,EXPOS);let heroOn=!reduceMotion,heroTimer=0,heroN=0;const heroRand=mulberry(7);
+function heroStep(){const p=louvain(EX,0.6,heroRand);hero.fill(p.map(c=>col(c)));heroN++;$('heroCap').textContent=`${heroN}번째 실현`}
+function heroPlay(on){heroOn=on;$('heroPlay').setAttribute('aria-pressed',String(on));$('heroPlay').textContent=on?'일시 정지':'재생';clearInterval(heroTimer);if(on)heroTimer=setInterval(heroStep,1400)}
+$('heroPlay').onclick=()=>heroPlay(!heroOn);heroStep();heroPlay(heroOn);
+hero.nodes.forEach(n=>n.c.style.transition='fill .5s');
+
+/* ---------- ensemble on the example ---------- */
+const mult=[];for(let k=0;k<10;k++){const cell=document.createElement('div');cell.className='cell';$('exMult').appendChild(cell);const v=new NetView(cell,{W:200,H:130,pad:12,r:7,label:'실현 하나'});v.set(EX,EXPOS);const s=document.createElement('span');cell.appendChild(s);mult.push({v,s,cell})}
+const coiView=new NetView($('coiNet'),{W:300,H:200,pad:16,r:11,labels:true,label:'동반 비일관성으로 칠한 예제 네트워크'});coiView.set(EX,EXPOS);
+const bcView=new NetView($('bcNet'),{W:300,H:200,pad:16,r:11,labels:true,label:'사이 중심도로 칠한 예제 네트워크'});bcView.set(EX,EXPOS);
+const meiView=new NetView($('meiNet'),{W:600,H:300,pad:22,r:14,labels:true,label:'소속 비일관성으로 칠한 예제 네트워크'});meiView.set(EX,EXPOS);
+function exRun(k){for(let a=0;a<k;a++)EXS.parts.push(louvain(EX,EXS.gamma,EXS.rand));exRender()}
+function exRender(){
+  const P=EXS.parts,n=P.length;
+  mult.forEach((m,k)=>{const idx=n-10+k;if(idx>=0){m.v.fill(P[idx].map(c=>col(c)));m.s.textContent='#'+(idx+1);m.cell.style.opacity=1}else{m.v.fill(Array(13).fill('var(--none)'));m.s.textContent='';m.cell.style.opacity=.45}});
+  if(!n){readout($('exRead'),[['실현 횟수 n_d',0],['서로 다른 구성 수 C','–'],['분할 비일관성 Ω','–']]);$('exCfgs').innerHTML='';drawMatrix(null);drawCoi(null);drawPai(null);return}
+  const cf=configs(P),om=pai(cf);
+  readout($('exRead'),[['실현 횟수 n_d',n],['서로 다른 구성 수 C',cf.length],['분할 비일관성 Ω',om.toFixed(3)]]);
+  $('exCfgs').innerHTML=cf.slice(0,8).map(c=>`<li><svg viewBox="0 0 130 10" width="96" height="8" aria-hidden="true">${c.part.map((g,i)=>`<rect x="${i*10}" y="0" width="9" height="10" fill="${col(g)}"/>`).join('')}</svg><div class="bar" style="width:${(c.p*100).toFixed(1)}%"></div><span class="num">${(c.p*100).toFixed(0)}%</span></li>`).join('')+(cf.length>8?`<li><span></span><span class="cap">그 밖에 ${cf.length-8}개</span><span></span></li>`:'');
+  const f=cooc(P,13);drawMatrix(f);drawCoi(f);drawPai(cf);
+}
+$('exG').oninput=()=>{EXS.gamma=+$('exG').value;$('exGo').textContent=EXS.gamma.toFixed(2)};
+$('exG').onchange=()=>{EXS.parts=[];exRun(20)};
+$('exRun1').onclick=()=>exRun(1);$('exRun10').onclick=()=>exRun(10);$('exRun100').onclick=()=>exRun(100);$('exReset').onclick=()=>{EXS.parts=[];exRender()};
+
+/* co-occurrence matrix */
+function drawMatrix(f){
+  const svg=$('mat');svg.textContent='';const N=13,o=30,c=(440-o-6)/N;
+  for(let i=0;i<N;i++){const t1=el('text',{x:o-6,y:o+c*(i+.5)+4,'text-anchor':'end'},svg);t1.textContent=i+1;const t2=el('text',{x:o+c*(i+.5),y:o-8,'text-anchor':'middle'},svg);t2.textContent=i+1}
+  svg.querySelectorAll('text').forEach(t=>{t.setAttribute('font-size','12');t.setAttribute('fill','var(--muted)')});
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){const v=f?f[i][j]:NaN;
+    const r=el('rect',{x:o+c*j,y:o+c*i,width:c-1,height:c-1,class:'cell',fill:f?matColor(v):'var(--grid)'},svg);
+    if(f){const tx=el('text',{x:o+c*(j+.5),y:o+c*(i+.5)+4,'text-anchor':'middle','font-size':'10.5','pointer-events':'none',fill:'#1B2238'},svg);tx.textContent=v===1?'1':v===0?'0':v.toFixed(1).replace(/^0/,'')}
+    const show=()=>{$('matAnn').textContent=f?(i===j?`φ(${i+1}, ${i+1}) = 1, 당연합니다.`:`φ(${i+1}, ${j+1}) = ${f[i][j].toFixed(2)}: 실현의 ${(f[i][j]*100).toFixed(0)}%에서 같은 커뮤니티에 있었습니다.`):''};
+    r.addEventListener('pointerenter',show);r.addEventListener('click',show)}
+}
+/* CoI vs betweenness */
+function drawCoi(f){
+  const bcMax=Math.max(...EXBC);bcView.fill(EXBC.map(b=>ramp(b/bcMax)));bcView.tips(EXBC.map((b,i)=>`노드 ${i+1}: 사이 중심도 ${b.toFixed(1)}`));
+  $('coiBar').style.background=rampCss();
+  if(!f){coiView.fill(Array(13).fill('var(--none)'));$('coiTab').innerHTML='';return}
+  const phi=coi(f),pm=Math.max(0.5,...phi);coiView.fill(phi.map(p=>ramp(p/pm)));coiView.tips(phi.map((p,i)=>`노드 ${i+1}: CoI ${p.toFixed(2)}`));
+  $('coiTab').innerHTML=`<tr><th>노드</th>${phi.map((_,i)=>`<th>${i+1}</th>`).join('')}</tr><tr><td>CoI Φ</td>${phi.map(p=>`<td class="mx">${p.toFixed(2)}</td>`).join('')}</tr><tr><td>사이 중심도</td>${EXBC.map(b=>`<td class="mx">${b.toFixed(1)}</td>`).join('')}</tr>`;
+}
+/* partition and membership inconsistency */
+function drawPai(cf){
+  $('meiBar').style.background=rampCss();
+  if(!cf){readout($('paiRead'),[['Ω','–']]);$('paiTab').innerHTML='';meiView.fill(Array(13).fill('var(--none)'));return}
+  const show=cf.slice(0,6),om=pai(cf);
+  readout($('paiRead'),[['서로 다른 구성 수 C',cf.length],['분할 비일관성 Ω',om.toFixed(3)]]);
+  const strip=c=>`<svg viewBox="0 0 130 10" width="78" height="7" aria-hidden="true">${c.part.map((g,i)=>`<rect x="${i*10}" y="0" width="9" height="10" fill="${col(g)}"/>`).join('')}</svg>`;
+  $('paiTab').innerHTML=`<tr><th>구성</th><th>p<sub>α</sub></th>${show.map((_,b)=>`<th>S<sub>α${b+1}</sub></th>`).join('')}</tr>`+
+    show.map((c,a)=>`<tr><td>${a+1} ${strip(c)}</td><td>${c.p.toFixed(2)}</td>${show.map((d,b)=>`<td class="mx">${(a===b?1:ecs(c.part,d.part)).toFixed(3)}</td>`).join('')}</tr>`).join('')+(cf.length>6?`<tr><td colspan="${show.length+2}" class="cap" style="text-align:left">드문 구성 ${cf.length-6}개는 생략</td></tr>`:'');
+  const psi=[...mei(EXS.parts,13)],mx=Math.max(2,...psi);
+  meiView.fill(psi.map(v=>ramp(mx>1?(v-1)/(mx-1):0)));meiView.tips(psi.map((v,i)=>`노드 ${i+1}: MeI ${v.toFixed(3)}`));$('meiMax').textContent=mx.toFixed(2);
+}
+
+/* ---------- model networks ---------- */
+function planted(seed){   // three groups of 60 nodes; node i links outside its group with probability E_i ~ U[0, 0.5]
+  const r=mulberry(seed),N=180,lab=[...Array(N)].map((_,i)=>Math.floor(i/60)),Ex=lab.map(()=>r()*0.5),E=[],has=new Set();
+  while(E.length<1700){const i=Math.floor(r()*N),out=r()<Ex[i];let j;do{j=Math.floor(r()*N)}while(j===i||(out?lab[j]===lab[i]:lab[j]!==lab[i]));
+    const k=Math.min(i,j)*N+Math.max(i,j);if(!has.has(k)){has.add(k);E.push([i,j])}}
+  return {G:new Graph(N,E),lab};
+}
+function nested(seed){   // three groups, each made of three subgroups of 20 nodes
+  const r=mulberry(seed);const {G,lab}=sbm(Array(9).fill(20),(a,b)=>a===b?0.5:(Math.floor(a/3)===Math.floor(b/3)?0.09:0.008),r);return {G,lab};
+}
+const NETS={};
+function getNet(key){
+  if(NETS[key])return NETS[key];
+  let o;
+  if(key==='karate'){const G=new Graph(34,KE);o={G,pos:layoutRun(G,{seed:7,iters:500,gravity:0.05}),r:9,grid:[0.1,1.2,0.025],m:100}}
+  else if(key==='single'){const {G,lab}=planted(11);const ext=[...Array(G.n)].map((_,i)=>G.adj[i].filter(j=>lab[j]!==lab[i]).length/Math.max(1,G.deg(i)));
+    const rr=mulberry(4);   // each group fills a third of the disk; more external links -> closer to the center
+    const rk=new Array(G.n);[...ext.keys()].sort((a,b)=>ext[a]-ext[b]).forEach((i,k)=>rk[i]=k/(G.n-1));
+    const pos=ext.map((e,i)=>{const rad=0.12+0.86*Math.sqrt(1-rk[i]),ang=2*Math.PI*(lab[i]+0.08+0.84*rr())/3;return [0.5+0.5*rad*Math.cos(ang),0.5+0.5*rad*Math.sin(ang)]});
+    o={G,lab,ext,pos,r:4.6,grid:[0.1,2.6,0.05],m:40}}
+  else{const {G,lab}=nested(5);o={G,lab,pos:layoutRun(G,{seed:3,iters:300,gravity:0.06,groups:lab.map(l=>Math.floor(l/3))}),r:4.6,grid:[0.1,5,0.1],m:40}}
+  o.scan=null;return NETS[key]=o;
+}
+
+/* ---------- consistency landscape ---------- */
+const LS={key:'karate',sel:null,shade:'none',busy:false,token:0};
+const lsView={host:$('lsNet'),v:null,key:null};
+function lsShowNet(){
+  const net=getNet(LS.key);
+  if(lsView.key!==LS.key){lsView.host.textContent='';lsView.v=new NetView(lsView.host,{W:600,H:LS.key==='karate'?380:440,pad:16,r:net.r,label:'고른 해상도에서 가장 자주 나온 구성으로 칠한 네트워크'});lsView.v.set(net.G,net.pos);lsView.key=LS.key}
+  const pt=LS.sel;
+  if(!pt){lsView.v.fill(Array(net.G.n).fill('var(--none)'));$('lsCap').textContent='';readout($('lsRead'),[]);return}
+  const cf=configs(pt.parts),best=cf[0].part;
+  let fills=colorsFor(best),tips=best.map((c,i)=>`노드 ${i+1}`);
+  if(LS.shade!=='none'){
+    const vals=LS.shade==='mei'?[...mei(pt.parts,net.G.n)]:coi(cooc(pt.parts,net.G.n));
+    const lo=LS.shade==='mei'?1:0,hi=Math.max(LS.shade==='mei'?2:0.5,...vals);fills=vals.map(v=>ramp((v-lo)/(hi-lo)));
+    tips=vals.map((v,i)=>`노드 ${i+1}: ${LS.shade==='mei'?'MeI':'CoI'} ${v.toFixed(3)}`);
+    $('lsCap').textContent=LS.shade==='mei'?`색: 소속 비일관성, 1(흐리게)부터 ${hi.toFixed(2)}(강한 색)까지.`:`색: 동반 비일관성, 0(흐리게)부터 ${hi.toFixed(2)}(강한 색)까지.`;
+  } else $('lsCap').textContent='색: 이 해상도에서 가장 자주 나온 구성. 회색 노드는 혼자 커뮤니티를 이룬 노드입니다.';
+  lsView.v.fill(fills);lsView.v.tips(tips);
+  readout($('lsRead'),[['해상도 γ',pt.g.toFixed(3)],['분할 비일관성 Ω',pt.om.toFixed(3)],['평균 커뮤니티 수 ⟨n_c⟩',pt.nc.toFixed(2)],['서로 다른 구성 수 C',cf.length],['가장 자주 나온 구성의 비율',(cf[0].p*100).toFixed(0)+'%']]);
+}
+function lsChart(){
+  const svg=$('lsChart');svg.textContent='';const net=getNet(LS.key),[g0,g1]=net.grid,W=600,H=260,l=44,r=40,t=12,b=34;
+  const pts=net.scan||[];const omMax=Math.max(1.2,...pts.map(p=>p.om)),ncMax=Math.max(4,...pts.map(p=>p.nc));
+  const X=g=>l+(g-g0)/(g1-g0)*(W-l-r),YO=v=>H-b-(v-1)/(omMax-1)*(H-t-b),YN=v=>H-b-(v-1)/(ncMax-1)*(H-t-b);
+  // shading of consistent ranges
+  const dg=net.grid[2];pts.forEach(p=>{if(p.om<1.03&&p.nc>1.05&&Math.abs(p.nc-Math.round(p.nc))<0.06)el('rect',{x:X(p.g-dg/2),y:t,width:X(p.g+dg/2)-X(p.g-dg/2),height:H-t-b,fill:'var(--grid)'},svg)});
+  el('line',{x1:l,y1:H-b,x2:W-r,y2:H-b,class:'axis'},svg);el('line',{x1:l,y1:t,x2:l,y2:H-b,class:'axis'},svg);el('line',{x1:W-r,y1:t,x2:W-r,y2:H-b,class:'axis'},svg);
+  const txt=(x,y,s,a,fill)=>{const e=el('text',{x,y,'text-anchor':a},svg);e.textContent=s;if(fill)e.setAttribute('fill',fill);return e};
+  for(let k=0;k<=4;k++){const v=1+(omMax-1)*k/4;txt(l-6,YO(v)+4,v.toFixed(2),'end','var(--om)')}
+  const nstep=ncMax>12?4:ncMax>6?2:1;for(let v=1;v<=ncMax+1e-9;v+=nstep){txt(W-r+6,YN(v)+4,String(v),'start','var(--nc)')}
+  const gstep=g1-g0>3?1:g1-g0>1.5?0.5:0.2;for(let g=Math.ceil(g0/gstep)*gstep;g<=g1+1e-9;g+=gstep)txt(X(g),H-b+15,(+g.toFixed(2)).toString(),'middle');
+  txt((l+W-r)/2,H-4,'해상도 γ','middle');
+  if(pts.length>1){
+    el('path',{d:pts.map((p,i)=>(i?'L':'M')+X(p.g).toFixed(1)+' '+YN(p.nc).toFixed(1)).join(''),fill:'none',stroke:'var(--nc)','stroke-width':1.6},svg);
+    el('path',{d:pts.map((p,i)=>(i?'L':'M')+X(p.g).toFixed(1)+' '+YO(p.om).toFixed(1)).join(''),fill:'none',stroke:'var(--om)','stroke-width':1.6},svg);
+  }
+  pts.forEach(p=>{el('rect',{x:X(p.g)-2.6,y:YN(p.nc)-2.6,width:5.2,height:5.2,fill:'none',stroke:'var(--nc)','stroke-width':1.2},svg);el('circle',{cx:X(p.g),cy:YO(p.om),r:2.8,fill:'none',stroke:'var(--om)','stroke-width':1.3},svg)});
+  if(LS.sel)el('line',{x1:X(LS.sel.g),x2:X(LS.sel.g),y1:t,y2:H-b,stroke:'var(--marker)','stroke-width':1.5,'stroke-dasharray':'4 3'},svg);
+  svg.onclick=e=>{if(!pts.length)return;const bb=svg.getBoundingClientRect(),gx=g0+((e.clientX-bb.left)/bb.width*W-l)/(W-l-r)*(g1-g0);
+    let best=pts[0];for(const p of pts)if(Math.abs(p.g-gx)<Math.abs(best.g-gx))best=p;LS.sel=best;lsChart();lsShowNet()};
+}
+async function lsScan(){
+  const net=getNet(LS.key),key=LS.key,tok=++LS.token,[g0,g1,dg]=net.grid,rand=mulberry(99);net.scan=[];LS.sel=null;$('lsRun').disabled=true;
+  const n=Math.round((g1-g0)/dg)+1;
+  for(let k=0;k<n;k++){if(tok!==LS.token)return;const g=+(g0+k*dg).toFixed(4),parts=ensemble(net.G,g,net.m,rand),cf=configs(parts);
+    net.scan.push({g,parts,om:pai(cf),nc:avgNc(parts)});
+    if(k%3===2||k===n-1){$('lsLog').textContent=`훑는 중… γ = ${g.toFixed(2)} (점마다 실현 ${net.m}번)`;lsChart();await sleep(0)}}
+  if(tok!==LS.token)return;
+  // choose the middle of the widest consistent range with more than one community
+  const ok=net.scan.map(p=>p.om<1.03&&p.nc>1.05&&Math.abs(p.nc-Math.round(p.nc))<0.06);let bi=-1,bl=0;
+  for(let i=0;i<ok.length;){if(!ok[i]){i++;continue}let j=i;while(j<ok.length&&ok[j])j++;if(j-i>bl){bl=j-i;bi=i}i=j}
+  LS.sel=bi>=0?net.scan[bi+Math.floor(bl/2)]:net.scan[Math.floor(net.scan.length/2)];
+  const rng=bi>=0?`가장 넓은 일관적 구간: γ ≈ ${net.scan[bi].g.toFixed(2)}–${net.scan[bi+bl-1].g.toFixed(2)}, ⟨n_c⟩ = ${Math.round(net.scan[bi].nc)}.`:'커뮤니티가 둘 이상인 일관적 구간이 없습니다.';
+  $('lsLog').textContent=`완료: γ 값 ${n}개, 값마다 실현 ${net.m}번. ${rng}`;
+  $('lsRun').disabled=false;lsChart();lsShowNet();
+}
+document.querySelectorAll('[data-ln]').forEach(b=>b.onclick=()=>{LS.token++;$('lsRun').disabled=false;pressGroup([...document.querySelectorAll('[data-ln]')],b);LS.key=b.dataset.ln;const net=getNet(LS.key);
+  LS.sel=net.scan&&net.scan.length?net.scan[Math.floor(net.scan.length/2)]:null;$('lsLog').textContent=net.scan?'':'“γ 훑기”를 누르면 이 네트워크의 지형을 계산합니다.';lsChart();lsShowNet()});
+document.querySelectorAll('[data-lsh]').forEach(b=>b.onclick=()=>{pressGroup([...document.querySelectorAll('[data-lsh]')],b);LS.shade=b.dataset.lsh;lsShowNet()});
+$('lsRun').onclick=lsScan;
+
+/* ---------- bulk and boundary ---------- */
+const BU={timer:0,tok:0};
+const buMei=new NetView($('buMei'),{W:300,H:300,pad:10,r:4.4,edges:false,label:'소속 비일관성으로 칠한 심어 둔 그룹 네트워크'});
+const buCoi=new NetView($('buCoi'),{W:300,H:300,pad:10,r:4.4,edges:false,label:'동반 비일관성으로 칠한 심어 둔 그룹 네트워크'});
+function buSetup(){const net=getNet('single');buMei.set(net.G,net.pos);buCoi.set(net.G,net.pos);
+  net.ready=true}
+async function buRun(){const tok=++BU.tok,net=getNet('single'),g=+$('buG').value;$('buRead').innerHTML='<div><b>…</b>계산 중</div>';await sleep(30);if(tok!==BU.tok)return;
+  const parts=ensemble(net.G,g,60,mulberry(123)),psi=[...mei(parts,net.G.n)],phi=coi(cooc(parts,net.G.n));if(tok!==BU.tok)return;
+  const pm=Math.max(...psi),cm=Math.max(...phi,1e-9),pn=Math.min(...psi),cn=Math.min(...phi);buMei.fill(psi.map(v=>ramp(pm>pn?(v-pn)/(pm-pn):0)));buCoi.fill(phi.map(v=>ramp(cm>cn?(v-cn)/(cm-cn):0)));
+  buMei.tips(psi.map((v,i)=>`노드 ${i+1}: MeI ${v.toFixed(2)}`));buCoi.tips(phi.map((v,i)=>`노드 ${i+1}: CoI ${v.toFixed(3)}`));
+  scatter($('buSc1'),net.ext,psi,'MeI');scatter($('buSc2'),net.ext,phi,'CoI');
+  readout($('buRead'),[['평균 커뮤니티 수 ⟨n_c⟩',avgNc(parts).toFixed(1)],['분할 비일관성 Ω',pai(configs(parts)).toFixed(2)],['상관(MeI, 외부성)',pearson(psi,net.ext).toFixed(2)],['상관(CoI, 외부성)',pearson(phi,net.ext).toFixed(2)]]);
+}
+function scatter(svg,xs,ys,lab){svg.textContent='';const W=300,H=170,l=40,r=8,t=8,b=30,xm=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const X=x=>l+x/xm*(W-l-r),Y=y=>H-b-(y1>y0?(y-y0)/(y1-y0):0.5)*(H-t-b);
+  el('line',{x1:l,y1:H-b,x2:W-r,y2:H-b,class:'axis'},svg);el('line',{x1:l,y1:t,x2:l,y2:H-b,class:'axis'},svg);
+  xs.forEach((x,i)=>el('circle',{cx:X(x).toFixed(1),cy:Y(ys[i]).toFixed(1),r:2.4,fill:ramp(y1>y0?(ys[i]-y0)/(y1-y0):0),opacity:.9},svg));
+  const tx=(x,y,s,a)=>{const e=el('text',{x,y,'text-anchor':a,style:'font-size:14px'},svg);e.textContent=s};
+  tx((l+W-r)/2,H-6,'외부성','middle');tx(l-4,t+8,y1.toFixed(lab==='MeI'?1:2),'end');tx(l-4,H-b,y0.toFixed(lab==='MeI'?1:2),'end');tx(l,H-b+13,'0','middle');tx(W-r,H-b+13,xm.toFixed(2),'end')}
+$('buG').oninput=()=>{$('buGo').textContent=(+$('buG').value).toFixed(1);clearTimeout(BU.timer);BU.timer=setTimeout(buRun,250)};
+
+/* ---------- start ---------- */
+exRun(20);
+lsShowNet();lsChart();
+const lazy=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;lazy.unobserve(e.target);
+  if(e.target.id==='landscape')lsScan();if(e.target.id==='bulk'){buSetup();buRun()}}),{rootMargin:'200px'});
+lazy.observe($('landscape'));lazy.observe($('bulk'));
+function recolor(){LO=cssColor('--lo');HI=cssColor('--hi');exRender();lsShowNet();if(getNet('single').ready)buRun()}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',recolor);
+new MutationObserver(recolor).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+/* table of contents highlighting */
+(function(){const links=[...document.querySelectorAll('.toc a')];const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+  if(!('IntersectionObserver' in window))return;
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const i=secs.indexOf(e.target);links.forEach((a,k)=>a.classList.toggle('on',k===i))}})},{rootMargin:'-35% 0px -60% 0px'});
+  secs.forEach(s=>s&&io.observe(s))})();
+
+})();
+</script>
+<script>
+(() => {
+  // light/dark switch; the choice is remembered across all of the course demos
+  const btn = document.getElementById("themeBtn"), root = document.documentElement, mq = matchMedia("(prefers-color-scheme: dark)");
+  const SUN = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+  const MOON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>';
+  const current = () => root.dataset.theme || (mq.matches ? "dark" : "light");
+  const sync = () => { const dark = current() === "dark", label = dark ? "밝은 화면으로 전환" : "어두운 화면으로 전환";
+    btn.innerHTML = dark ? SUN : MOON; btn.setAttribute("aria-label", label); btn.title = label; };
+  btn.addEventListener("click", () => { const next = current() === "dark" ? "light" : "dark"; root.dataset.theme = next;
+    try { localStorage.setItem("netsci-theme", next); } catch (e) {} sync(); });
+  mq.addEventListener("change", sync);
+  sync();
+})();
+</script>
+</body>
+</html>
